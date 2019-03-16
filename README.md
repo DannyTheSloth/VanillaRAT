@@ -40,4 +40,5 @@ Note: If you accidentally run VanillaRatStub.exe, you can end the process by ope
 7. If any modification is made to VanillaRat or VanillaRatStub steps 4-5 need to be repeated. 
 
 ##Important Disclaimer:
+
 **I am in no way responsible for any malicious actions that you may make using this software. Please take note that this application was designed for educational purposes and should never be used malicously.**
