@@ -1,0 +1,16 @@
+C:\Users\dhuin\source\repos\VanillaRat\VanillaRatStub\bin\Debug\VanillaRatStub.exe.config
+C:\Users\dhuin\source\repos\VanillaRat\VanillaRatStub\bin\Debug\VanillaRatStub.exe
+C:\Users\dhuin\source\repos\VanillaRat\VanillaRatStub\bin\Debug\VanillaRatStub.pdb
+C:\Users\dhuin\source\repos\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.csprojAssemblyReference.cache
+C:\Users\dhuin\source\repos\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.csproj.CoreCompileInputs.cache
+C:\Users\dhuin\source\repos\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.exe
+C:\Users\dhuin\source\repos\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.pdb
+C:\Users\dhuin\source\repos\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.exe.config
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRatStub\bin\Debug\VanillaRatStub.exe.config
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRatStub\bin\Debug\VanillaRatStub.exe
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRatStub\bin\Debug\VanillaRatStub.pdb
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.exe.config
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.csproj.CoreCompileInputs.cache
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.exe
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.pdb
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRatStub\obj\Debug\VanillaRatStub.csprojAssemblyReference.cache
