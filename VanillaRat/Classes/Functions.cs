@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VanillaRat.Classes
+﻿namespace VanillaRat.Classes
 {
-    class Functions
+    internal class Functions
     {
         //Substring Function By Artful Hacker
         public static string GetSubstringByString(string a, string b, string c)
@@ -14,9 +8,11 @@ namespace VanillaRat.Classes
             try
             {
                 return c.Substring((c.IndexOf(a) + a.Length), (c.IndexOf(b) - c.IndexOf(a) - a.Length));
-            } catch { }
+            }
+            catch { }
             return "";
         }
+
         //From Quasar Rat
         public static string RemoveLastChars(string input, int amount = 2)
         {

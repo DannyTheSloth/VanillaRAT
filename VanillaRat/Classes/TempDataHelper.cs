@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VanillaRat.Classes
+﻿namespace VanillaRat.Classes
 {
-    class TempDataHelper
+    internal class TempDataHelper
     {
         public static string DownloadLocation { get; set; }
         public static bool CanDownload { get; set; }

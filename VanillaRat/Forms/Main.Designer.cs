@@ -30,21 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ClientMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnStartServer = new System.Windows.Forms.Button();
-            this.btnStopServer = new System.Windows.Forms.Button();
-            this.btnSettings = new System.Windows.Forms.Button();
-            this.btnBuilder = new System.Windows.Forms.Button();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.GetDataLoop = new System.Windows.Forms.Timer(this.components);
-            this.btnStopRD = new System.Windows.Forms.Button();
-            this.btnStartRD = new System.Windows.Forms.Button();
-            this.bwUpdateImage = new System.ComponentModel.BackgroundWorker();
-            this.txtStatus = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lbConnectedClients = new System.Windows.Forms.ListView();
-            this.chConnectionId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chIP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chTag = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.clientControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnClientKill = new System.Windows.Forms.ToolStripMenuItem();
             this.btnClientDisconnect = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,6 +55,21 @@
             this.btnPreviewMessage = new System.Windows.Forms.ToolStripMenuItem();
             this.clientExtrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenWebsite = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnStartServer = new System.Windows.Forms.Button();
+            this.btnStopServer = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnBuilder = new System.Windows.Forms.Button();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.GetDataLoop = new System.Windows.Forms.Timer(this.components);
+            this.btnStopRD = new System.Windows.Forms.Button();
+            this.btnStartRD = new System.Windows.Forms.Button();
+            this.bwUpdateImage = new System.ComponentModel.BackgroundWorker();
+            this.txtStatus = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lbConnectedClients = new System.Windows.Forms.ListView();
+            this.chConnectionId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chIP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chTag = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pbDesktop = new System.Windows.Forms.PictureBox();
             this.ClientMenu.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -85,138 +85,6 @@
             this.clientExtrasToolStripMenuItem});
             this.ClientMenu.Name = "ClientMenu";
             this.ClientMenu.Size = new System.Drawing.Size(196, 92);
-            // 
-            // btnStartServer
-            // 
-            this.btnStartServer.Location = new System.Drawing.Point(71, 321);
-            this.btnStartServer.Name = "btnStartServer";
-            this.btnStartServer.Size = new System.Drawing.Size(102, 23);
-            this.btnStartServer.TabIndex = 1;
-            this.btnStartServer.Text = "Start Server";
-            this.btnStartServer.UseVisualStyleBackColor = true;
-            this.btnStartServer.Click += new System.EventHandler(this.btnStartServer_Click);
-            // 
-            // btnStopServer
-            // 
-            this.btnStopServer.Location = new System.Drawing.Point(179, 321);
-            this.btnStopServer.Name = "btnStopServer";
-            this.btnStopServer.Size = new System.Drawing.Size(102, 23);
-            this.btnStopServer.TabIndex = 2;
-            this.btnStopServer.Text = "Stop Server";
-            this.btnStopServer.UseVisualStyleBackColor = true;
-            this.btnStopServer.Click += new System.EventHandler(this.btnStopServer_Click);
-            // 
-            // btnSettings
-            // 
-            this.btnSettings.Location = new System.Drawing.Point(395, 321);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(102, 23);
-            this.btnSettings.TabIndex = 3;
-            this.btnSettings.Text = "Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-            // 
-            // btnBuilder
-            // 
-            this.btnBuilder.Location = new System.Drawing.Point(287, 321);
-            this.btnBuilder.Name = "btnBuilder";
-            this.btnBuilder.Size = new System.Drawing.Size(102, 23);
-            this.btnBuilder.TabIndex = 4;
-            this.btnBuilder.Text = "Builder";
-            this.btnBuilder.UseVisualStyleBackColor = true;
-            this.btnBuilder.Click += new System.EventHandler(this.btnBuilder_Click);
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(12, 326);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(47, 13);
-            this.lblStatus.TabIndex = 5;
-            this.lblStatus.Text = "lblStatus";
-            // 
-            // GetDataLoop
-            // 
-            this.GetDataLoop.Interval = 200;
-            this.GetDataLoop.Tick += new System.EventHandler(this.GetDataLoop_Tick);
-            // 
-            // btnStopRD
-            // 
-            this.btnStopRD.Location = new System.Drawing.Point(805, 321);
-            this.btnStopRD.Name = "btnStopRD";
-            this.btnStopRD.Size = new System.Drawing.Size(143, 23);
-            this.btnStopRD.TabIndex = 8;
-            this.btnStopRD.Text = "Stop Remote Desktop";
-            this.btnStopRD.UseVisualStyleBackColor = true;
-            this.btnStopRD.Click += new System.EventHandler(this.btnStopRD_Click);
-            // 
-            // btnStartRD
-            // 
-            this.btnStartRD.Location = new System.Drawing.Point(954, 321);
-            this.btnStartRD.Name = "btnStartRD";
-            this.btnStartRD.Size = new System.Drawing.Size(143, 23);
-            this.btnStartRD.TabIndex = 9;
-            this.btnStartRD.Text = "Start Remote Desktop";
-            this.btnStartRD.UseVisualStyleBackColor = true;
-            this.btnStartRD.Click += new System.EventHandler(this.btnStartRD_Click);
-            // 
-            // bwUpdateImage
-            // 
-            this.bwUpdateImage.WorkerSupportsCancellation = true;
-            this.bwUpdateImage.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdateImage_DoWork);
-            // 
-            // txtStatus
-            // 
-            this.txtStatus.Location = new System.Drawing.Point(503, 323);
-            this.txtStatus.Name = "txtStatus";
-            this.txtStatus.ReadOnly = true;
-            this.txtStatus.Size = new System.Drawing.Size(296, 20);
-            this.txtStatus.TabIndex = 10;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Window;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.lbConnectedClients);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(485, 303);
-            this.panel1.TabIndex = 7;
-            // 
-            // lbConnectedClients
-            // 
-            this.lbConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbConnectedClients.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chConnectionId,
-            this.chIP,
-            this.chTag});
-            this.lbConnectedClients.ContextMenuStrip = this.ClientMenu;
-            this.lbConnectedClients.FullRowSelect = true;
-            this.lbConnectedClients.GridLines = true;
-            this.lbConnectedClients.Location = new System.Drawing.Point(-1, -1);
-            this.lbConnectedClients.MultiSelect = false;
-            this.lbConnectedClients.Name = "lbConnectedClients";
-            this.lbConnectedClients.Size = new System.Drawing.Size(485, 299);
-            this.lbConnectedClients.TabIndex = 0;
-            this.lbConnectedClients.UseCompatibleStateImageBehavior = false;
-            this.lbConnectedClients.View = System.Windows.Forms.View.Details;
-            this.lbConnectedClients.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.listView1_ColumnWidthChanging);
-            this.lbConnectedClients.SelectedIndexChanged += new System.EventHandler(this.lbConnectedClients_SelectedIndexChanged);
-            // 
-            // chConnectionId
-            // 
-            this.chConnectionId.Text = "ID";
-            this.chConnectionId.Width = 98;
-            // 
-            // chIP
-            // 
-            this.chIP.Text = "IP Address";
-            this.chIP.Width = 192;
-            // 
-            // chTag
-            // 
-            this.chTag.Text = "Client Tag";
-            this.chTag.Width = 192;
             // 
             // clientControlsToolStripMenuItem
             // 
@@ -434,9 +302,141 @@
             // 
             this.btnOpenWebsite.Image = global::VanillaRat.Properties.Resources.Website_48px;
             this.btnOpenWebsite.Name = "btnOpenWebsite";
-            this.btnOpenWebsite.Size = new System.Drawing.Size(180, 22);
+            this.btnOpenWebsite.Size = new System.Drawing.Size(151, 22);
             this.btnOpenWebsite.Text = "Open Website ";
             this.btnOpenWebsite.Click += new System.EventHandler(this.btnOpenWebsite_Click);
+            // 
+            // btnStartServer
+            // 
+            this.btnStartServer.Location = new System.Drawing.Point(71, 321);
+            this.btnStartServer.Name = "btnStartServer";
+            this.btnStartServer.Size = new System.Drawing.Size(102, 23);
+            this.btnStartServer.TabIndex = 1;
+            this.btnStartServer.Text = "Start Server";
+            this.btnStartServer.UseVisualStyleBackColor = true;
+            this.btnStartServer.Click += new System.EventHandler(this.btnStartServer_Click);
+            // 
+            // btnStopServer
+            // 
+            this.btnStopServer.Location = new System.Drawing.Point(179, 321);
+            this.btnStopServer.Name = "btnStopServer";
+            this.btnStopServer.Size = new System.Drawing.Size(102, 23);
+            this.btnStopServer.TabIndex = 2;
+            this.btnStopServer.Text = "Stop Server";
+            this.btnStopServer.UseVisualStyleBackColor = true;
+            this.btnStopServer.Click += new System.EventHandler(this.btnStopServer_Click);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Location = new System.Drawing.Point(395, 321);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(102, 23);
+            this.btnSettings.TabIndex = 3;
+            this.btnSettings.Text = "Settings";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // btnBuilder
+            // 
+            this.btnBuilder.Location = new System.Drawing.Point(287, 321);
+            this.btnBuilder.Name = "btnBuilder";
+            this.btnBuilder.Size = new System.Drawing.Size(102, 23);
+            this.btnBuilder.TabIndex = 4;
+            this.btnBuilder.Text = "Builder";
+            this.btnBuilder.UseVisualStyleBackColor = true;
+            this.btnBuilder.Click += new System.EventHandler(this.btnBuilder_Click);
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(12, 326);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(47, 13);
+            this.lblStatus.TabIndex = 5;
+            this.lblStatus.Text = "lblStatus";
+            // 
+            // GetDataLoop
+            // 
+            this.GetDataLoop.Interval = 200;
+            this.GetDataLoop.Tick += new System.EventHandler(this.GetDataLoop_Tick);
+            // 
+            // btnStopRD
+            // 
+            this.btnStopRD.Location = new System.Drawing.Point(805, 321);
+            this.btnStopRD.Name = "btnStopRD";
+            this.btnStopRD.Size = new System.Drawing.Size(143, 23);
+            this.btnStopRD.TabIndex = 8;
+            this.btnStopRD.Text = "Stop Remote Desktop";
+            this.btnStopRD.UseVisualStyleBackColor = true;
+            this.btnStopRD.Click += new System.EventHandler(this.btnStopRD_Click);
+            // 
+            // btnStartRD
+            // 
+            this.btnStartRD.Location = new System.Drawing.Point(954, 321);
+            this.btnStartRD.Name = "btnStartRD";
+            this.btnStartRD.Size = new System.Drawing.Size(143, 23);
+            this.btnStartRD.TabIndex = 9;
+            this.btnStartRD.Text = "Start Remote Desktop";
+            this.btnStartRD.UseVisualStyleBackColor = true;
+            this.btnStartRD.Click += new System.EventHandler(this.btnStartRD_Click);
+            // 
+            // bwUpdateImage
+            // 
+            this.bwUpdateImage.WorkerSupportsCancellation = true;
+            this.bwUpdateImage.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdateImage_DoWork);
+            // 
+            // txtStatus
+            // 
+            this.txtStatus.Location = new System.Drawing.Point(503, 323);
+            this.txtStatus.Name = "txtStatus";
+            this.txtStatus.ReadOnly = true;
+            this.txtStatus.Size = new System.Drawing.Size(296, 20);
+            this.txtStatus.TabIndex = 10;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.Window;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.lbConnectedClients);
+            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(485, 303);
+            this.panel1.TabIndex = 7;
+            // 
+            // lbConnectedClients
+            // 
+            this.lbConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbConnectedClients.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chConnectionId,
+            this.chIP,
+            this.chTag});
+            this.lbConnectedClients.ContextMenuStrip = this.ClientMenu;
+            this.lbConnectedClients.FullRowSelect = true;
+            this.lbConnectedClients.GridLines = true;
+            this.lbConnectedClients.Location = new System.Drawing.Point(-1, -1);
+            this.lbConnectedClients.MultiSelect = false;
+            this.lbConnectedClients.Name = "lbConnectedClients";
+            this.lbConnectedClients.Size = new System.Drawing.Size(485, 299);
+            this.lbConnectedClients.TabIndex = 0;
+            this.lbConnectedClients.UseCompatibleStateImageBehavior = false;
+            this.lbConnectedClients.View = System.Windows.Forms.View.Details;
+            this.lbConnectedClients.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.listView1_ColumnWidthChanging);
+            this.lbConnectedClients.SelectedIndexChanged += new System.EventHandler(this.lbConnectedClients_SelectedIndexChanged);
+            // 
+            // chConnectionId
+            // 
+            this.chConnectionId.Text = "ID";
+            this.chConnectionId.Width = 98;
+            // 
+            // chIP
+            // 
+            this.chIP.Text = "IP Address";
+            this.chIP.Width = 192;
+            // 
+            // chTag
+            // 
+            this.chTag.Text = "Client Tag";
+            this.chTag.Width = 192;
             // 
             // pbDesktop
             // 
@@ -468,6 +468,7 @@
             this.Name = "Main";
             this.Text = "Vanilla Rat";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
+            this.Load += new System.EventHandler(this.Main_Load);
             this.ClientMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbDesktop)).EndInit();

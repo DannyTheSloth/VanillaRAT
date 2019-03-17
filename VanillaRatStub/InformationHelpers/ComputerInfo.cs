@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Management;
-using System.Text.RegularExpressions;
-using VanillaRatStub;
-using System.Runtime.Serialization.Json;
-using System.Net;
 using System.IO;
+using System.Management;
+using System.Net;
+using System.Runtime.Serialization.Json;
+using System.Text;
 
 namespace VanillaRatStub
 {
-    class ComputerInfo
+    internal class ComputerInfo
     {
-        //From Quasar Rat 
+        //From Quasar Rat
         public static GeoInfo GeoInfo { get; private set; }
+
         public static string RemoveLastChars(string input, int amount = 2)
         {
             if (input.Length > amount)
                 input = input.Remove(input.Length - amount);
             return input;
         }
+
         public static string GetAntivirus()
         {
             try
@@ -44,12 +41,15 @@ namespace VanillaRatStub
                         Name = "N/A";
                     return Name;
                 }
-            } catch { return "N/A"; }
+            }
+            catch { return "N/A"; }
         }
+
         public static string GetName()
         {
             return Environment.MachineName;
         }
+
         public static string GetGPU()
         {
             try
@@ -67,6 +67,7 @@ namespace VanillaRatStub
             }
             catch { return "N/A"; }
         }
+
         public static string GetCPU()
         {
             try
@@ -85,6 +86,7 @@ namespace VanillaRatStub
             catch { }
             return "N/A";
         }
+
         public static int GetRamAmount()
         {
             try
@@ -100,8 +102,10 @@ namespace VanillaRatStub
                     }
                 }
                 return RamAmount;
-            } catch { return -1; }
+            }
+            catch { return -1; }
         }
+
         public static void GetGeoInfo()
         {
             try
@@ -125,7 +129,8 @@ namespace VanillaRatStub
                         }
                     }
                 }
-            } catch { }
+            }
+            catch { }
             GeoInfo.Ip = (string.IsNullOrEmpty(GeoInfo.Ip)) ? "N/A" : GeoInfo.Ip;
             GeoInfo.Country = (string.IsNullOrEmpty(GeoInfo.Country)) ? "N/A" : GeoInfo.Country;
             GeoInfo.CountryCode = (string.IsNullOrEmpty(GeoInfo.CountryCode)) ? "-" : GeoInfo.CountryCode;
@@ -134,5 +139,5 @@ namespace VanillaRatStub
             GeoInfo.Timezone = (string.IsNullOrEmpty(GeoInfo.Timezone)) ? "N/A" : GeoInfo.Timezone;
             GeoInfo.Isp = (string.IsNullOrEmpty(GeoInfo.Isp)) ? "N/A" : GeoInfo.Isp;
         }
-    }    
+    }
 }

@@ -121,7 +121,7 @@
             this.txtInterval.Name = "txtInterval";
             this.txtInterval.Size = new System.Drawing.Size(79, 20);
             this.txtInterval.TabIndex = 9;
-            this.txtInterval.Text = "80";
+            this.txtInterval.Text = "1";
             // 
             // lblUpdateInterval
             // 
