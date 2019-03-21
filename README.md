@@ -1,4 +1,4 @@
-## VanillaRat - Advanced Remote Administration Tool
+![Banner](Banner.png)
 ### Description:
 VanillaRat is an advanced remote administration tool coded in C#. VanillaRat uses the Telepathy TCP networking library, dnlib module reading and writing library, and Costura.Fody dll embedding library.
 
@@ -14,11 +14,12 @@ VanillaRat is an advanced remote administration tool coded in C#. VanillaRat use
 - Clipboard Text (Copied text)
 
 ### TODO:
-- Code cleanup and commenting
+- Code cleanup and commenting (50% complete) 
 - Add a keylogger
 - Add password recovery
 - Add a remote shell 
 - Add options for installation 
+- Redesign networking system
 
 ### How To Install:
 **Release:**
@@ -39,7 +40,7 @@ Note: If you accidentally run VanillaRatStub.exe, you can end the process by ope
 6. Run VanillaRat.exe and have fun! 
 7. If any modification is made to VanillaRat or VanillaRatStub steps 4-5 need to be repeated. 
 
-### Using Vanilla Rat
+### Using Vanilla Rat:
 
 **Setting The Server Up:**
 To get started you must have at least one open port that you do not use with other applications. The default port is 1604. You must also have a dynamic dns address which you can get from https://no-ip.com/.
@@ -56,4 +57,5 @@ Once a client is connected you can select the client and right click on the clie
 ![Capture](https://user-images.githubusercontent.com/39781618/54472005-b7bca600-478f-11e9-8a0a-45006870ee18.PNG)
 ## Important Disclaimer:
 
-**I am in no way responsible for any malicious actions that you may make using this software. Please take note that this application was designed for educational purposes and should never be used malicously.**
+**I am in no way responsible for any malicious actions that you may make using this software. Please take note that this application was designed for educational purposes and should never be used maliciously.**
+

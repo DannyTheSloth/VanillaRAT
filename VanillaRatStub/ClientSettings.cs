@@ -6,5 +6,8 @@
         public static string Port = "";
         public static string ClientTag = "";
         public static string UpdateInterval = "";
+        public static string Install = "";
+        public static string Startup = "";
+        public static string Admin = "";
     }
 }
