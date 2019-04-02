@@ -132,6 +132,12 @@
     <Compile Include="Forms\HardwareUsageViewer.Designer.cs">
       <DependentUpon>HardwareUsageViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Keylogger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Keylogger.Designer.cs">
+      <DependentUpon>Keylogger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\HardwareUsageViewer.resx">
       <DependentUpon>HardwareUsageViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Keylogger.resx">
+      <DependentUpon>Keylogger.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -261,6 +270,7 @@
     <None Include="Server_48px.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Compose_48px.png" />
     <Content Include="StreamLibrary.dll" />
   </ItemGroup>
   <ItemGroup />

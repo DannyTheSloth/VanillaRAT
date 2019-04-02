@@ -9,16 +9,18 @@ VanillaRat is an advanced remote administration tool coded in C#. VanillaRat use
 - Computer Information 
 - Hardware Usage Information (CPU usage, disk usage, available ram)
 - Message Box Sender 
+- Live Keylogger 
 - Website Opener 
 - Application Permission Raiser (Normal -> Admin)
 - Clipboard Text (Copied text)
+- Startup 
 
 ### TODO:
-- Code cleanup and commenting (50% complete) 
-- Add a keylogger
+- Code cleanup and commenting (50% complete, still need to comment) 
+- Add a keylogger (Complete)
 - Add password recovery
 - Add a remote shell 
-- Add options for installation 
+- Add options for installation (Complete, still need to add folder selection)
 - Redesign networking system
 
 ### How To Install:
@@ -58,4 +60,3 @@ Once a client is connected you can select the client and right click on the clie
 ## Important Disclaimer:
 
 **I am in no way responsible for any malicious actions that you may make using this software. Please take note that this application was designed for educational purposes and should never be used maliciously.**
-

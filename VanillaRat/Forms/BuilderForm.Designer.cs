@@ -42,9 +42,9 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbRegularOptions = new System.Windows.Forms.TabPage();
             this.tbAdditionalOptions = new System.Windows.Forms.TabPage();
+            this.cbEnableAdmin = new System.Windows.Forms.CheckBox();
             this.cbEnableStartup = new System.Windows.Forms.CheckBox();
             this.cbEnableInstallation = new System.Windows.Forms.CheckBox();
-            this.cbEnableAdmin = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tbRegularOptions.SuspendLayout();
             this.tbAdditionalOptions.SuspendLayout();
@@ -187,6 +187,16 @@
             this.tbAdditionalOptions.Text = "Additional Options";
             this.tbAdditionalOptions.UseVisualStyleBackColor = true;
             // 
+            // cbEnableAdmin
+            // 
+            this.cbEnableAdmin.AutoSize = true;
+            this.cbEnableAdmin.Location = new System.Drawing.Point(9, 6);
+            this.cbEnableAdmin.Name = "cbEnableAdmin";
+            this.cbEnableAdmin.Size = new System.Drawing.Size(157, 17);
+            this.cbEnableAdmin.TabIndex = 15;
+            this.cbEnableAdmin.Text = "Enable Administration Mode";
+            this.cbEnableAdmin.UseVisualStyleBackColor = true;
+            // 
             // cbEnableStartup
             // 
             this.cbEnableStartup.AutoSize = true;
@@ -201,24 +211,13 @@
             // cbEnableInstallation
             // 
             this.cbEnableInstallation.AutoSize = true;
-            this.cbEnableInstallation.Location = new System.Drawing.Point(9, 6);
+            this.cbEnableInstallation.Location = new System.Drawing.Point(9, 29);
             this.cbEnableInstallation.Name = "cbEnableInstallation";
             this.cbEnableInstallation.Size = new System.Drawing.Size(112, 17);
             this.cbEnableInstallation.TabIndex = 0;
             this.cbEnableInstallation.Text = "Enable Installation";
             this.cbEnableInstallation.UseVisualStyleBackColor = true;
             this.cbEnableInstallation.CheckedChanged += new System.EventHandler(this.cbEnableInstallation_CheckedChanged);
-            // 
-            // cbEnableAdmin
-            // 
-            this.cbEnableAdmin.AutoSize = true;
-            this.cbEnableAdmin.Enabled = false;
-            this.cbEnableAdmin.Location = new System.Drawing.Point(9, 29);
-            this.cbEnableAdmin.Name = "cbEnableAdmin";
-            this.cbEnableAdmin.Size = new System.Drawing.Size(157, 17);
-            this.cbEnableAdmin.TabIndex = 15;
-            this.cbEnableAdmin.Text = "Enable Administration Mode";
-            this.cbEnableAdmin.UseVisualStyleBackColor = true;
             // 
             // BuilderForm
             // 

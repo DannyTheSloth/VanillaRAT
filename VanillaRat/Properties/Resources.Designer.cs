@@ -93,6 +93,16 @@ namespace VanillaRat.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Compose_48px {
+            get {
+                object obj = ResourceManager.GetObject("Compose_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Console_48px {
             get {
                 object obj = ResourceManager.GetObject("Console_48px", resourceCulture);

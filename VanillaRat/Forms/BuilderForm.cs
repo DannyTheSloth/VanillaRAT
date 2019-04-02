@@ -20,7 +20,7 @@ namespace VanillaRat.Forms
         }
         private void btnBuild_Click(object sender, EventArgs e)
         {
-            if (txtDNS.Text == null || txtPort.Text == null || txtName.Text == null || txtClientTag.Text == null || txtInterval.Text == null) 
+            if (txtDNS.Text == null || txtPort.Text == null || txtName.Text == null || txtClientTag.Text == null || txtInterval.Text == null)
             {
                 MessageBox.Show("Error: One or more text fields is empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -30,17 +30,18 @@ namespace VanillaRat.Forms
             {
                 Convert.ToInt16(txtPort.Text);
                 Convert.ToInt16(txtInterval.Text);
-            } catch (Exception EX)
+            }
+            catch (Exception EX)
             {
                 MessageBox.Show("Error: " + EX.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;                   
+                return;
             }
 
             string Install = "False";
             string Admin = "False";
             string Startup = "False";
-            Install = cbEnableInstallation.Checked ? "True" : "False";              
-            Startup = cbEnableStartup.Checked ? "True" : "False";      
+            Install = cbEnableInstallation.Checked ? "True" : "False";
+            Startup = cbEnableStartup.Checked ? "True" : "False";
             Admin = cbEnableAdmin.Checked ? "True" : "False";
 
 
@@ -63,7 +64,7 @@ namespace VanillaRat.Forms
                     cbEnableAdmin.Enabled = true;
                 cbEnableStartup.Enabled = false;
             }
-            
+
         }
     }
 }

