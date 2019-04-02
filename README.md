@@ -22,6 +22,7 @@ VanillaRat is an advanced remote administration tool coded in C#. VanillaRat use
 - Add a remote shell 
 - Add options for installation (Complete, still need to add folder selection)
 - Redesign networking system
+- Bug Fixing
 
 ### How To Install:
 **Release:**
