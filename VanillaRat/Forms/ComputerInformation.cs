@@ -4,11 +4,11 @@ namespace VanillaRat.Forms
 {
     public partial class ComputerInformation : Form
     {
-        public int ConnectionID { get; set; }
-
         public ComputerInformation()
         {
             InitializeComponent();
         }
+
+        public int ConnectionID { get; set; }
     }
 }

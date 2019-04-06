@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+using VanillaRat.Classes;
 
 namespace VanillaRat.Forms
 {
@@ -9,66 +13,116 @@ namespace VanillaRat.Forms
         public HardwareUsageViewer()
         {
             InitializeComponent();
+            Update = true;                  
         }
-
         public int ConnectionID { get; set; }
-
-        private void btnStart_Click(object sender, EventArgs e)
+        public bool Update { get; set; }
+        //Set up charts
+        private void InitCharts()
         {
-            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StartUsageStream"));
+            ucCpu.Series.Clear();
+            ucCpu.Palette = ChartColorPalette.SeaGreen;
+            ucCpu.Titles.Add("CPU Usage");
+            Series SCPU = ucCpu.Series.Add("CPU Usage");
+            ucCpu.Series[0].ChartType = SeriesChartType.FastLine;
+            SCPU.Points.Add(0);
+            ucCpu.Series[0].YAxisType = AxisType.Primary;
+            ucCpu.Series[0].YValueType = ChartValueType.Int32;
+            ucCpu.Series[0].IsXValueIndexed = false;
+            ucCpu.ResetAutoValues();
+            ucCpu.ChartAreas[0].AxisY.Maximum = 100;
+            ucCpu.ChartAreas[0].AxisY.Minimum = 0;
+            ucCpu.ChartAreas[0].AxisX.Enabled = AxisEnabled.False;
+            ucCpu.ChartAreas[0].AxisY.Title = "CPU Usage %";
+            ucCpu.ChartAreas[0].AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
+            ucDisk.Series.Clear();
+            ucDisk.Palette = ChartColorPalette.SeaGreen;
+            ucDisk.Titles.Add("Disk Usage");
+            Series SDISK = ucDisk.Series.Add("Disk Usage");
+            ucDisk.Series[0].ChartType = SeriesChartType.FastLine;
+            SDISK.Points.Add(0);
+            ucDisk.Series[0].YAxisType = AxisType.Primary;
+            ucDisk.Series[0].YValueType = ChartValueType.Int32;
+            ucDisk.Series[0].IsXValueIndexed = false;
+            ucDisk.ResetAutoValues();
+            ucDisk.ChartAreas[0].AxisY.Maximum = 100;
+            ucDisk.ChartAreas[0].AxisY.Minimum = 0;
+            ucDisk.ChartAreas[0].AxisX.Enabled = AxisEnabled.False;
+            ucDisk.ChartAreas[0].AxisY.Title = "Disk Usage %";
+            ucDisk.ChartAreas[0].AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
+            Update = true;
+            bwUpdateCharts.RunWorkerAsync();
         }
-
+        //Stop usage stream
         private void btnStop_Click(object sender, EventArgs e)
         {
-            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StopUsageStream"));
+            if (Update && bwUpdateCharts.IsBusy)
+            {
+                Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StopUsageStream"));
+                bwUpdateCharts.CancelAsync();
+                Update = false;
+                btnStop.Text = "Start";
+            }
+            else if (!Update && !bwUpdateCharts.IsBusy)
+            {
+                Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StartUsageStream"));
+                Update = true;
+                bwUpdateCharts.RunWorkerAsync();
+                btnStop.Text = "Stop";
+            }
+
         }
 
+        //On CPU change
         private void txtCpuUsage_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                int IntegerValue = Convert.ToInt32(txtCpuUsage.Text);
-                if (IntegerValue == 0)
-                    pbUsage.Value = 0;
-                if (pbUsage.Value > IntegerValue)
-                {
-                    pbUsage.Value = pbUsage.Value - IntegerValue;
-                }
-                else
-                {
-                    pbUsage.Value = pbUsage.Value + IntegerValue;
-                }
-            }
-            catch { }
+            
         }
 
+        //On disk change
         private void txtDiskUsage_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                int IntegerValue = Convert.ToInt32(txtDiskUsage.Text);
-                if (IntegerValue == 0)
-                    pbDiskUsage.Value = 0;
-                if (pbDiskUsage.Value > IntegerValue)
-                {
-                    pbDiskUsage.Value = pbDiskUsage.Value - IntegerValue;
-                }
-                else
-                {
-                    pbDiskUsage.Value = pbDiskUsage.Value + IntegerValue;
-                }
-            }
-            catch { }
+            
         }
-
+        //On ram Change 
         private void txtAvailableRam_TextChanged(object sender, EventArgs e)
         {
         }
 
+        //Stop usage stream
         private void HardwareUsageViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StopUsageStream"));
-            Classes.AutoClosingMessageBox.Show("Waiting for usage stream to stop.", "Waiting", 1000);
+            Update = false;
+            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StopUsageStream"));
+            AutoClosingMessageBox.Show("Waiting for usage stream to stop.", "Waiting", 1000);
+        }
+        //On form load
+        private void HardwareUsageViewer_Load(object sender, EventArgs e)
+        {
+            InitCharts();
+        }
+        //Update Charts
+        private void bwUpdateCharts_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            while (Update)
+            {
+                Invoke(new MethodInvoker(() =>
+                {
+                    try
+                    {
+                        int CpuUsage = Convert.ToInt32(txtCpuUsage.Text);
+                        ucCpu.Series[0].Points.AddY(CpuUsage);
+                        if (ucCpu.Series[0].Points.Count > 40)
+                            ucCpu.Series[0].Points.RemoveAt(0);
+                        int DiskUsage = Convert.ToInt32(txtDiskUsage.Text);
+                        ucDisk.Series[0].Points.AddY(DiskUsage);
+                        if (ucDisk.Series[0].Points.Count > 40)
+                            ucDisk.Series[0].Points.RemoveAt(0);
+                    }
+                    catch { }
+                }));
+                Thread.Sleep(450);
+            }
         }
     }
 }

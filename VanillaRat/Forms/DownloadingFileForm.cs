@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using VanillaRat.Classes;
 
 namespace VanillaRat.Forms
 {
@@ -19,15 +13,13 @@ namespace VanillaRat.Forms
 
         private void DownloadingFileForm_Shown(object sender, EventArgs e)
         {
-
         }
 
+        //Prevents closing until download is complete
         private void DownloadingFileForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Classes.TempDataHelper.CanDownload == false)
-            {
+            if (TempDataHelper.CanDownload == false)
                 e.Cancel = true;
-            }
             else
                 e.Cancel = false;
         }

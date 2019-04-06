@@ -90,6 +90,12 @@
     <Compile Include="Classes\TempDataHelper.cs" />
     <Compile Include="ClientSettings.cs" />
     <Compile Include="Classes\Settings.cs" />
+    <Compile Include="Forms\AudioRecorder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AudioRecorder.Designer.cs">
+      <DependentUpon>AudioRecorder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\BuilderForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +156,12 @@
     <Compile Include="Forms\OpenWebsite.Designer.cs">
       <DependentUpon>OpenWebsite.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RDC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RDC.Designer.cs">
+      <DependentUpon>RDC.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,6 +170,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <EmbeddedResource Include="Forms\AudioRecorder.resx">
+      <DependentUpon>AudioRecorder.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BuilderForm.resx">
       <DependentUpon>BuilderForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -188,6 +204,9 @@
     <EmbeddedResource Include="Forms\OpenWebsite.resx">
       <DependentUpon>OpenWebsite.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RDC.resx">
+      <DependentUpon>RDC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -203,7 +222,7 @@
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
@@ -271,6 +290,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Compose_48px.png" />
+    <None Include="Monitor_48px.png" />
+    <None Include="Play_48px.png" />
+    <None Include="Headphones_48px.png" />
+    <None Include="Person_48px.png" />
     <Content Include="StreamLibrary.dll" />
   </ItemGroup>
   <ItemGroup />

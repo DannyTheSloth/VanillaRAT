@@ -30,17 +30,28 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ClientMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnStartServer = new System.Windows.Forms.Button();
+            this.btnStopServer = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnBuilder = new System.Windows.Forms.Button();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.GetDataLoop = new System.Windows.Forms.Timer(this.components);
+            this.bwUpdateImage = new System.ComponentModel.BackgroundWorker();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lbConnectedClients = new System.Windows.Forms.ListView();
+            this.chConnectionId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chIP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chTag = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SidebarPanel = new System.Windows.Forms.Panel();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.chAntiVirus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chOperatingSystem = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lblCurrentID = new System.Windows.Forms.ToolStripMenuItem();
             this.clientControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnClientKill = new System.Windows.Forms.ToolStripMenuItem();
             this.btnClientDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.btnShowClientConsole = new System.Windows.Forms.ToolStripMenuItem();
             this.btnRaisePerms = new System.Windows.Forms.ToolStripMenuItem();
-            this.clientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnGetRunningApps = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOpenComputerInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOpenFileBrowser = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnGrabClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnGetHardwareUsage = new System.Windows.Forms.ToolStripMenuItem();
             this.clientCommunicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenMessageBoxDialog = new System.Windows.Forms.ToolStripMenuItem();
             this.headerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,39 +64,199 @@
             this.cbIcons = new System.Windows.Forms.ToolStripComboBox();
             this.btnSendMessageBox = new System.Windows.Forms.ToolStripMenuItem();
             this.btnPreviewMessage = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnGetRunningApps = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenComputerInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenFileBrowser = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnGrabClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnGetHardwareUsage = new System.Windows.Forms.ToolStripMenuItem();
             this.clientExtrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenWebsite = new System.Windows.Forms.ToolStripMenuItem();
             this.btnStartLiveKeylogger = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnStartServer = new System.Windows.Forms.Button();
-            this.btnStopServer = new System.Windows.Forms.Button();
-            this.btnSettings = new System.Windows.Forms.Button();
-            this.btnBuilder = new System.Windows.Forms.Button();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.GetDataLoop = new System.Windows.Forms.Timer(this.components);
-            this.btnStopRD = new System.Windows.Forms.Button();
-            this.btnStartRD = new System.Windows.Forms.Button();
-            this.bwUpdateImage = new System.ComponentModel.BackgroundWorker();
-            this.txtStatus = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lbConnectedClients = new System.Windows.Forms.ListView();
-            this.chConnectionId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chIP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chTag = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pbDesktop = new System.Windows.Forms.PictureBox();
+            this.remoteDesktopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnStartRemoteDesktop = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnStopRemoteDesktop = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAudioRecorder = new System.Windows.Forms.ToolStripMenuItem();
             this.ClientMenu.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDesktop)).BeginInit();
+            this.SidebarPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ClientMenu
             // 
             this.ClientMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblCurrentID,
             this.clientControlsToolStripMenuItem,
-            this.clientToolStripMenuItem,
             this.clientCommunicationToolStripMenuItem,
+            this.clientToolStripMenuItem,
             this.clientExtrasToolStripMenuItem});
             this.ClientMenu.Name = "ClientMenu";
-            this.ClientMenu.Size = new System.Drawing.Size(196, 114);
+            this.ClientMenu.Size = new System.Drawing.Size(202, 114);
+            // 
+            // btnStartServer
+            // 
+            this.btnStartServer.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(110)))), ((int)(((byte)(114)))));
+            this.btnStartServer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStartServer.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStartServer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(230)))), ((int)(((byte)(233)))));
+            this.btnStartServer.Location = new System.Drawing.Point(12, 11);
+            this.btnStartServer.Name = "btnStartServer";
+            this.btnStartServer.Size = new System.Drawing.Size(146, 38);
+            this.btnStartServer.TabIndex = 1;
+            this.btnStartServer.Text = "START SERVER";
+            this.btnStartServer.UseVisualStyleBackColor = true;
+            this.btnStartServer.Click += new System.EventHandler(this.btnStartServer_Click);
+            // 
+            // btnStopServer
+            // 
+            this.btnStopServer.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(110)))), ((int)(((byte)(114)))));
+            this.btnStopServer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStopServer.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStopServer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(230)))), ((int)(((byte)(233)))));
+            this.btnStopServer.Location = new System.Drawing.Point(12, 55);
+            this.btnStopServer.Name = "btnStopServer";
+            this.btnStopServer.Size = new System.Drawing.Size(146, 38);
+            this.btnStopServer.TabIndex = 2;
+            this.btnStopServer.Text = "STOP SERVER";
+            this.btnStopServer.UseVisualStyleBackColor = true;
+            this.btnStopServer.Click += new System.EventHandler(this.btnStopServer_Click);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(110)))), ((int)(((byte)(114)))));
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSettings.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSettings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(230)))), ((int)(((byte)(233)))));
+            this.btnSettings.Location = new System.Drawing.Point(12, 143);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(146, 38);
+            this.btnSettings.TabIndex = 3;
+            this.btnSettings.Text = "SETTINGS";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // btnBuilder
+            // 
+            this.btnBuilder.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(110)))), ((int)(((byte)(114)))));
+            this.btnBuilder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuilder.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBuilder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(230)))), ((int)(((byte)(233)))));
+            this.btnBuilder.Location = new System.Drawing.Point(12, 99);
+            this.btnBuilder.Name = "btnBuilder";
+            this.btnBuilder.Size = new System.Drawing.Size(146, 38);
+            this.btnBuilder.TabIndex = 4;
+            this.btnBuilder.Text = "BUILDER";
+            this.btnBuilder.UseVisualStyleBackColor = true;
+            this.btnBuilder.Click += new System.EventHandler(this.btnBuilder_Click);
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(258, 323);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(47, 13);
+            this.lblStatus.TabIndex = 5;
+            this.lblStatus.Text = "lblStatus";
+            // 
+            // GetDataLoop
+            // 
+            this.GetDataLoop.Interval = 200;
+            this.GetDataLoop.Tick += new System.EventHandler(this.GetDataLoop_Tick);
+            // 
+            // bwUpdateImage
+            // 
+            this.bwUpdateImage.WorkerSupportsCancellation = true;
+            this.bwUpdateImage.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdateImage_DoWork);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.Window;
+            this.panel1.Controls.Add(this.lbConnectedClients);
+            this.panel1.Location = new System.Drawing.Point(165, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(733, 437);
+            this.panel1.TabIndex = 7;
+            // 
+            // lbConnectedClients
+            // 
+            this.lbConnectedClients.BackColor = System.Drawing.SystemColors.Window;
+            this.lbConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbConnectedClients.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chConnectionId,
+            this.chIP,
+            this.chTag,
+            this.chAntiVirus,
+            this.chOperatingSystem});
+            this.lbConnectedClients.ContextMenuStrip = this.ClientMenu;
+            this.lbConnectedClients.FullRowSelect = true;
+            this.lbConnectedClients.GridLines = true;
+            this.lbConnectedClients.Location = new System.Drawing.Point(6, -1);
+            this.lbConnectedClients.MultiSelect = false;
+            this.lbConnectedClients.Name = "lbConnectedClients";
+            this.lbConnectedClients.Size = new System.Drawing.Size(730, 437);
+            this.lbConnectedClients.TabIndex = 0;
+            this.lbConnectedClients.UseCompatibleStateImageBehavior = false;
+            this.lbConnectedClients.View = System.Windows.Forms.View.Details;
+            this.lbConnectedClients.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.listView1_ColumnWidthChanging);
+            this.lbConnectedClients.SelectedIndexChanged += new System.EventHandler(this.lbConnectedClients_SelectedIndexChanged);
+            // 
+            // chConnectionId
+            // 
+            this.chConnectionId.Text = "ID";
+            this.chConnectionId.Width = 65;
+            // 
+            // chIP
+            // 
+            this.chIP.Text = "IP Address";
+            this.chIP.Width = 162;
+            // 
+            // chTag
+            // 
+            this.chTag.Text = "Client Tag";
+            this.chTag.Width = 162;
+            // 
+            // SidebarPanel
+            // 
+            this.SidebarPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(54)))));
+            this.SidebarPanel.Controls.Add(this.lblVersion);
+            this.SidebarPanel.Controls.Add(this.btnStopServer);
+            this.SidebarPanel.Controls.Add(this.btnStartServer);
+            this.SidebarPanel.Controls.Add(this.btnBuilder);
+            this.SidebarPanel.Controls.Add(this.btnSettings);
+            this.SidebarPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SidebarPanel.Location = new System.Drawing.Point(0, 0);
+            this.SidebarPanel.Name = "SidebarPanel";
+            this.SidebarPanel.Size = new System.Drawing.Size(171, 437);
+            this.SidebarPanel.TabIndex = 8;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(230)))), ((int)(((byte)(233)))));
+            this.lblVersion.Location = new System.Drawing.Point(8, 411);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(30, 16);
+            this.lblVersion.TabIndex = 9;
+            this.lblVersion.Text = "v1.3";
+            this.lblVersion.Click += new System.EventHandler(this.lblVersion_Click);
+            // 
+            // chAntiVirus
+            // 
+            this.chAntiVirus.Text = "Anti-Virus";
+            this.chAntiVirus.Width = 162;
+            // 
+            // chOperatingSystem
+            // 
+            this.chOperatingSystem.Text = "Operating System";
+            this.chOperatingSystem.Width = 162;
+            // 
+            // lblCurrentID
+            // 
+            this.lblCurrentID.Image = global::VanillaRat.Properties.Resources.Person_48px;
+            this.lblCurrentID.Name = "lblCurrentID";
+            this.lblCurrentID.Size = new System.Drawing.Size(201, 22);
+            this.lblCurrentID.Text = "Client ID: None Selected";
             // 
             // clientControlsToolStripMenuItem
             // 
@@ -96,7 +267,7 @@
             this.btnRaisePerms});
             this.clientControlsToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Services_48px;
             this.clientControlsToolStripMenuItem.Name = "clientControlsToolStripMenuItem";
-            this.clientControlsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.clientControlsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.clientControlsToolStripMenuItem.Text = "Client Controls";
             // 
             // btnClientKill
@@ -131,66 +302,13 @@
             this.btnRaisePerms.Text = "Raise Permission Level (Will Restart)";
             this.btnRaisePerms.Click += new System.EventHandler(this.btnRaisePerms_Click);
             // 
-            // clientToolStripMenuItem
-            // 
-            this.clientToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnGetRunningApps,
-            this.btnOpenComputerInfo,
-            this.btnOpenFileBrowser,
-            this.btnGrabClipboard,
-            this.btnGetHardwareUsage});
-            this.clientToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Info_48px;
-            this.clientToolStripMenuItem.Name = "clientToolStripMenuItem";
-            this.clientToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.clientToolStripMenuItem.Text = "Client Information";
-            // 
-            // btnGetRunningApps
-            // 
-            this.btnGetRunningApps.Image = global::VanillaRat.Properties.Resources.Windows_Client_48px;
-            this.btnGetRunningApps.Name = "btnGetRunningApps";
-            this.btnGetRunningApps.Size = new System.Drawing.Size(209, 22);
-            this.btnGetRunningApps.Text = "Get Running Applications";
-            this.btnGetRunningApps.Click += new System.EventHandler(this.btnGetRunningApps_Click);
-            // 
-            // btnOpenComputerInfo
-            // 
-            this.btnOpenComputerInfo.Image = global::VanillaRat.Properties.Resources.Laptop_48px;
-            this.btnOpenComputerInfo.Name = "btnOpenComputerInfo";
-            this.btnOpenComputerInfo.Size = new System.Drawing.Size(209, 22);
-            this.btnOpenComputerInfo.Text = "Get Computer Info";
-            this.btnOpenComputerInfo.Click += new System.EventHandler(this.btnOpenComputerInfo_Click);
-            // 
-            // btnOpenFileBrowser
-            // 
-            this.btnOpenFileBrowser.Image = global::VanillaRat.Properties.Resources.Opened_Folder_48px;
-            this.btnOpenFileBrowser.Name = "btnOpenFileBrowser";
-            this.btnOpenFileBrowser.Size = new System.Drawing.Size(209, 22);
-            this.btnOpenFileBrowser.Text = "Open File Browser";
-            this.btnOpenFileBrowser.Click += new System.EventHandler(this.btnOpenFileBrowser_Click);
-            // 
-            // btnGrabClipboard
-            // 
-            this.btnGrabClipboard.Image = global::VanillaRat.Properties.Resources.Document_48px;
-            this.btnGrabClipboard.Name = "btnGrabClipboard";
-            this.btnGrabClipboard.Size = new System.Drawing.Size(209, 22);
-            this.btnGrabClipboard.Text = "Get Clipboard Text ";
-            this.btnGrabClipboard.Click += new System.EventHandler(this.btnGrabClipboard_Click);
-            // 
-            // btnGetHardwareUsage
-            // 
-            this.btnGetHardwareUsage.Image = global::VanillaRat.Properties.Resources.Server_48px;
-            this.btnGetHardwareUsage.Name = "btnGetHardwareUsage";
-            this.btnGetHardwareUsage.Size = new System.Drawing.Size(209, 22);
-            this.btnGetHardwareUsage.Text = "Get Hardware Usage";
-            this.btnGetHardwareUsage.Click += new System.EventHandler(this.btnGetHardwareUsage_Click);
-            // 
             // clientCommunicationToolStripMenuItem
             // 
             this.clientCommunicationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnOpenMessageBoxDialog});
             this.clientCommunicationToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Communication_48px;
             this.clientCommunicationToolStripMenuItem.Name = "clientCommunicationToolStripMenuItem";
-            this.clientCommunicationToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.clientCommunicationToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.clientCommunicationToolStripMenuItem.Text = "Client Communication";
             // 
             // btnOpenMessageBoxDialog
@@ -290,14 +408,69 @@
             this.btnPreviewMessage.Text = "Preview Message";
             this.btnPreviewMessage.Click += new System.EventHandler(this.btnPreviewMessage_Click);
             // 
+            // clientToolStripMenuItem
+            // 
+            this.clientToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnGetRunningApps,
+            this.btnOpenComputerInfo,
+            this.btnOpenFileBrowser,
+            this.btnGrabClipboard,
+            this.btnGetHardwareUsage});
+            this.clientToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Info_48px;
+            this.clientToolStripMenuItem.Name = "clientToolStripMenuItem";
+            this.clientToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.clientToolStripMenuItem.Text = "Client Information";
+            // 
+            // btnGetRunningApps
+            // 
+            this.btnGetRunningApps.Image = global::VanillaRat.Properties.Resources.Windows_Client_48px;
+            this.btnGetRunningApps.Name = "btnGetRunningApps";
+            this.btnGetRunningApps.Size = new System.Drawing.Size(209, 22);
+            this.btnGetRunningApps.Text = "Get Running Applications";
+            this.btnGetRunningApps.Click += new System.EventHandler(this.btnGetRunningApps_Click);
+            // 
+            // btnOpenComputerInfo
+            // 
+            this.btnOpenComputerInfo.Image = global::VanillaRat.Properties.Resources.Laptop_48px;
+            this.btnOpenComputerInfo.Name = "btnOpenComputerInfo";
+            this.btnOpenComputerInfo.Size = new System.Drawing.Size(209, 22);
+            this.btnOpenComputerInfo.Text = "Get Computer Info";
+            this.btnOpenComputerInfo.Click += new System.EventHandler(this.btnOpenComputerInfo_Click);
+            // 
+            // btnOpenFileBrowser
+            // 
+            this.btnOpenFileBrowser.Image = global::VanillaRat.Properties.Resources.Opened_Folder_48px;
+            this.btnOpenFileBrowser.Name = "btnOpenFileBrowser";
+            this.btnOpenFileBrowser.Size = new System.Drawing.Size(209, 22);
+            this.btnOpenFileBrowser.Text = "Open File Browser";
+            this.btnOpenFileBrowser.Click += new System.EventHandler(this.btnOpenFileBrowser_Click);
+            // 
+            // btnGrabClipboard
+            // 
+            this.btnGrabClipboard.Image = global::VanillaRat.Properties.Resources.Document_48px;
+            this.btnGrabClipboard.Name = "btnGrabClipboard";
+            this.btnGrabClipboard.Size = new System.Drawing.Size(209, 22);
+            this.btnGrabClipboard.Text = "Get Clipboard Text ";
+            this.btnGrabClipboard.Click += new System.EventHandler(this.btnGrabClipboard_Click);
+            // 
+            // btnGetHardwareUsage
+            // 
+            this.btnGetHardwareUsage.Image = global::VanillaRat.Properties.Resources.Server_48px;
+            this.btnGetHardwareUsage.Name = "btnGetHardwareUsage";
+            this.btnGetHardwareUsage.Size = new System.Drawing.Size(209, 22);
+            this.btnGetHardwareUsage.Text = "Get Hardware Usage";
+            this.btnGetHardwareUsage.Click += new System.EventHandler(this.btnGetHardwareUsage_Click);
+            // 
             // clientExtrasToolStripMenuItem
             // 
             this.clientExtrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnOpenWebsite,
-            this.btnStartLiveKeylogger});
+            this.btnStartLiveKeylogger,
+            this.remoteDesktopToolStripMenuItem,
+            this.btnAudioRecorder});
             this.clientExtrasToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Flash_On_48px;
             this.clientExtrasToolStripMenuItem.Name = "clientExtrasToolStripMenuItem";
-            this.clientExtrasToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.clientExtrasToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.clientExtrasToolStripMenuItem.Text = "Client Extras ";
             // 
             // btnOpenWebsite
@@ -312,176 +485,63 @@
             // 
             this.btnStartLiveKeylogger.Image = global::VanillaRat.Properties.Resources.Compose_48px;
             this.btnStartLiveKeylogger.Name = "btnStartLiveKeylogger";
-            this.btnStartLiveKeylogger.Size = new System.Drawing.Size(180, 22);
+            this.btnStartLiveKeylogger.Size = new System.Drawing.Size(178, 22);
             this.btnStartLiveKeylogger.Text = "Start Live Keylogger";
             this.btnStartLiveKeylogger.Click += new System.EventHandler(this.btnStartLiveKeylogger_Click);
             // 
-            // btnStartServer
+            // remoteDesktopToolStripMenuItem
             // 
-            this.btnStartServer.Location = new System.Drawing.Point(71, 321);
-            this.btnStartServer.Name = "btnStartServer";
-            this.btnStartServer.Size = new System.Drawing.Size(102, 23);
-            this.btnStartServer.TabIndex = 1;
-            this.btnStartServer.Text = "Start Server";
-            this.btnStartServer.UseVisualStyleBackColor = true;
-            this.btnStartServer.Click += new System.EventHandler(this.btnStartServer_Click);
+            this.remoteDesktopToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnStartRemoteDesktop,
+            this.btnStopRemoteDesktop});
+            this.remoteDesktopToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Monitor_48px;
+            this.remoteDesktopToolStripMenuItem.Name = "remoteDesktopToolStripMenuItem";
+            this.remoteDesktopToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.remoteDesktopToolStripMenuItem.Text = "Remote Desktop";
             // 
-            // btnStopServer
+            // btnStartRemoteDesktop
             // 
-            this.btnStopServer.Location = new System.Drawing.Point(179, 321);
-            this.btnStopServer.Name = "btnStopServer";
-            this.btnStopServer.Size = new System.Drawing.Size(102, 23);
-            this.btnStopServer.TabIndex = 2;
-            this.btnStopServer.Text = "Stop Server";
-            this.btnStopServer.UseVisualStyleBackColor = true;
-            this.btnStopServer.Click += new System.EventHandler(this.btnStopServer_Click);
+            this.btnStartRemoteDesktop.Image = global::VanillaRat.Properties.Resources.Play_48px;
+            this.btnStartRemoteDesktop.Name = "btnStartRemoteDesktop";
+            this.btnStartRemoteDesktop.Size = new System.Drawing.Size(188, 22);
+            this.btnStartRemoteDesktop.Text = "Start Remote Desktop";
+            this.btnStartRemoteDesktop.Click += new System.EventHandler(this.btnStartRemoteDesktop_Click);
             // 
-            // btnSettings
+            // btnStopRemoteDesktop
             // 
-            this.btnSettings.Location = new System.Drawing.Point(395, 321);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(102, 23);
-            this.btnSettings.TabIndex = 3;
-            this.btnSettings.Text = "Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            this.btnStopRemoteDesktop.Image = global::VanillaRat.Properties.Resources.Close_Window_48px2;
+            this.btnStopRemoteDesktop.Name = "btnStopRemoteDesktop";
+            this.btnStopRemoteDesktop.Size = new System.Drawing.Size(188, 22);
+            this.btnStopRemoteDesktop.Text = "Stop Remote Desktop";
+            this.btnStopRemoteDesktop.Click += new System.EventHandler(this.btnStopRemoteDesktop_Click);
             // 
-            // btnBuilder
+            // btnAudioRecorder
             // 
-            this.btnBuilder.Location = new System.Drawing.Point(287, 321);
-            this.btnBuilder.Name = "btnBuilder";
-            this.btnBuilder.Size = new System.Drawing.Size(102, 23);
-            this.btnBuilder.TabIndex = 4;
-            this.btnBuilder.Text = "Builder";
-            this.btnBuilder.UseVisualStyleBackColor = true;
-            this.btnBuilder.Click += new System.EventHandler(this.btnBuilder_Click);
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(12, 326);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(47, 13);
-            this.lblStatus.TabIndex = 5;
-            this.lblStatus.Text = "lblStatus";
-            // 
-            // GetDataLoop
-            // 
-            this.GetDataLoop.Interval = 200;
-            this.GetDataLoop.Tick += new System.EventHandler(this.GetDataLoop_Tick);
-            // 
-            // btnStopRD
-            // 
-            this.btnStopRD.Location = new System.Drawing.Point(805, 321);
-            this.btnStopRD.Name = "btnStopRD";
-            this.btnStopRD.Size = new System.Drawing.Size(143, 23);
-            this.btnStopRD.TabIndex = 8;
-            this.btnStopRD.Text = "Stop Remote Desktop";
-            this.btnStopRD.UseVisualStyleBackColor = true;
-            this.btnStopRD.Click += new System.EventHandler(this.btnStopRD_Click);
-            // 
-            // btnStartRD
-            // 
-            this.btnStartRD.Location = new System.Drawing.Point(954, 321);
-            this.btnStartRD.Name = "btnStartRD";
-            this.btnStartRD.Size = new System.Drawing.Size(143, 23);
-            this.btnStartRD.TabIndex = 9;
-            this.btnStartRD.Text = "Start Remote Desktop";
-            this.btnStartRD.UseVisualStyleBackColor = true;
-            this.btnStartRD.Click += new System.EventHandler(this.btnStartRD_Click);
-            // 
-            // bwUpdateImage
-            // 
-            this.bwUpdateImage.WorkerSupportsCancellation = true;
-            this.bwUpdateImage.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdateImage_DoWork);
-            // 
-            // txtStatus
-            // 
-            this.txtStatus.Location = new System.Drawing.Point(503, 323);
-            this.txtStatus.Name = "txtStatus";
-            this.txtStatus.ReadOnly = true;
-            this.txtStatus.Size = new System.Drawing.Size(296, 20);
-            this.txtStatus.TabIndex = 10;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Window;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.lbConnectedClients);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(485, 303);
-            this.panel1.TabIndex = 7;
-            // 
-            // lbConnectedClients
-            // 
-            this.lbConnectedClients.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbConnectedClients.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chConnectionId,
-            this.chIP,
-            this.chTag});
-            this.lbConnectedClients.ContextMenuStrip = this.ClientMenu;
-            this.lbConnectedClients.FullRowSelect = true;
-            this.lbConnectedClients.GridLines = true;
-            this.lbConnectedClients.Location = new System.Drawing.Point(-1, -1);
-            this.lbConnectedClients.MultiSelect = false;
-            this.lbConnectedClients.Name = "lbConnectedClients";
-            this.lbConnectedClients.Size = new System.Drawing.Size(485, 299);
-            this.lbConnectedClients.TabIndex = 0;
-            this.lbConnectedClients.UseCompatibleStateImageBehavior = false;
-            this.lbConnectedClients.View = System.Windows.Forms.View.Details;
-            this.lbConnectedClients.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.listView1_ColumnWidthChanging);
-            this.lbConnectedClients.SelectedIndexChanged += new System.EventHandler(this.lbConnectedClients_SelectedIndexChanged);
-            // 
-            // chConnectionId
-            // 
-            this.chConnectionId.Text = "ID";
-            this.chConnectionId.Width = 98;
-            // 
-            // chIP
-            // 
-            this.chIP.Text = "IP Address";
-            this.chIP.Width = 192;
-            // 
-            // chTag
-            // 
-            this.chTag.Text = "Client Tag";
-            this.chTag.Width = 192;
-            // 
-            // pbDesktop
-            // 
-            this.pbDesktop.BackColor = System.Drawing.SystemColors.Window;
-            this.pbDesktop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbDesktop.Location = new System.Drawing.Point(503, 12);
-            this.pbDesktop.Name = "pbDesktop";
-            this.pbDesktop.Size = new System.Drawing.Size(594, 303);
-            this.pbDesktop.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbDesktop.TabIndex = 6;
-            this.pbDesktop.TabStop = false;
+            this.btnAudioRecorder.Image = global::VanillaRat.Properties.Resources.Headphones_48px;
+            this.btnAudioRecorder.Name = "btnAudioRecorder";
+            this.btnAudioRecorder.Size = new System.Drawing.Size(178, 22);
+            this.btnAudioRecorder.Text = "Audio Recorder";
+            this.btnAudioRecorder.Click += new System.EventHandler(this.btnAudioRecorder_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1109, 350);
-            this.Controls.Add(this.txtStatus);
-            this.Controls.Add(this.btnStartRD);
-            this.Controls.Add(this.btnStopRD);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(898, 437);
+            this.Controls.Add(this.SidebarPanel);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.pbDesktop);
             this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.btnBuilder);
-            this.Controls.Add(this.btnSettings);
-            this.Controls.Add(this.btnStopServer);
-            this.Controls.Add(this.btnStartServer);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Main";
+            this.ShowIcon = false;
             this.Text = "Vanilla Rat";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
             this.ClientMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbDesktop)).EndInit();
+            this.SidebarPanel.ResumeLayout(false);
+            this.SidebarPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -511,11 +571,7 @@
         private System.Windows.Forms.ToolStripComboBox cbIcons;
         private System.Windows.Forms.ToolStripMenuItem btnSendMessageBox;
         private System.Windows.Forms.ToolStripMenuItem btnPreviewMessage;
-        private System.Windows.Forms.PictureBox pbDesktop;
-        private System.Windows.Forms.Button btnStopRD;
-        private System.Windows.Forms.Button btnStartRD;
         private System.ComponentModel.BackgroundWorker bwUpdateImage;
-        private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.ToolStripMenuItem clientToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem btnGetRunningApps;
         private System.Windows.Forms.ToolStripMenuItem clientExtrasToolStripMenuItem;
@@ -531,6 +587,15 @@
         private System.Windows.Forms.ToolStripMenuItem btnGrabClipboard;
         private System.Windows.Forms.ToolStripMenuItem btnGetHardwareUsage;
         private System.Windows.Forms.ToolStripMenuItem btnStartLiveKeylogger;
+        private System.Windows.Forms.ToolStripMenuItem remoteDesktopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem btnStartRemoteDesktop;
+        private System.Windows.Forms.ToolStripMenuItem btnStopRemoteDesktop;
+        private System.Windows.Forms.Panel SidebarPanel;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.ToolStripMenuItem btnAudioRecorder;
+        private System.Windows.Forms.ColumnHeader chAntiVirus;
+        private System.Windows.Forms.ColumnHeader chOperatingSystem;
+        private System.Windows.Forms.ToolStripMenuItem lblCurrentID;
     }
 }
 

