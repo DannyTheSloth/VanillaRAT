@@ -33,6 +33,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.lblUpdateInterval = new System.Windows.Forms.Label();
             this.txtUpdateInterval = new System.Windows.Forms.TextBox();
+            this.cbNotify = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblPort
@@ -53,7 +54,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(15, 64);
+            this.btnSave.Location = new System.Drawing.Point(15, 87);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(190, 23);
             this.btnSave.TabIndex = 2;
@@ -77,18 +78,30 @@
             this.txtUpdateInterval.Size = new System.Drawing.Size(79, 20);
             this.txtUpdateInterval.TabIndex = 12;
             // 
+            // cbNotify
+            // 
+            this.cbNotify.AutoSize = true;
+            this.cbNotify.Location = new System.Drawing.Point(15, 64);
+            this.cbNotify.Name = "cbNotify";
+            this.cbNotify.Size = new System.Drawing.Size(127, 17);
+            this.cbNotify.TabIndex = 13;
+            this.cbNotify.Text = "Notfiy On Connection";
+            this.cbNotify.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(217, 96);
+            this.ClientSize = new System.Drawing.Size(217, 119);
+            this.Controls.Add(this.cbNotify);
             this.Controls.Add(this.txtUpdateInterval);
             this.Controls.Add(this.lblUpdateInterval);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtPort);
             this.Controls.Add(this.lblPort);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SettingsForm";
+            this.ShowIcon = false;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.ResumeLayout(false);
@@ -103,5 +116,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblUpdateInterval;
         private System.Windows.Forms.TextBox txtUpdateInterval;
+        private System.Windows.Forms.CheckBox cbNotify;
     }
 }

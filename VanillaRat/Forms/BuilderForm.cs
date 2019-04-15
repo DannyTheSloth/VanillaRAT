@@ -10,7 +10,12 @@ namespace VanillaRat.Forms
         public BuilderForm()
         {
             InitializeComponent();
+            MinimizeBox = false;
+            MaximizeBox = false;
+            Update = true;
         }
+
+        public bool Update { get; set; }
 
         //Build client
         private void btnBuild_Click(object sender, EventArgs e)
@@ -40,7 +45,6 @@ namespace VanillaRat.Forms
             Install = cbEnableInstallation.Checked ? "True" : "False";
             Startup = cbEnableStartup.Checked ? "True" : "False";
 
-
             ClientBuilder.BuildClient(txtPort.Text, txtDNS.Text, txtName.Text, txtClientTag.Text, txtInterval.Text,
                 Install, Startup);
             Process.Start("explorer.exe", Environment.CurrentDirectory + @"\Clients\");
@@ -54,6 +58,12 @@ namespace VanillaRat.Forms
                 cbEnableStartup.Enabled = true;
             else
                 cbEnableStartup.Enabled = false;
+        }
+
+        //On form close
+        private void BuilderForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Update = false;
         }
     }
 }

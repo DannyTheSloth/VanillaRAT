@@ -50,9 +50,10 @@
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(481, 264);
             this.Controls.Add(this.lbInformation);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ComputerInformation";
+            this.ShowIcon = false;
             this.Text = "ComputerInformation";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ComputerInformation_FormClosing);
             this.ResumeLayout(false);
 
         }

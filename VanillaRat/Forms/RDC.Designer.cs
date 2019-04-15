@@ -34,7 +34,6 @@
             // 
             // pbDesktop
             // 
-            this.pbDesktop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbDesktop.Location = new System.Drawing.Point(0, 0);
             this.pbDesktop.Name = "pbDesktop";
@@ -51,8 +50,9 @@
             this.Controls.Add(this.pbDesktop);
             this.Name = "RDC";
             this.ShowIcon = false;
-            this.Text = "RDC";
+            this.Text = "Remote Desktop Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RDC_FormClosing);
+            this.Load += new System.EventHandler(this.RDC_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbDesktop)).EndInit();
             this.ResumeLayout(false);
 

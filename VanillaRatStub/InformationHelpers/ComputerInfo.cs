@@ -108,7 +108,7 @@ namespace VanillaRatStub
                     foreach (ManagementObject MO in MOS.Get())
                     {
                         double Bytes = Convert.ToDouble(MO["TotalPhysicalMemory"]);
-                        RamAmount = (int) (Bytes / 1048576);
+                        RamAmount = (int)(Bytes / 1048576);
                         break;
                     }
                 }
@@ -126,11 +126,11 @@ namespace VanillaRatStub
             try
             {
                 DataContractJsonSerializer JS = new DataContractJsonSerializer(typeof(GeoInfo));
-                HttpWebRequest Request = (HttpWebRequest) WebRequest.Create("http://ip-api.com/json/");
+                HttpWebRequest Request = (HttpWebRequest)WebRequest.Create("http://ip-api.com/json/");
                 Request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; rv:48.0) Gecko/20100101 Firefox/48.0";
                 Request.Proxy = null;
                 Request.Timeout = 10000;
-                using (HttpWebResponse Response = (HttpWebResponse) Request.GetResponse())
+                using (HttpWebResponse Response = (HttpWebResponse)Request.GetResponse())
                 {
                     using (Stream DS = Response.GetResponseStream())
                     {
@@ -139,7 +139,7 @@ namespace VanillaRatStub
                             string ResponseString = Reader.ReadToEnd();
                             using (MemoryStream MS = new MemoryStream(Encoding.UTF8.GetBytes(ResponseString)))
                             {
-                                GeoInfo = (GeoInfo) JS.ReadObject(MS);
+                                GeoInfo = (GeoInfo)JS.ReadObject(MS);
                             }
                         }
                     }
@@ -159,16 +159,16 @@ namespace VanillaRatStub
         }
 
         [DllImport("kernel32.dll")]
-        static extern bool IsWow64Process(IntPtr hProcess, out bool wow64Process);
+        private static extern bool IsWow64Process(IntPtr hProcess, out bool wow64Process);
 
         [DllImport("kernel32.dll")]
-        static extern IntPtr GetCurrentProcess();
+        private static extern IntPtr GetCurrentProcess();
 
         [DllImport("kernel32.dll")]
-        static extern IntPtr GetModuleHandle(string moduleName);
+        private static extern IntPtr GetModuleHandle(string moduleName);
 
         [DllImport("kernel32")]
-        static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+        private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 
         public static bool Is64BitOperatingSystem()
         {

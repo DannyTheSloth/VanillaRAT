@@ -34,9 +34,9 @@
             // 
             // btnStartStopRecord
             // 
-            this.btnStartStopRecord.Location = new System.Drawing.Point(12, 126);
+            this.btnStartStopRecord.Location = new System.Drawing.Point(12, 12);
             this.btnStartStopRecord.Name = "btnStartStopRecord";
-            this.btnStartStopRecord.Size = new System.Drawing.Size(145, 23);
+            this.btnStartStopRecord.Size = new System.Drawing.Size(193, 23);
             this.btnStartStopRecord.TabIndex = 0;
             this.btnStartStopRecord.Text = "Start Recording";
             this.btnStartStopRecord.UseVisualStyleBackColor = true;
@@ -44,11 +44,11 @@
             // 
             // btnPlayback
             // 
-            this.btnPlayback.Location = new System.Drawing.Point(168, 126);
+            this.btnPlayback.Location = new System.Drawing.Point(12, 41);
             this.btnPlayback.Name = "btnPlayback";
-            this.btnPlayback.Size = new System.Drawing.Size(145, 23);
+            this.btnPlayback.Size = new System.Drawing.Size(193, 23);
             this.btnPlayback.TabIndex = 1;
-            this.btnPlayback.Text = "Play Recording";
+            this.btnPlayback.Text = "Start Playing";
             this.btnPlayback.UseVisualStyleBackColor = true;
             this.btnPlayback.Click += new System.EventHandler(this.btnPlayback_Click);
             // 
@@ -56,12 +56,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(325, 161);
+            this.ClientSize = new System.Drawing.Size(217, 76);
             this.Controls.Add(this.btnPlayback);
             this.Controls.Add(this.btnStartStopRecord);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AudioRecorder";
+            this.ShowIcon = false;
             this.Text = "Audio Recorder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AudioRecorder_FormClosing);
             this.ResumeLayout(false);
 
         }

@@ -171,9 +171,11 @@
             this.Controls.Add(this.btnGetDirectoryInfo);
             this.Controls.Add(this.txtCurrentDirectory);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FileExplorer";
+            this.ShowIcon = false;
             this.Text = "File Explorer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FileExplorer_FormClosing);
             this.panel1.ResumeLayout(false);
             this.FileMenu.ResumeLayout(false);
             this.ResumeLayout(false);

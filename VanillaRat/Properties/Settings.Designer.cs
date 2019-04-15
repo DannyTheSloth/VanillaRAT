@@ -46,5 +46,17 @@ namespace VanillaRat.Properties {
                 this["UpdateInterval"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Notfiy {
+            get {
+                return ((bool)(this["Notfiy"]));
+            }
+            set {
+                this["Notfiy"] = value;
+            }
+        }
     }
 }

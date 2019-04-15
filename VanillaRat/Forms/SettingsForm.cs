@@ -27,6 +27,8 @@ namespace VanillaRat.Forms
 
             Settings.Default.Port = Convert.ToInt16(txtPort.Text);
             Settings.Default.UpdateInterval = Convert.ToInt16(txtUpdateInterval.Text);
+            Settings.Default.Notfiy = cbNotify.Checked;
+            Settings.Default.Save();
             Close();
         }
 
@@ -36,6 +38,7 @@ namespace VanillaRat.Forms
             Classes.Settings.Values Settings;
             txtPort.Text = Settings.GetPort().ToString();
             txtUpdateInterval.Text = Settings.GetUpdateInterval().ToString();
+            cbNotify.Checked = Settings.GetNotifyValue();
         }
     }
 }

@@ -15,6 +15,12 @@
             {
                 return Properties.Settings.Default.UpdateInterval;
             }
+
+            //Get notify on connection from settings
+            public bool GetNotifyValue()
+            {
+                return Properties.Settings.Default.Notfiy;
+            }
         }
     }
 }

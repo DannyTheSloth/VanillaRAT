@@ -10,7 +10,12 @@ namespace VanillaRat.Forms
         public ClientRunningApps()
         {
             InitializeComponent();
+            MinimizeBox = false;
+            MaximizeBox = false;
+            Update = true;
         }
+
+        public bool Update { get; set; }
 
         public int ConnectionID { get; set; }
 
@@ -33,6 +38,12 @@ namespace VanillaRat.Forms
             Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("EndProcess(" + Item.SubItems[1].Text + ")"));
             Item.Remove();
             Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("GetProcesses"));
+        }
+
+        //On form close
+        private void ClientRunningApps_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Update = false;
         }
     }
 }

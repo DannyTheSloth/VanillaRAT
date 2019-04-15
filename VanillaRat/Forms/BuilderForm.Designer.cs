@@ -129,7 +129,7 @@
             this.txtInterval.Name = "txtInterval";
             this.txtInterval.Size = new System.Drawing.Size(295, 20);
             this.txtInterval.TabIndex = 9;
-            this.txtInterval.Text = "50";
+            this.txtInterval.Text = "1";
             // 
             // lblUpdateInterval
             // 
@@ -214,9 +214,11 @@
             this.ClientSize = new System.Drawing.Size(432, 203);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnBuild);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "BuilderForm";
+            this.ShowIcon = false;
             this.Text = "Builder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BuilderForm_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.tbRegularOptions.ResumeLayout(false);
             this.tbRegularOptions.PerformLayout();

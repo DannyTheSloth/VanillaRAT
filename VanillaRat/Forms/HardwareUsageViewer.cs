@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
+using System.ComponentModel;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,15 +13,21 @@ namespace VanillaRat.Forms
         public HardwareUsageViewer()
         {
             InitializeComponent();
-            Update = true;                  
+            Update = true;
+            MinimizeBox = false;
+            MaximizeBox = false;
+            UpdateForm = true;
         }
+
         public int ConnectionID { get; set; }
         public bool Update { get; set; }
+        public bool UpdateForm { get; set; }
+
         //Set up charts
         private void InitCharts()
         {
             ucCpu.Series.Clear();
-            ucCpu.Palette = ChartColorPalette.SeaGreen;
+            ucCpu.Palette = ChartColorPalette.BrightPastel;
             ucCpu.Titles.Add("CPU Usage");
             Series SCPU = ucCpu.Series.Add("CPU Usage");
             ucCpu.Series[0].ChartType = SeriesChartType.FastLine;
@@ -36,7 +42,7 @@ namespace VanillaRat.Forms
             ucCpu.ChartAreas[0].AxisY.Title = "CPU Usage %";
             ucCpu.ChartAreas[0].AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
             ucDisk.Series.Clear();
-            ucDisk.Palette = ChartColorPalette.SeaGreen;
+            ucDisk.Palette = ChartColorPalette.BrightPastel;
             ucDisk.Titles.Add("Disk Usage");
             Series SDISK = ucDisk.Series.Add("Disk Usage");
             ucDisk.Series[0].ChartType = SeriesChartType.FastLine;
@@ -53,6 +59,7 @@ namespace VanillaRat.Forms
             Update = true;
             bwUpdateCharts.RunWorkerAsync();
         }
+
         //Stop usage stream
         private void btnStop_Click(object sender, EventArgs e)
         {
@@ -70,20 +77,18 @@ namespace VanillaRat.Forms
                 bwUpdateCharts.RunWorkerAsync();
                 btnStop.Text = "Stop";
             }
-
         }
 
         //On CPU change
         private void txtCpuUsage_TextChanged(object sender, EventArgs e)
         {
-            
         }
 
         //On disk change
         private void txtDiskUsage_TextChanged(object sender, EventArgs e)
         {
-            
         }
+
         //On ram Change 
         private void txtAvailableRam_TextChanged(object sender, EventArgs e)
         {
@@ -92,17 +97,20 @@ namespace VanillaRat.Forms
         //Stop usage stream
         private void HardwareUsageViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
+            UpdateForm = false;
             Update = false;
             Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("StopUsageStream"));
             AutoClosingMessageBox.Show("Waiting for usage stream to stop.", "Waiting", 1000);
         }
+
         //On form load
         private void HardwareUsageViewer_Load(object sender, EventArgs e)
         {
             InitCharts();
         }
+
         //Update Charts
-        private void bwUpdateCharts_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bwUpdateCharts_DoWork(object sender, DoWorkEventArgs e)
         {
             while (Update)
             {
@@ -119,7 +127,9 @@ namespace VanillaRat.Forms
                         if (ucDisk.Series[0].Points.Count > 40)
                             ucDisk.Series[0].Points.RemoveAt(0);
                     }
-                    catch { }
+                    catch
+                    {
+                    }
                 }));
                 Thread.Sleep(450);
             }

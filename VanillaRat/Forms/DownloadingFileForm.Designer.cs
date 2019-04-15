@@ -57,8 +57,9 @@
             this.ClientSize = new System.Drawing.Size(234, 64);
             this.Controls.Add(this.txtDownloadingFile);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "DownloadingFileForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DownloadingFileForm_FormClosing);
             this.Shown += new System.EventHandler(this.DownloadingFileForm_Shown);

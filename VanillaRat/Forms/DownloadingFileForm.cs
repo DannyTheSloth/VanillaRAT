@@ -9,7 +9,12 @@ namespace VanillaRat.Forms
         public DownloadingFileForm()
         {
             InitializeComponent();
+            MinimizeBox = false;
+            MaximizeBox = false;
+            Update = true;
         }
+
+        public bool Update { get; set; }
 
         private void DownloadingFileForm_Shown(object sender, EventArgs e)
         {

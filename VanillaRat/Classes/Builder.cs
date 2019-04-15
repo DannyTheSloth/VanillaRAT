@@ -8,6 +8,7 @@ namespace VanillaRat.Classes
 {
     internal class Builder
     {
+        //Build client
         public void BuildClient(string Port, string DNS, string Name, string ClientTag, string UpdateInterval,
             string Install, string Startup)
         {

@@ -7,8 +7,18 @@ namespace VanillaRat.Forms
         public ClipboardTextViewer()
         {
             InitializeComponent();
+            MinimizeBox = false;
+            MaximizeBox = false;
+            Update = true;
         }
 
         public int ConnectionID { get; set; }
+        public bool Update { get; set; }
+
+        //On form close
+        private void ClipboardTextViewer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Update = false;
+        }
     }
 }

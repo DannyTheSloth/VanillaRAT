@@ -81,8 +81,9 @@
             this.Controls.Add(this.lblWindowName);
             this.Controls.Add(this.txtCurrentWindow);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Keylogger";
+            this.ShowIcon = false;
             this.Text = "Keylogger";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Keylogger_FormClosing);
             this.panel1.ResumeLayout(false);

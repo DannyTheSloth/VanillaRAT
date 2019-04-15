@@ -43,7 +43,7 @@
             // lblLink
             // 
             this.lblLink.AutoSize = true;
-            this.lblLink.Location = new System.Drawing.Point(12, 15);
+            this.lblLink.Location = new System.Drawing.Point(9, 15);
             this.lblLink.Name = "lblLink";
             this.lblLink.Size = new System.Drawing.Size(30, 13);
             this.lblLink.TabIndex = 1;
@@ -51,7 +51,7 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(12, 38);
+            this.btnOpen.Location = new System.Drawing.Point(12, 41);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(193, 23);
             this.btnOpen.TabIndex = 2;
@@ -63,13 +63,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(217, 68);
+            this.ClientSize = new System.Drawing.Size(217, 74);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.lblLink);
             this.Controls.Add(this.txtLink);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "OpenWebsite";
+            this.ShowIcon = false;
             this.Text = "Open Website";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OpenWebsite_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

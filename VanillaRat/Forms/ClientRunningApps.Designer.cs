@@ -113,9 +113,11 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(644, 368);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ClientRunningApps";
+            this.ShowIcon = false;
             this.Text = "Running Applications";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientRunningApps_FormClosing);
             this.ProcessesMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -43,17 +43,17 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.UsageTabs = new System.Windows.Forms.TabControl();
             this.tpCPU = new System.Windows.Forms.TabPage();
-            this.tpDisk = new System.Windows.Forms.TabPage();
-            this.tpRam = new System.Windows.Forms.TabPage();
             this.ucCpu = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tpDisk = new System.Windows.Forms.TabPage();
             this.ucDisk = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tpRam = new System.Windows.Forms.TabPage();
             this.bwUpdateCharts = new System.ComponentModel.BackgroundWorker();
             this.UsageTabs.SuspendLayout();
             this.tpCPU.SuspendLayout();
-            this.tpDisk.SuspendLayout();
-            this.tpRam.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ucCpu)).BeginInit();
+            this.tpDisk.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ucDisk)).BeginInit();
+            this.tpRam.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtCpuUsage
@@ -146,33 +146,6 @@
             this.tpCPU.Text = "CPU Usage";
             this.tpCPU.UseVisualStyleBackColor = true;
             // 
-            // tpDisk
-            // 
-            this.tpDisk.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tpDisk.Controls.Add(this.ucDisk);
-            this.tpDisk.Controls.Add(this.label2);
-            this.tpDisk.Controls.Add(this.txtDiskUsage);
-            this.tpDisk.Location = new System.Drawing.Point(4, 22);
-            this.tpDisk.Name = "tpDisk";
-            this.tpDisk.Padding = new System.Windows.Forms.Padding(3);
-            this.tpDisk.Size = new System.Drawing.Size(473, 197);
-            this.tpDisk.TabIndex = 1;
-            this.tpDisk.Text = "Disk Usage";
-            this.tpDisk.UseVisualStyleBackColor = true;
-            // 
-            // tpRam
-            // 
-            this.tpRam.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tpRam.Controls.Add(this.label3);
-            this.tpRam.Controls.Add(this.txtAvailableRam);
-            this.tpRam.Location = new System.Drawing.Point(4, 22);
-            this.tpRam.Name = "tpRam";
-            this.tpRam.Padding = new System.Windows.Forms.Padding(3);
-            this.tpRam.Size = new System.Drawing.Size(473, 197);
-            this.tpRam.TabIndex = 2;
-            this.tpRam.Text = "Available Ram";
-            this.tpRam.UseVisualStyleBackColor = true;
-            // 
             // ucCpu
             // 
             chartArea3.Name = "ChartArea1";
@@ -188,6 +161,20 @@
             this.ucCpu.Size = new System.Drawing.Size(459, 144);
             this.ucCpu.TabIndex = 12;
             this.ucCpu.Text = "chart1";
+            // 
+            // tpDisk
+            // 
+            this.tpDisk.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tpDisk.Controls.Add(this.ucDisk);
+            this.tpDisk.Controls.Add(this.label2);
+            this.tpDisk.Controls.Add(this.txtDiskUsage);
+            this.tpDisk.Location = new System.Drawing.Point(4, 22);
+            this.tpDisk.Name = "tpDisk";
+            this.tpDisk.Padding = new System.Windows.Forms.Padding(3);
+            this.tpDisk.Size = new System.Drawing.Size(473, 197);
+            this.tpDisk.TabIndex = 1;
+            this.tpDisk.Text = "Disk Usage";
+            this.tpDisk.UseVisualStyleBackColor = true;
             // 
             // ucDisk
             // 
@@ -205,6 +192,19 @@
             this.ucDisk.TabIndex = 13;
             this.ucDisk.Text = "chart1";
             // 
+            // tpRam
+            // 
+            this.tpRam.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tpRam.Controls.Add(this.label3);
+            this.tpRam.Controls.Add(this.txtAvailableRam);
+            this.tpRam.Location = new System.Drawing.Point(4, 22);
+            this.tpRam.Name = "tpRam";
+            this.tpRam.Padding = new System.Windows.Forms.Padding(3);
+            this.tpRam.Size = new System.Drawing.Size(473, 197);
+            this.tpRam.TabIndex = 2;
+            this.tpRam.Text = "Available Ram";
+            this.tpRam.UseVisualStyleBackColor = true;
+            // 
             // bwUpdateCharts
             // 
             this.bwUpdateCharts.WorkerSupportsCancellation = true;
@@ -217,20 +217,21 @@
             this.ClientSize = new System.Drawing.Size(481, 261);
             this.Controls.Add(this.UsageTabs);
             this.Controls.Add(this.btnStop);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "HardwareUsageViewer";
+            this.ShowIcon = false;
             this.Text = "Hardware Usage Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HardwareUsageViewer_FormClosing);
             this.Load += new System.EventHandler(this.HardwareUsageViewer_Load);
             this.UsageTabs.ResumeLayout(false);
             this.tpCPU.ResumeLayout(false);
             this.tpCPU.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ucCpu)).EndInit();
             this.tpDisk.ResumeLayout(false);
             this.tpDisk.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ucDisk)).EndInit();
             this.tpRam.ResumeLayout(false);
             this.tpRam.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ucCpu)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ucDisk)).EndInit();
             this.ResumeLayout(false);
 
         }
