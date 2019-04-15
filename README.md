@@ -13,7 +13,7 @@ VanillaRat is an advanced remote administration tool coded in C#. VanillaRat use
 - Website Opener 
 - Application Permission Raiser (Normal -> Admin)
 - Clipboard Text (Copied text)
-- Chat
+- Chat (Does not allow for client to close form)
 - Audio Recorder (Microphone)
 - Process Killer (Task manager, etc.)
 - Startup 
