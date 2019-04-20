@@ -57,7 +57,7 @@ Once a client is connected you can select the client and right click on the clie
 - Clipboard Text: Note you do not have to close the dialog if you want to get another copy of the currently copied text on the client. Just hit Get Clipboard Text again and the dialog will automatically update.
 
 ### Screenshot: 
-![Screenshot](Screenshot.png)
+![Demo](VanillaRatDemo.gif)
 
 ## A Special Thanks To:
 
