@@ -56,7 +56,10 @@ Once a client is connected you can select the client and right click on the clie
 - File Browser: Right click to bring up options for downloading, uploading, refrshing, and deleting files. Note that for uploading you may drag and drop a file into the browser to upload it into the directory it is currently in.
 - Clipboard Text: Note you do not have to close the dialog if you want to get another copy of the currently copied text on the client. Just hit Get Clipboard Text again and the dialog will automatically update.
 
-### Screenshot: 
+### Screenshot:
+![Screenshot](Screenshot.png)
+
+### Demo: 
 ![Demo](VanillaRatDemo.gif)
 
 ## A Special Thanks To:
