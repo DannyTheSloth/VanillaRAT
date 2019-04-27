@@ -83,6 +83,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -332,6 +333,8 @@
     <None Include="Person_48px.png" />
     <None Include="Click_Soft_00.wav" />
     <None Include="Chat_48px.png" />
+    <None Include="Administrative Tools_48px.png" />
+    <None Include="Lock Landscape_48px.png" />
     <Content Include="StreamLibrary.dll" />
   </ItemGroup>
   <ItemGroup>

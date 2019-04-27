@@ -47,7 +47,7 @@ namespace VanillaRat.Forms
             FadeIn(15);
         }
 
-        //On notification box show 
+        //On notification box show
         private async void NotificationBox_Shown(object sender, EventArgs e)
         {
             await Task.Delay(3000);

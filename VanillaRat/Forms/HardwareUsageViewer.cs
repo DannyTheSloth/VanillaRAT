@@ -89,7 +89,7 @@ namespace VanillaRat.Forms
         {
         }
 
-        //On ram Change 
+        //On ram Change
         private void txtAvailableRam_TextChanged(object sender, EventArgs e)
         {
         }

@@ -83,7 +83,7 @@
             // 
             // btnBuild
             // 
-            this.btnBuild.Location = new System.Drawing.Point(12, 170);
+            this.btnBuild.Location = new System.Drawing.Point(12, 165);
             this.btnBuild.Name = "btnBuild";
             this.btnBuild.Size = new System.Drawing.Size(408, 23);
             this.btnBuild.TabIndex = 4;
@@ -125,7 +125,7 @@
             // 
             // txtInterval
             // 
-            this.txtInterval.Location = new System.Drawing.Point(120, 110);
+            this.txtInterval.Location = new System.Drawing.Point(120, 109);
             this.txtInterval.Name = "txtInterval";
             this.txtInterval.Size = new System.Drawing.Size(295, 20);
             this.txtInterval.TabIndex = 9;
@@ -134,7 +134,7 @@
             // lblUpdateInterval
             // 
             this.lblUpdateInterval.AutoSize = true;
-            this.lblUpdateInterval.Location = new System.Drawing.Point(6, 113);
+            this.lblUpdateInterval.Location = new System.Drawing.Point(6, 112);
             this.lblUpdateInterval.Name = "lblUpdateInterval";
             this.lblUpdateInterval.Size = new System.Drawing.Size(108, 13);
             this.lblUpdateInterval.TabIndex = 10;
@@ -148,7 +148,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(432, 164);
+            this.tabControl1.Size = new System.Drawing.Size(432, 163);
             this.tabControl1.TabIndex = 11;
             // 
             // tbRegularOptions
@@ -167,7 +167,7 @@
             this.tbRegularOptions.Location = new System.Drawing.Point(4, 22);
             this.tbRegularOptions.Name = "tbRegularOptions";
             this.tbRegularOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tbRegularOptions.Size = new System.Drawing.Size(424, 138);
+            this.tbRegularOptions.Size = new System.Drawing.Size(424, 137);
             this.tbRegularOptions.TabIndex = 0;
             this.tbRegularOptions.Text = "Regular Options";
             this.tbRegularOptions.UseVisualStyleBackColor = true;
@@ -211,7 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(432, 203);
+            this.ClientSize = new System.Drawing.Size(432, 193);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnBuild);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

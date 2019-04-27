@@ -169,7 +169,7 @@ namespace VanillaRat.Forms
         private void lbFiles_DragDrop(object sender, DragEventArgs e)
         {
             int MaximumFiles = 0;
-            string[] File = (string[]) e.Data.GetData(DataFormats.FileDrop, false);
+            string[] File = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             foreach (string S in File)
                 MaximumFiles++;
             if (MaximumFiles > 1)

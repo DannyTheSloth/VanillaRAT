@@ -117,6 +117,7 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.ex
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.exe
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.pdb
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\dnlib.xml
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.csprojAssemblyReference.cache
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.exe.config
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.AudioRecorder.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.BuilderForm.resources
@@ -139,4 +140,3 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.cs
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.csproj.CopyComplete
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.exe
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.pdb
-C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.csprojAssemblyReference.cache

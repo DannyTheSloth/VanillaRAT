@@ -30,35 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ClientMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.lblCurrentID = new System.Windows.Forms.ToolStripMenuItem();
-            this.clientControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnClientKill = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnClientDisconnect = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnRaisePerms = new System.Windows.Forms.ToolStripMenuItem();
-            this.clientCommunicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOpenMessageBoxDialog = new System.Windows.Forms.ToolStripMenuItem();
-            this.headerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtHeader = new System.Windows.Forms.ToolStripTextBox();
-            this.messageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtMessage = new System.Windows.Forms.ToolStripTextBox();
-            this.buttonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cbButtons = new System.Windows.Forms.ToolStripComboBox();
-            this.iconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cbIcons = new System.Windows.Forms.ToolStripComboBox();
-            this.btnSendMessageBox = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnPreviewMessage = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOpenChat = new System.Windows.Forms.ToolStripMenuItem();
-            this.clientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnGetRunningApps = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOpenComputerInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOpenFileBrowser = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnGrabClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnGetHardwareUsage = new System.Windows.Forms.ToolStripMenuItem();
-            this.clientExtrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnStartKL = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnRemoteDesktop = new System.Windows.Forms.ToolStripMenuItem();
-            this.openWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOpenAudioRecorder = new System.Windows.Forms.ToolStripMenuItem();
             this.btnStartServer = new System.Windows.Forms.Button();
             this.btnStopServer = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
@@ -75,6 +46,42 @@
             this.SidebarPanel = new System.Windows.Forms.Panel();
             this.lblVersion = new System.Windows.Forms.Label();
             this.bwUpdateImage = new System.ComponentModel.BackgroundWorker();
+            this.lblCurrentID = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnClientKill = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnClientDisconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnRaisePerms = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientComputerControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnLockComputer = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnGetRunningApps = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenComputerInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenFileBrowser = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnGrabClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnGetHardwareUsage = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientCommunicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenMessageBoxDialog = new System.Windows.Forms.ToolStripMenuItem();
+            this.headerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtHeader = new System.Windows.Forms.ToolStripTextBox();
+            this.messageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtMessage = new System.Windows.Forms.ToolStripTextBox();
+            this.buttonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbButtons = new System.Windows.Forms.ToolStripComboBox();
+            this.iconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbIcons = new System.Windows.Forms.ToolStripComboBox();
+            this.btnSendMessageBox = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnPreviewMessage = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendTextToSpeechToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.messageToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtTTSText = new System.Windows.Forms.ToolStripTextBox();
+            this.btnSendTTS = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnTTSListen = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenChat = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientExtrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnStartKL = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnRemoteDesktop = new System.Windows.Forms.ToolStripMenuItem();
+            this.openWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenAudioRecorder = new System.Windows.Forms.ToolStripMenuItem();
             this.btnToggleAntiProcess = new System.Windows.Forms.ToolStripMenuItem();
             this.ClientMenu.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -86,266 +93,12 @@
             this.ClientMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblCurrentID,
             this.clientControlsToolStripMenuItem,
+            this.clientComputerControlsToolStripMenuItem,
             this.clientToolStripMenuItem,
             this.clientCommunicationToolStripMenuItem,
             this.clientExtrasToolStripMenuItem});
             this.ClientMenu.Name = "ClientMenu";
-            this.ClientMenu.Size = new System.Drawing.Size(202, 114);
-            // 
-            // lblCurrentID
-            // 
-            this.lblCurrentID.Image = global::VanillaRat.Properties.Resources.Person_48px;
-            this.lblCurrentID.Name = "lblCurrentID";
-            this.lblCurrentID.Size = new System.Drawing.Size(201, 22);
-            this.lblCurrentID.Text = "Client ID: None Selected";
-            // 
-            // clientControlsToolStripMenuItem
-            // 
-            this.clientControlsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnClientKill,
-            this.btnClientDisconnect,
-            this.btnRaisePerms});
-            this.clientControlsToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Services_48px;
-            this.clientControlsToolStripMenuItem.Name = "clientControlsToolStripMenuItem";
-            this.clientControlsToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.clientControlsToolStripMenuItem.Text = "Client Controls";
-            // 
-            // btnClientKill
-            // 
-            this.btnClientKill.Image = global::VanillaRat.Properties.Resources.Close_Window_48px;
-            this.btnClientKill.Name = "btnClientKill";
-            this.btnClientKill.Size = new System.Drawing.Size(262, 22);
-            this.btnClientKill.Text = "Kill Process (Won\'t Come Back)";
-            this.btnClientKill.Click += new System.EventHandler(this.btnClientKill_Click);
-            // 
-            // btnClientDisconnect
-            // 
-            this.btnClientDisconnect.Image = global::VanillaRat.Properties.Resources.Disconnected_48px;
-            this.btnClientDisconnect.Name = "btnClientDisconnect";
-            this.btnClientDisconnect.Size = new System.Drawing.Size(262, 22);
-            this.btnClientDisconnect.Text = "Disconnect (Will Reconnect)";
-            this.btnClientDisconnect.Click += new System.EventHandler(this.btnClientDisconnect_Click);
-            // 
-            // btnRaisePerms
-            // 
-            this.btnRaisePerms.Image = global::VanillaRat.Properties.Resources.Double_Up_48px;
-            this.btnRaisePerms.Name = "btnRaisePerms";
-            this.btnRaisePerms.Size = new System.Drawing.Size(262, 22);
-            this.btnRaisePerms.Text = "Raise Permission Level (Will Restart)";
-            this.btnRaisePerms.Click += new System.EventHandler(this.btnRaisePerms_Click);
-            // 
-            // clientCommunicationToolStripMenuItem
-            // 
-            this.clientCommunicationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnOpenMessageBoxDialog,
-            this.btnOpenChat});
-            this.clientCommunicationToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Communication_48px;
-            this.clientCommunicationToolStripMenuItem.Name = "clientCommunicationToolStripMenuItem";
-            this.clientCommunicationToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.clientCommunicationToolStripMenuItem.Text = "Client Communication";
-            // 
-            // btnOpenMessageBoxDialog
-            // 
-            this.btnOpenMessageBoxDialog.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.headerToolStripMenuItem,
-            this.messageToolStripMenuItem,
-            this.buttonsToolStripMenuItem,
-            this.iconToolStripMenuItem,
-            this.btnSendMessageBox,
-            this.btnPreviewMessage});
-            this.btnOpenMessageBoxDialog.Image = global::VanillaRat.Properties.Resources.Paper_Plane_48px;
-            this.btnOpenMessageBoxDialog.Name = "btnOpenMessageBoxDialog";
-            this.btnOpenMessageBoxDialog.Size = new System.Drawing.Size(180, 22);
-            this.btnOpenMessageBoxDialog.Text = "Send Message Box";
-            // 
-            // headerToolStripMenuItem
-            // 
-            this.headerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.txtHeader});
-            this.headerToolStripMenuItem.Name = "headerToolStripMenuItem";
-            this.headerToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.headerToolStripMenuItem.Text = "Header";
-            // 
-            // txtHeader
-            // 
-            this.txtHeader.Name = "txtHeader";
-            this.txtHeader.Size = new System.Drawing.Size(100, 23);
-            // 
-            // messageToolStripMenuItem
-            // 
-            this.messageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.txtMessage});
-            this.messageToolStripMenuItem.Name = "messageToolStripMenuItem";
-            this.messageToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.messageToolStripMenuItem.Text = "Message ";
-            // 
-            // txtMessage
-            // 
-            this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(100, 23);
-            // 
-            // buttonsToolStripMenuItem
-            // 
-            this.buttonsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cbButtons});
-            this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
-            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.buttonsToolStripMenuItem.Text = "Buttons";
-            // 
-            // cbButtons
-            // 
-            this.cbButtons.Items.AddRange(new object[] {
-            "Abort Retry Ignore",
-            "OK",
-            "OK Cancel",
-            "Retry Cancel",
-            "Yes No",
-            "Yes No Cancel"});
-            this.cbButtons.Name = "cbButtons";
-            this.cbButtons.Size = new System.Drawing.Size(121, 23);
-            // 
-            // iconToolStripMenuItem
-            // 
-            this.iconToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cbIcons});
-            this.iconToolStripMenuItem.Name = "iconToolStripMenuItem";
-            this.iconToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.iconToolStripMenuItem.Text = "Icon";
-            // 
-            // cbIcons
-            // 
-            this.cbIcons.Items.AddRange(new object[] {
-            "Asterisk",
-            "Error",
-            "Exclamation ",
-            "Hand",
-            "Information",
-            "None",
-            "Question",
-            "Stop",
-            "Warning"});
-            this.cbIcons.Name = "cbIcons";
-            this.cbIcons.Size = new System.Drawing.Size(121, 23);
-            // 
-            // btnSendMessageBox
-            // 
-            this.btnSendMessageBox.Name = "btnSendMessageBox";
-            this.btnSendMessageBox.Size = new System.Drawing.Size(164, 22);
-            this.btnSendMessageBox.Text = "Send Message";
-            this.btnSendMessageBox.Click += new System.EventHandler(this.btnSendMessageBox_Click);
-            // 
-            // btnPreviewMessage
-            // 
-            this.btnPreviewMessage.Name = "btnPreviewMessage";
-            this.btnPreviewMessage.Size = new System.Drawing.Size(164, 22);
-            this.btnPreviewMessage.Text = "Preview Message";
-            this.btnPreviewMessage.Click += new System.EventHandler(this.btnPreviewMessage_Click);
-            // 
-            // btnOpenChat
-            // 
-            this.btnOpenChat.Image = global::VanillaRat.Properties.Resources.Chat_48px;
-            this.btnOpenChat.Name = "btnOpenChat";
-            this.btnOpenChat.Size = new System.Drawing.Size(180, 22);
-            this.btnOpenChat.Text = "Open Chat";
-            this.btnOpenChat.Click += new System.EventHandler(this.btnOpenChat_Click);
-            // 
-            // clientToolStripMenuItem
-            // 
-            this.clientToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnGetRunningApps,
-            this.btnOpenComputerInfo,
-            this.btnOpenFileBrowser,
-            this.btnGrabClipboard,
-            this.btnGetHardwareUsage});
-            this.clientToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Info_48px;
-            this.clientToolStripMenuItem.Name = "clientToolStripMenuItem";
-            this.clientToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.clientToolStripMenuItem.Text = "Client Information";
-            // 
-            // btnGetRunningApps
-            // 
-            this.btnGetRunningApps.Image = global::VanillaRat.Properties.Resources.Windows_Client_48px;
-            this.btnGetRunningApps.Name = "btnGetRunningApps";
-            this.btnGetRunningApps.Size = new System.Drawing.Size(209, 22);
-            this.btnGetRunningApps.Text = "Get Running Applications";
-            this.btnGetRunningApps.Click += new System.EventHandler(this.btnGetRunningApps_Click);
-            // 
-            // btnOpenComputerInfo
-            // 
-            this.btnOpenComputerInfo.Image = global::VanillaRat.Properties.Resources.Laptop_48px;
-            this.btnOpenComputerInfo.Name = "btnOpenComputerInfo";
-            this.btnOpenComputerInfo.Size = new System.Drawing.Size(209, 22);
-            this.btnOpenComputerInfo.Text = "Get Computer Info";
-            this.btnOpenComputerInfo.Click += new System.EventHandler(this.btnOpenComputerInfo_Click);
-            // 
-            // btnOpenFileBrowser
-            // 
-            this.btnOpenFileBrowser.Image = global::VanillaRat.Properties.Resources.Opened_Folder_48px;
-            this.btnOpenFileBrowser.Name = "btnOpenFileBrowser";
-            this.btnOpenFileBrowser.Size = new System.Drawing.Size(209, 22);
-            this.btnOpenFileBrowser.Text = "Open File Browser";
-            this.btnOpenFileBrowser.Click += new System.EventHandler(this.btnOpenFileBrowser_Click);
-            // 
-            // btnGrabClipboard
-            // 
-            this.btnGrabClipboard.Image = global::VanillaRat.Properties.Resources.Document_48px;
-            this.btnGrabClipboard.Name = "btnGrabClipboard";
-            this.btnGrabClipboard.Size = new System.Drawing.Size(209, 22);
-            this.btnGrabClipboard.Text = "Get Clipboard Text ";
-            this.btnGrabClipboard.Click += new System.EventHandler(this.btnGrabClipboard_Click);
-            // 
-            // btnGetHardwareUsage
-            // 
-            this.btnGetHardwareUsage.Image = global::VanillaRat.Properties.Resources.Server_48px;
-            this.btnGetHardwareUsage.Name = "btnGetHardwareUsage";
-            this.btnGetHardwareUsage.Size = new System.Drawing.Size(209, 22);
-            this.btnGetHardwareUsage.Text = "Get Hardware Usage";
-            this.btnGetHardwareUsage.Click += new System.EventHandler(this.btnGetHardwareUsage_Click);
-            // 
-            // clientExtrasToolStripMenuItem
-            // 
-            this.clientExtrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnStartKL,
-            this.btnRemoteDesktop,
-            this.openWebsiteToolStripMenuItem,
-            this.btnOpenAudioRecorder,
-            this.btnToggleAntiProcess});
-            this.clientExtrasToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Flash_On_48px;
-            this.clientExtrasToolStripMenuItem.Name = "clientExtrasToolStripMenuItem";
-            this.clientExtrasToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.clientExtrasToolStripMenuItem.Text = "Client Extras ";
-            // 
-            // btnStartKL
-            // 
-            this.btnStartKL.Image = global::VanillaRat.Properties.Resources.Compose_48px;
-            this.btnStartKL.Name = "btnStartKL";
-            this.btnStartKL.Size = new System.Drawing.Size(180, 22);
-            this.btnStartKL.Text = "Live Keylogger";
-            this.btnStartKL.Click += new System.EventHandler(this.btnStartKL_Click);
-            // 
-            // btnRemoteDesktop
-            // 
-            this.btnRemoteDesktop.Image = global::VanillaRat.Properties.Resources.Monitor_48px;
-            this.btnRemoteDesktop.Name = "btnRemoteDesktop";
-            this.btnRemoteDesktop.Size = new System.Drawing.Size(180, 22);
-            this.btnRemoteDesktop.Text = "Remote Desktop";
-            this.btnRemoteDesktop.Click += new System.EventHandler(this.btnRemoteDesktop_Click);
-            // 
-            // openWebsiteToolStripMenuItem
-            // 
-            this.openWebsiteToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Website_48px;
-            this.openWebsiteToolStripMenuItem.Name = "openWebsiteToolStripMenuItem";
-            this.openWebsiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openWebsiteToolStripMenuItem.Text = "Open Website";
-            this.openWebsiteToolStripMenuItem.Click += new System.EventHandler(this.btnOpenWebsite);
-            // 
-            // btnOpenAudioRecorder
-            // 
-            this.btnOpenAudioRecorder.Image = global::VanillaRat.Properties.Resources.Headphones_48px;
-            this.btnOpenAudioRecorder.Name = "btnOpenAudioRecorder";
-            this.btnOpenAudioRecorder.Size = new System.Drawing.Size(180, 22);
-            this.btnOpenAudioRecorder.Text = "Audio Recorder";
-            this.btnOpenAudioRecorder.Click += new System.EventHandler(this.btnOpenAudioRecorder_Click);
+            this.ClientMenu.Size = new System.Drawing.Size(211, 136);
             // 
             // btnStartServer
             // 
@@ -497,13 +250,324 @@
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(30, 16);
             this.lblVersion.TabIndex = 9;
-            this.lblVersion.Text = "v1.4";
+            this.lblVersion.Text = "v1.5";
             this.lblVersion.Click += new System.EventHandler(this.lblVersion_Click);
             // 
             // bwUpdateImage
             // 
             this.bwUpdateImage.WorkerSupportsCancellation = true;
             this.bwUpdateImage.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdateImage_DoWork);
+            // 
+            // lblCurrentID
+            // 
+            this.lblCurrentID.Image = global::VanillaRat.Properties.Resources.Person_48px;
+            this.lblCurrentID.Name = "lblCurrentID";
+            this.lblCurrentID.Size = new System.Drawing.Size(210, 22);
+            this.lblCurrentID.Text = "Client ID: None Selected";
+            // 
+            // clientControlsToolStripMenuItem
+            // 
+            this.clientControlsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnClientKill,
+            this.btnClientDisconnect,
+            this.btnRaisePerms});
+            this.clientControlsToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Services_48px;
+            this.clientControlsToolStripMenuItem.Name = "clientControlsToolStripMenuItem";
+            this.clientControlsToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.clientControlsToolStripMenuItem.Text = "Client Controls";
+            // 
+            // btnClientKill
+            // 
+            this.btnClientKill.Image = global::VanillaRat.Properties.Resources.Close_Window_48px;
+            this.btnClientKill.Name = "btnClientKill";
+            this.btnClientKill.Size = new System.Drawing.Size(262, 22);
+            this.btnClientKill.Text = "Kill Process (Won\'t Come Back)";
+            this.btnClientKill.Click += new System.EventHandler(this.btnClientKill_Click);
+            // 
+            // btnClientDisconnect
+            // 
+            this.btnClientDisconnect.Image = global::VanillaRat.Properties.Resources.Disconnected_48px;
+            this.btnClientDisconnect.Name = "btnClientDisconnect";
+            this.btnClientDisconnect.Size = new System.Drawing.Size(262, 22);
+            this.btnClientDisconnect.Text = "Disconnect (Will Reconnect)";
+            this.btnClientDisconnect.Click += new System.EventHandler(this.btnClientDisconnect_Click);
+            // 
+            // btnRaisePerms
+            // 
+            this.btnRaisePerms.Image = global::VanillaRat.Properties.Resources.Double_Up_48px;
+            this.btnRaisePerms.Name = "btnRaisePerms";
+            this.btnRaisePerms.Size = new System.Drawing.Size(262, 22);
+            this.btnRaisePerms.Text = "Raise Permission Level (Will Restart)";
+            this.btnRaisePerms.Click += new System.EventHandler(this.btnRaisePerms_Click);
+            // 
+            // clientComputerControlsToolStripMenuItem
+            // 
+            this.clientComputerControlsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnLockComputer});
+            this.clientComputerControlsToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Administrative_Tools_48px;
+            this.clientComputerControlsToolStripMenuItem.Name = "clientComputerControlsToolStripMenuItem";
+            this.clientComputerControlsToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.clientComputerControlsToolStripMenuItem.Text = "Client Computer Controls";
+            // 
+            // btnLockComputer
+            // 
+            this.btnLockComputer.Image = global::VanillaRat.Properties.Resources.Lock_Landscape_48px;
+            this.btnLockComputer.Name = "btnLockComputer";
+            this.btnLockComputer.Size = new System.Drawing.Size(180, 22);
+            this.btnLockComputer.Text = "Toggle Screen Lock";
+            this.btnLockComputer.Click += new System.EventHandler(this.btnLockComputer_Click);
+            // 
+            // clientToolStripMenuItem
+            // 
+            this.clientToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnGetRunningApps,
+            this.btnOpenComputerInfo,
+            this.btnOpenFileBrowser,
+            this.btnGrabClipboard,
+            this.btnGetHardwareUsage});
+            this.clientToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Info_48px;
+            this.clientToolStripMenuItem.Name = "clientToolStripMenuItem";
+            this.clientToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.clientToolStripMenuItem.Text = "Client Information";
+            // 
+            // btnGetRunningApps
+            // 
+            this.btnGetRunningApps.Image = global::VanillaRat.Properties.Resources.Windows_Client_48px;
+            this.btnGetRunningApps.Name = "btnGetRunningApps";
+            this.btnGetRunningApps.Size = new System.Drawing.Size(209, 22);
+            this.btnGetRunningApps.Text = "Get Running Applications";
+            this.btnGetRunningApps.Click += new System.EventHandler(this.btnGetRunningApps_Click);
+            // 
+            // btnOpenComputerInfo
+            // 
+            this.btnOpenComputerInfo.Image = global::VanillaRat.Properties.Resources.Laptop_48px;
+            this.btnOpenComputerInfo.Name = "btnOpenComputerInfo";
+            this.btnOpenComputerInfo.Size = new System.Drawing.Size(209, 22);
+            this.btnOpenComputerInfo.Text = "Get Computer Info";
+            this.btnOpenComputerInfo.Click += new System.EventHandler(this.btnOpenComputerInfo_Click);
+            // 
+            // btnOpenFileBrowser
+            // 
+            this.btnOpenFileBrowser.Image = global::VanillaRat.Properties.Resources.Opened_Folder_48px;
+            this.btnOpenFileBrowser.Name = "btnOpenFileBrowser";
+            this.btnOpenFileBrowser.Size = new System.Drawing.Size(209, 22);
+            this.btnOpenFileBrowser.Text = "Open File Browser";
+            this.btnOpenFileBrowser.Click += new System.EventHandler(this.btnOpenFileBrowser_Click);
+            // 
+            // btnGrabClipboard
+            // 
+            this.btnGrabClipboard.Image = global::VanillaRat.Properties.Resources.Document_48px;
+            this.btnGrabClipboard.Name = "btnGrabClipboard";
+            this.btnGrabClipboard.Size = new System.Drawing.Size(209, 22);
+            this.btnGrabClipboard.Text = "Get Clipboard Text ";
+            this.btnGrabClipboard.Click += new System.EventHandler(this.btnGrabClipboard_Click);
+            // 
+            // btnGetHardwareUsage
+            // 
+            this.btnGetHardwareUsage.Image = global::VanillaRat.Properties.Resources.Server_48px;
+            this.btnGetHardwareUsage.Name = "btnGetHardwareUsage";
+            this.btnGetHardwareUsage.Size = new System.Drawing.Size(209, 22);
+            this.btnGetHardwareUsage.Text = "Get Hardware Usage";
+            this.btnGetHardwareUsage.Click += new System.EventHandler(this.btnGetHardwareUsage_Click);
+            // 
+            // clientCommunicationToolStripMenuItem
+            // 
+            this.clientCommunicationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnOpenMessageBoxDialog,
+            this.sendTextToSpeechToolStripMenuItem,
+            this.btnOpenChat});
+            this.clientCommunicationToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Communication_48px;
+            this.clientCommunicationToolStripMenuItem.Name = "clientCommunicationToolStripMenuItem";
+            this.clientCommunicationToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.clientCommunicationToolStripMenuItem.Text = "Client Communication";
+            // 
+            // btnOpenMessageBoxDialog
+            // 
+            this.btnOpenMessageBoxDialog.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.headerToolStripMenuItem,
+            this.messageToolStripMenuItem,
+            this.buttonsToolStripMenuItem,
+            this.iconToolStripMenuItem,
+            this.btnSendMessageBox,
+            this.btnPreviewMessage});
+            this.btnOpenMessageBoxDialog.Image = global::VanillaRat.Properties.Resources.Paper_Plane_48px;
+            this.btnOpenMessageBoxDialog.Name = "btnOpenMessageBoxDialog";
+            this.btnOpenMessageBoxDialog.Size = new System.Drawing.Size(181, 22);
+            this.btnOpenMessageBoxDialog.Text = "Send Message Box";
+            // 
+            // headerToolStripMenuItem
+            // 
+            this.headerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.txtHeader});
+            this.headerToolStripMenuItem.Name = "headerToolStripMenuItem";
+            this.headerToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.headerToolStripMenuItem.Text = "Header";
+            // 
+            // txtHeader
+            // 
+            this.txtHeader.Name = "txtHeader";
+            this.txtHeader.Size = new System.Drawing.Size(100, 23);
+            // 
+            // messageToolStripMenuItem
+            // 
+            this.messageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.txtMessage});
+            this.messageToolStripMenuItem.Name = "messageToolStripMenuItem";
+            this.messageToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.messageToolStripMenuItem.Text = "Message ";
+            // 
+            // txtMessage
+            // 
+            this.txtMessage.Name = "txtMessage";
+            this.txtMessage.Size = new System.Drawing.Size(100, 23);
+            // 
+            // buttonsToolStripMenuItem
+            // 
+            this.buttonsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cbButtons});
+            this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
+            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.buttonsToolStripMenuItem.Text = "Buttons";
+            // 
+            // cbButtons
+            // 
+            this.cbButtons.Items.AddRange(new object[] {
+            "Abort Retry Ignore",
+            "OK",
+            "OK Cancel",
+            "Retry Cancel",
+            "Yes No",
+            "Yes No Cancel"});
+            this.cbButtons.Name = "cbButtons";
+            this.cbButtons.Size = new System.Drawing.Size(121, 23);
+            // 
+            // iconToolStripMenuItem
+            // 
+            this.iconToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cbIcons});
+            this.iconToolStripMenuItem.Name = "iconToolStripMenuItem";
+            this.iconToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.iconToolStripMenuItem.Text = "Icon";
+            // 
+            // cbIcons
+            // 
+            this.cbIcons.Items.AddRange(new object[] {
+            "Asterisk",
+            "Error",
+            "Exclamation ",
+            "Hand",
+            "Information",
+            "None",
+            "Question",
+            "Stop",
+            "Warning"});
+            this.cbIcons.Name = "cbIcons";
+            this.cbIcons.Size = new System.Drawing.Size(121, 23);
+            // 
+            // btnSendMessageBox
+            // 
+            this.btnSendMessageBox.Name = "btnSendMessageBox";
+            this.btnSendMessageBox.Size = new System.Drawing.Size(164, 22);
+            this.btnSendMessageBox.Text = "Send Message";
+            this.btnSendMessageBox.Click += new System.EventHandler(this.btnSendMessageBox_Click);
+            // 
+            // btnPreviewMessage
+            // 
+            this.btnPreviewMessage.Name = "btnPreviewMessage";
+            this.btnPreviewMessage.Size = new System.Drawing.Size(164, 22);
+            this.btnPreviewMessage.Text = "Preview Message";
+            this.btnPreviewMessage.Click += new System.EventHandler(this.btnPreviewMessage_Click);
+            // 
+            // sendTextToSpeechToolStripMenuItem
+            // 
+            this.sendTextToSpeechToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.messageToolStripMenuItem1,
+            this.btnSendTTS,
+            this.btnTTSListen});
+            this.sendTextToSpeechToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Paper_Plane_48px;
+            this.sendTextToSpeechToolStripMenuItem.Name = "sendTextToSpeechToolStripMenuItem";
+            this.sendTextToSpeechToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.sendTextToSpeechToolStripMenuItem.Text = "Send Text To Speech";
+            // 
+            // messageToolStripMenuItem1
+            // 
+            this.messageToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.txtTTSText});
+            this.messageToolStripMenuItem1.Name = "messageToolStripMenuItem1";
+            this.messageToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.messageToolStripMenuItem1.Text = "Message";
+            // 
+            // txtTTSText
+            // 
+            this.txtTTSText.Name = "txtTTSText";
+            this.txtTTSText.Size = new System.Drawing.Size(100, 23);
+            // 
+            // btnSendTTS
+            // 
+            this.btnSendTTS.Name = "btnSendTTS";
+            this.btnSendTTS.Size = new System.Drawing.Size(142, 22);
+            this.btnSendTTS.Text = "Send TTS";
+            this.btnSendTTS.Click += new System.EventHandler(this.btnSendTTS_Click);
+            // 
+            // btnTTSListen
+            // 
+            this.btnTTSListen.Name = "btnTTSListen";
+            this.btnTTSListen.Size = new System.Drawing.Size(142, 22);
+            this.btnTTSListen.Text = "Listen to TTS";
+            this.btnTTSListen.Click += new System.EventHandler(this.btnTTSListen_Click);
+            // 
+            // btnOpenChat
+            // 
+            this.btnOpenChat.Image = global::VanillaRat.Properties.Resources.Chat_48px;
+            this.btnOpenChat.Name = "btnOpenChat";
+            this.btnOpenChat.Size = new System.Drawing.Size(181, 22);
+            this.btnOpenChat.Text = "Open Chat";
+            this.btnOpenChat.Click += new System.EventHandler(this.btnOpenChat_Click);
+            // 
+            // clientExtrasToolStripMenuItem
+            // 
+            this.clientExtrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnStartKL,
+            this.btnRemoteDesktop,
+            this.openWebsiteToolStripMenuItem,
+            this.btnOpenAudioRecorder,
+            this.btnToggleAntiProcess});
+            this.clientExtrasToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Flash_On_48px;
+            this.clientExtrasToolStripMenuItem.Name = "clientExtrasToolStripMenuItem";
+            this.clientExtrasToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.clientExtrasToolStripMenuItem.Text = "Client Extras ";
+            // 
+            // btnStartKL
+            // 
+            this.btnStartKL.Image = global::VanillaRat.Properties.Resources.Compose_48px;
+            this.btnStartKL.Name = "btnStartKL";
+            this.btnStartKL.Size = new System.Drawing.Size(180, 22);
+            this.btnStartKL.Text = "Live Keylogger";
+            this.btnStartKL.Click += new System.EventHandler(this.btnStartKL_Click);
+            // 
+            // btnRemoteDesktop
+            // 
+            this.btnRemoteDesktop.Image = global::VanillaRat.Properties.Resources.Monitor_48px;
+            this.btnRemoteDesktop.Name = "btnRemoteDesktop";
+            this.btnRemoteDesktop.Size = new System.Drawing.Size(180, 22);
+            this.btnRemoteDesktop.Text = "Remote Desktop";
+            this.btnRemoteDesktop.Click += new System.EventHandler(this.btnRemoteDesktop_Click);
+            // 
+            // openWebsiteToolStripMenuItem
+            // 
+            this.openWebsiteToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Website_48px;
+            this.openWebsiteToolStripMenuItem.Name = "openWebsiteToolStripMenuItem";
+            this.openWebsiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openWebsiteToolStripMenuItem.Text = "Open Website";
+            this.openWebsiteToolStripMenuItem.Click += new System.EventHandler(this.btnOpenWebsite);
+            // 
+            // btnOpenAudioRecorder
+            // 
+            this.btnOpenAudioRecorder.Image = global::VanillaRat.Properties.Resources.Headphones_48px;
+            this.btnOpenAudioRecorder.Name = "btnOpenAudioRecorder";
+            this.btnOpenAudioRecorder.Size = new System.Drawing.Size(180, 22);
+            this.btnOpenAudioRecorder.Text = "Audio Recorder";
+            this.btnOpenAudioRecorder.Click += new System.EventHandler(this.btnOpenAudioRecorder_Click);
             // 
             // btnToggleAntiProcess
             // 
@@ -586,6 +650,13 @@
         private System.ComponentModel.BackgroundWorker bwUpdateImage;
         private System.Windows.Forms.ToolStripMenuItem btnOpenChat;
         private System.Windows.Forms.ToolStripMenuItem btnToggleAntiProcess;
+        private System.Windows.Forms.ToolStripMenuItem sendTextToSpeechToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem messageToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripTextBox txtTTSText;
+        private System.Windows.Forms.ToolStripMenuItem btnSendTTS;
+        private System.Windows.Forms.ToolStripMenuItem btnTTSListen;
+        private System.Windows.Forms.ToolStripMenuItem clientComputerControlsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem btnLockComputer;
     }
 }
 

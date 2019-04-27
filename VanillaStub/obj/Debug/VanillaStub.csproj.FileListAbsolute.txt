@@ -1,0 +1,12 @@
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\bin\Debug\VanillaStub.exe.config
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\bin\Debug\VanillaStub.exe
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\bin\Debug\VanillaStub.pdb
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.csprojAssemblyReference.cache
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.Forms.Chat.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.Forms.InitialForm.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.Forms.ScreenLock.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.Properties.Resources.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.csproj.GenerateResource.cache
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.csproj.CoreCompileInputs.cache
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.exe
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaStub\obj\Debug\VanillaStub.pdb

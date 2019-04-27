@@ -21,6 +21,11 @@
             {
                 return Properties.Settings.Default.Notfiy;
             }
+
+            public string GetPassword()
+            {
+                return Properties.Settings.Default.Password;
+            }
         }
     }
 }

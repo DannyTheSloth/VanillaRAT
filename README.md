@@ -9,6 +9,8 @@ VanillaRat is an advanced remote administration tool coded in C#. VanillaRat use
 - Computer Information 
 - Hardware Usage Information (CPU usage, disk usage, available ram)
 - Message Box Sender 
+- Text To Speech
+- Screen Locker
 - Live Keylogger (Also shows current window)
 - Website Opener 
 - Application Permission Raiser (Normal -> Admin)
@@ -56,8 +58,11 @@ Once a client is connected you can select the client and right click on the clie
 - File Browser: Right click to bring up options for downloading, uploading, refrshing, and deleting files. Note that for uploading you may drag and drop a file into the browser to upload it into the directory it is currently in.
 - Clipboard Text: Note you do not have to close the dialog if you want to get another copy of the currently copied text on the client. Just hit Get Clipboard Text again and the dialog will automatically update.
 
-### Screenshot: 
+### Screenshot:
 ![Screenshot](Screenshot.png)
+
+### Demo: 
+![Demo](VanillaRatDemo.gif)
 
 ## A Special Thanks To:
 
@@ -65,4 +70,4 @@ Once a client is connected you can select the client and right click on the clie
 
 ## Important Disclaimer:
 
-**I am in no way responsible for any malicious actions that you may make using this software. Please take note that this application was designed for educational purposes and should never be used maliciously.**
+**I, the creator, am in no way responsible for any actions that you may make using this software. You take full responsibility with any action taken using this software. Please take note that this application was designed for educational purposes and should never be used maliciously. By downloading the software or source to the software, you automatically accept this agreement.**

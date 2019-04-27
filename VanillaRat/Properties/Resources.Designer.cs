@@ -63,6 +63,16 @@ namespace VanillaRat.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Administrative_Tools_48px {
+            get {
+                object obj = ResourceManager.GetObject("Administrative Tools_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Chat_48px {
             get {
                 object obj = ResourceManager.GetObject("Chat_48px", resourceCulture);
@@ -215,6 +225,16 @@ namespace VanillaRat.Properties {
         internal static System.Drawing.Bitmap Laptop_48px {
             get {
                 object obj = ResourceManager.GetObject("Laptop_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lock_Landscape_48px {
+            get {
+                object obj = ResourceManager.GetObject("Lock Landscape_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
