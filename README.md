@@ -11,6 +11,7 @@ VanillaRat is an advanced remote administration tool coded in C#. VanillaRat use
 - Message Box Sender 
 - Text To Speech
 - Screen Locker
+- Updater
 - Live Keylogger (Also shows current window)
 - Website Opener 
 - Application Permission Raiser (Normal -> Admin)
