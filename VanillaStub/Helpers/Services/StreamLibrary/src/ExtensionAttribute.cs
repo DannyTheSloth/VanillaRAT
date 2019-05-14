@@ -1,10 +1,5 @@
 ﻿namespace System.Runtime.CompilerServices
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public sealed class ExtensionAttribute : Attribute
-    {
-        public ExtensionAttribute()
-        {
-        }
-    }
+    public sealed class ExtensionAttribute : Attribute { }
 }

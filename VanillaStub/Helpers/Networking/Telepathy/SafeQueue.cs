@@ -4,7 +4,7 @@ namespace VanillaStub.Helpers.Telepathy
 {
     public class SafeQueue<T>
     {
-        private Queue<T> queue = new Queue<T>();
+        private readonly Queue<T> queue = new Queue<T>();
 
         public int Count
         {
@@ -35,6 +35,7 @@ namespace VanillaStub.Helpers.Telepathy
                     result = queue.Dequeue();
                     return true;
                 }
+
                 return false;
             }
         }

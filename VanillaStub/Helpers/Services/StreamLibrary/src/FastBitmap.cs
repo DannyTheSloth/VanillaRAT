@@ -2,23 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace VanillaStub.Helpers.Services.StreamLibrary.src
 {
     public unsafe class FastBitmap
     {
-        public Bitmap bitmap { get; set; }
-        public BitmapData bitmapData { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        public PixelFormat format { get; private set; }
         public DateTime BitmapCreatedAt;
-        public bool IsLocked { get; private set; }
-
-        public int Stride
-        {
-            get { return bitmapData.Stride; }
-        }
 
         public FastBitmap(Bitmap bitmap, PixelFormat format)
         {
@@ -37,8 +27,8 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
             }
 
             this.bitmap = bitmap;
-            this.Width = this.bitmap.Width;
-            this.Height = this.bitmap.Height;
+            Width = this.bitmap.Width;
+            Height = this.bitmap.Height;
             this.format = format;
             Lock();
             BitmapCreatedAt = DateTime.Now;
@@ -46,7 +36,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 
         public FastBitmap(Bitmap bitmap)
         {
-            this.format = bitmap.PixelFormat;
+            format = bitmap.PixelFormat;
 
             switch (format)
             {
@@ -63,16 +53,25 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
             }
 
             this.bitmap = bitmap;
-            this.Width = this.bitmap.Width;
-            this.Height = this.bitmap.Height;
-            this.format = format;
+            Width = this.bitmap.Width;
+            Height = this.bitmap.Height;
+            format = format;
             Lock();
             BitmapCreatedAt = DateTime.Now;
         }
 
+        public Bitmap bitmap { get; set; }
+        public BitmapData bitmapData { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
+        public PixelFormat format { get; }
+        public bool IsLocked { get; private set; }
+
+        public int Stride => bitmapData.Stride;
+
         public Color GetPixel(int x, int y)
         {
-            byte* position = (byte*)bitmapData.Scan0.ToPointer();
+            byte* position = (byte*) bitmapData.Scan0.ToPointer();
             position += CalcOffset(x, y);
 
             byte A = position[3];
@@ -84,7 +83,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 
         public void SetPixel(int x, int y, Color color)
         {
-            byte* position = (byte*)bitmapData.Scan0.ToPointer();
+            byte* position = (byte*) bitmapData.Scan0.ToPointer();
             position += CalcOffset(x, y);
 
             position[3] = color.A;
@@ -103,6 +102,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                 byte B = ImgData[offset + 2];
                 return Color.FromArgb(255, R, G, B);
             }
+
             return Color.FromArgb(255, 0, 0, 0);
         }
 
@@ -121,34 +121,31 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         public void DrawRectangle(Point begin, Point end, Color color)
         {
             for (int x = begin.X; x < end.X; x++)
-            {
-                for (int y = begin.Y; y < end.Y; y++)
-                {
-                    SetPixel(x, y, color);
-                }
-            }
+            for (int y = begin.Y; y < end.Y; y++)
+                SetPixel(x, y, color);
         }
 
-        public Int64 CalcOffset(int x, int y)
+        public long CalcOffset(int x, int y)
         {
             switch (format)
             {
                 case PixelFormat.Format32bppArgb:
-                    return (y * bitmapData.Stride) + (x * 4);
+                    return y * bitmapData.Stride + x * 4;
 
                 case PixelFormat.Format24bppRgb:
                 case PixelFormat.Format32bppRgb:
-                    return (y * bitmapData.Stride) + (x * 3);
+                    return y * bitmapData.Stride + x * 3;
 
                 case PixelFormat.Format8bppIndexed:
-                    return (y * bitmapData.Stride) + x;
+                    return y * bitmapData.Stride + x;
 
                 case PixelFormat.Format4bppIndexed:
-                    return (y * bitmapData.Stride) + (x / 2);
+                    return y * bitmapData.Stride + x / 2;
 
                 case PixelFormat.Format1bppIndexed:
-                    return (y * bitmapData.Stride) + (x * 8);
+                    return y * bitmapData.Stride + x * 8;
             }
+
             return 0;
         }
 
@@ -157,20 +154,20 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
             switch (format)
             {
                 case PixelFormat.Format32bppArgb:
-                    return (y * (width * 4)) + (x * 4);
+                    return y * width * 4 + x * 4;
 
                 case PixelFormat.Format24bppRgb:
                 case PixelFormat.Format32bppRgb:
-                    return (y * (width * 3)) + (x * 3);
+                    return y * width * 3 + x * 3;
 
                 case PixelFormat.Format8bppIndexed:
-                    return (y * width) + x;
+                    return y * width + x;
 
                 case PixelFormat.Format4bppIndexed:
-                    return (y * (width / 2)) + (x / 2);
+                    return y * (width / 2) + x / 2;
 
                 case PixelFormat.Format1bppIndexed:
-                    return (y * (width * 8)) + (x * 8);
+                    return y * width * 8 + x * 8;
 
                 default:
                     throw new NotSupportedException(format + " is not supported.");
@@ -180,7 +177,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         public void ScanPixelDuplicates(Point BeginPoint, ref Point EndPoint, ref Color RetColor)
         {
             Color curColor = GetPixel(BeginPoint.X, BeginPoint.Y);
-            for (int x = BeginPoint.X; x < this.Width; x++)
+            for (int x = BeginPoint.X; x < Width; x++)
             {
                 Color prevColor = GetPixel(x, BeginPoint.Y);
 
@@ -194,7 +191,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                 }
             }
 
-            EndPoint = new Point(this.Width, BeginPoint.Y);
+            EndPoint = new Point(Width, BeginPoint.Y);
             RetColor = curColor;
         }
 
@@ -211,7 +208,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         {
             if (!IsLocked)
             {
-                bitmapData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, format);
+                bitmapData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, format);
                 IsLocked = true;
             }
         }
@@ -220,23 +217,31 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         {
             int bytes = Math.Abs(bitmapData.Stride) * Height;
             byte[] rgbValues = new byte[bytes];
-            System.Runtime.InteropServices.Marshal.Copy(new IntPtr(bitmapData.Scan0.ToInt32()), rgbValues, 0, bytes);
+            Marshal.Copy(new IntPtr(bitmapData.Scan0.ToInt32()), rgbValues, 0, bytes);
             return rgbValues;
         }
 
         public void ByteArrayToBitmap(byte[] data)
         {
-            System.Runtime.InteropServices.Marshal.Copy(data, 0, bitmapData.Scan0, data.Length);
+            Marshal.Copy(data, 0, bitmapData.Scan0, data.Length);
         }
 
         public void Dispose()
         {
             if (bitmap != null)
             {
-                try { bitmap.UnlockBits(bitmapData); }
+                try
+                {
+                    bitmap.UnlockBits(bitmapData);
+                }
                 catch { }
-                try { bitmap.Dispose(); }
+
+                try
+                {
+                    bitmap.Dispose();
+                }
                 catch { }
+
                 try
                 {
                     bitmap = null;
@@ -257,53 +262,62 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 
             for (int y = beginPoint.Y; y < endPoint.Y; y++)
             {
-                int BeginOffset = (int)FastBitmap.CalcImageOffset(beginPoint.X, y, format, ImgSize.Width);//(y * ImgSize.Width * 4) + (beginPoint.X * 4);
-                int EndOffset = (int)FastBitmap.CalcImageOffset(endPoint.X, y, format, ImgSize.Width);//(y * ImgSize.Width * 4) + (endPoint.X * 4);
+                int BeginOffset =
+                    CalcImageOffset(beginPoint.X, y, format,
+                        ImgSize.Width); //(y * ImgSize.Width * 4) + (beginPoint.X * 4);
+                int EndOffset =
+                    CalcImageOffset(endPoint.X, y, format, ImgSize.Width); //(y * ImgSize.Width * 4) + (endPoint.X * 4);
 
                 switch (format)
                 {
                     case PixelFormat.Format32bppArgb:
-                        {
-                            if (EndOffset + ((endPoint.X - beginPoint.X) * 4) >= (ImgSize.Width * ImgSize.Height) * 4)
-                                break;
-                            offsets.Add(new ArrayOffset(BeginOffset, EndOffset, ((endPoint.X - beginPoint.X) * 4), beginPoint.X, y, (endPoint.X - beginPoint.X), 1));
+                    {
+                        if (EndOffset + (endPoint.X - beginPoint.X) * 4 >= ImgSize.Width * ImgSize.Height * 4)
                             break;
-                        }
+                        offsets.Add(new ArrayOffset(BeginOffset, EndOffset, (endPoint.X - beginPoint.X) * 4,
+                            beginPoint.X, y, endPoint.X - beginPoint.X, 1));
+                        break;
+                    }
                     case PixelFormat.Format24bppRgb:
                     case PixelFormat.Format32bppRgb:
-                        {
-                            if (EndOffset + ((endPoint.X - beginPoint.X) * 3) >= (ImgSize.Width * ImgSize.Height) * 3)
-                                break;
-                            offsets.Add(new ArrayOffset(BeginOffset, EndOffset, ((endPoint.X - beginPoint.X) * 3), beginPoint.X, y, (endPoint.X - beginPoint.X), 1));
+                    {
+                        if (EndOffset + (endPoint.X - beginPoint.X) * 3 >= ImgSize.Width * ImgSize.Height * 3)
                             break;
-                        }
+                        offsets.Add(new ArrayOffset(BeginOffset, EndOffset, (endPoint.X - beginPoint.X) * 3,
+                            beginPoint.X, y, endPoint.X - beginPoint.X, 1));
+                        break;
+                    }
                     case PixelFormat.Format8bppIndexed:
-                        {
-                            if (EndOffset + ((endPoint.X - beginPoint.X)) >= (ImgSize.Width * ImgSize.Height))
-                                break;
-                            offsets.Add(new ArrayOffset(BeginOffset, EndOffset, ((endPoint.X - beginPoint.X)), beginPoint.X, y, (endPoint.X - beginPoint.X), 1));
+                    {
+                        if (EndOffset + (endPoint.X - beginPoint.X) >= ImgSize.Width * ImgSize.Height)
                             break;
-                        }
+                        offsets.Add(new ArrayOffset(BeginOffset, EndOffset, endPoint.X - beginPoint.X, beginPoint.X, y,
+                            endPoint.X - beginPoint.X, 1));
+                        break;
+                    }
                     case PixelFormat.Format4bppIndexed:
-                        {
-                            if (EndOffset + ((endPoint.X - beginPoint.X) / 2) >= (ImgSize.Width * ImgSize.Height) / 2)
-                                break;
-                            offsets.Add(new ArrayOffset(BeginOffset, EndOffset, ((endPoint.X - beginPoint.X) / 2), beginPoint.X, y, (endPoint.X - beginPoint.X), 1));
+                    {
+                        if (EndOffset + (endPoint.X - beginPoint.X) / 2 >= ImgSize.Width * ImgSize.Height / 2)
                             break;
-                        }
+                        offsets.Add(new ArrayOffset(BeginOffset, EndOffset, (endPoint.X - beginPoint.X) / 2,
+                            beginPoint.X, y, endPoint.X - beginPoint.X, 1));
+                        break;
+                    }
                     case PixelFormat.Format1bppIndexed:
-                        {
-                            if (EndOffset + ((endPoint.X - beginPoint.X) * 8) >= (ImgSize.Width * ImgSize.Height) * 8)
-                                break;
-                            offsets.Add(new ArrayOffset(BeginOffset, EndOffset, ((endPoint.X - beginPoint.X) * 8), beginPoint.X, y, (endPoint.X - beginPoint.X), 1));
+                    {
+                        if (EndOffset + (endPoint.X - beginPoint.X) * 8 >= ImgSize.Width * ImgSize.Height * 8)
                             break;
-                        }
+                        offsets.Add(new ArrayOffset(BeginOffset, EndOffset, (endPoint.X - beginPoint.X) * 8,
+                            beginPoint.X, y, endPoint.X - beginPoint.X, 1));
+                        break;
+                    }
                     default:
-                        {
-                            throw new NotSupportedException(format + " is not supported.");
-                        }
+                    {
+                        throw new NotSupportedException(format + " is not supported.");
+                    }
                 }
             }
+
             return offsets.ToArray();
         }
 
@@ -312,53 +326,57 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         /// <param name="endPoint">The end of the X, Y</param>
         /// <param name="ImgSize">The size of the image</param>
         /// <param name="SlicePieces">Slice the byte points into pieces to get the byte points faster</param>
-        public static ArrayOffset[,][] Get2DBytePoints(Point beginPoint, Point endPoint, Size ImgSize, int SlicePieces, PixelFormat format)
+        public static ArrayOffset[,][] Get2DBytePoints(Point beginPoint, Point endPoint, Size ImgSize, int SlicePieces,
+            PixelFormat format)
         {
             int Width = endPoint.X - beginPoint.X;
             int Height = endPoint.Y - beginPoint.Y;
 
-            float Wsize = ((float)Width / (float)SlicePieces);
-            float Hsize = ((float)Height / (float)SlicePieces);
+            float Wsize = Width / (float) SlicePieces;
+            float Hsize = Height / (float) SlicePieces;
 
             //+1 just to make sure we are not going outside the array
-            if (Wsize - (int)Wsize > 0.0F) Wsize += 1.0F;
-            if (Hsize - (int)Hsize > 0.0F) Hsize += 1.0F;
+            if (Wsize - (int) Wsize > 0.0F) Wsize += 1.0F;
+            if (Hsize - (int) Hsize > 0.0F) Hsize += 1.0F;
 
-            ArrayOffset[,][] ImageArrayOffsets = new ArrayOffset[(int)Hsize, (int)Wsize][];
+            ArrayOffset[,][] ImageArrayOffsets = new ArrayOffset[(int) Hsize, (int) Wsize][];
             Point tmp = new Point(0, 0);
             for (int y = beginPoint.Y; y < Height; y += SlicePieces)
             {
                 for (int x = beginPoint.X; x < Width; x += SlicePieces)
                 {
-                    ImageArrayOffsets[tmp.Y, tmp.X] = FastBitmap.GetBytePoints(new Point(x, y), new Point(x + SlicePieces, y + SlicePieces), ImgSize, format);
+                    ImageArrayOffsets[tmp.Y, tmp.X] = GetBytePoints(new Point(x, y),
+                        new Point(x + SlicePieces, y + SlicePieces), ImgSize, format);
                     tmp.X++;
                 }
+
                 tmp.X = 0;
                 tmp.Y++;
             }
+
             return ImageArrayOffsets;
         }
     }
 
     public class ArrayOffset
     {
-        public int BeginOffset { get; private set; }
-        public int EndOffset { get; private set; }
-        public int Stride { get; private set; }
-        public int X { get; private set; }
-        public int Y { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-
         public ArrayOffset(int begin, int end, int Stride, int x, int y, int width, int height)
         {
-            this.BeginOffset = begin;
-            this.EndOffset = end;
+            BeginOffset = begin;
+            EndOffset = end;
             this.Stride = Stride;
-            this.X = x;
-            this.Y = y;
-            this.Width = width;
-            this.Height = height;
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
         }
+
+        public int BeginOffset { get; }
+        public int EndOffset { get; }
+        public int Stride { get; }
+        public int X { get; }
+        public int Y { get; }
+        public int Width { get; }
+        public int Height { get; }
     }
 }

@@ -3,23 +3,25 @@
 namespace VanillaStub.Helpers.Services.StreamLibrary.src
 {
     /// <summary>
-    /// A helper class for pointers
+    ///     A helper class for pointers
     /// </summary>
     public class PointerHelper
     {
         private int _offset;
 
-        public IntPtr Pointer
+        public PointerHelper(IntPtr pointer, int Length)
         {
-            get;
-            private set;
+            TotalLength = Length;
+            Pointer = pointer;
         }
 
-        public int TotalLength { get; private set; }
+        public IntPtr Pointer { get; }
+
+        public int TotalLength { get; }
 
         public int Offset
         {
-            get { return _offset; }
+            get => _offset;
             set
             {
                 if (value < 0)
@@ -32,20 +34,15 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
             }
         }
 
-        public PointerHelper(IntPtr pointer, int Length)
-        {
-            this.TotalLength = Length;
-            this.Pointer = pointer;
-        }
-
         /// <summary>
-        /// Copies data from Source to the current Pointer Offset
+        ///     Copies data from Source to the current Pointer Offset
         /// </summary>
         public void Copy(IntPtr Source, int SourceOffset, int SourceLength)
         {
-            if (CheckBoundries(this.Offset, SourceLength))
+            if (CheckBoundries(Offset, SourceLength))
                 throw new AccessViolationException("Cannot write outside of the buffer space");
-            NativeMethods.memcpy(new IntPtr(this.Pointer.ToInt64() + Offset), new IntPtr(Source.ToInt64() + SourceOffset), (uint)SourceLength);
+            NativeMethods.memcpy(new IntPtr(Pointer.ToInt64() + Offset), new IntPtr(Source.ToInt64() + SourceOffset),
+                (uint) SourceLength);
         }
 
         private bool CheckBoundries(int offset, int length)

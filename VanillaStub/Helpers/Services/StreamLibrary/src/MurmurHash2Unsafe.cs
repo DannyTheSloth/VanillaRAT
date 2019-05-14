@@ -1,23 +1,21 @@
-﻿using System;
-
-namespace VanillaStub.Helpers.Services.StreamLibrary.src
+﻿namespace VanillaStub.Helpers.Services.StreamLibrary.src
 {
     public unsafe class MurmurHash2Unsafe
     {
-        private const UInt32 m = 0x5bd1e995;
-        private const Int32 r = 24;
+        private const uint m = 0x5bd1e995;
+        private const int r = 24;
 
-        public unsafe UInt32 Hash(Byte* data, int length)
+        public uint Hash(byte* data, int length)
         {
             if (length == 0)
                 return 0;
-            UInt32 h = 0xc58f1a7b ^ (UInt32)length;
-            Int32 remainingBytes = length & 3; // mod 4
-            Int32 numberOfLoops = length >> 2; // div 4
-            UInt32* realData = (UInt32*)data;
+            uint h = 0xc58f1a7b ^ (uint) length;
+            int remainingBytes = length & 3; // mod 4
+            int numberOfLoops = length >> 2; // div 4
+            uint* realData = (uint*) data;
             while (numberOfLoops != 0)
             {
-                UInt32 k = *realData;
+                uint k = *realData;
                 k *= m;
                 k ^= k >> r;
                 k *= m;
@@ -27,25 +25,23 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                 numberOfLoops--;
                 realData++;
             }
+
             switch (remainingBytes)
             {
                 case 3:
-                    h ^= (UInt16)(*realData);
-                    h ^= ((UInt32)(*(((Byte*)(realData)) + 2))) << 16;
+                    h ^= (ushort) *realData;
+                    h ^= (uint) *((byte*) realData + 2) << 16;
                     h *= m;
                     break;
 
                 case 2:
-                    h ^= (UInt16)(*realData);
+                    h ^= (ushort) *realData;
                     h *= m;
                     break;
 
                 case 1:
-                    h ^= *((Byte*)realData);
+                    h ^= *((byte*) realData);
                     h *= m;
-                    break;
-
-                default:
                     break;
             }
 

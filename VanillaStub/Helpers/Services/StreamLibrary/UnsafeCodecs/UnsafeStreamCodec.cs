@@ -9,51 +9,43 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
 {
     public class UnsafeStreamCodec : IUnsafeCodec
     {
-        public override ulong CachedSize
-        {
-            get;
-            internal set;
-        }
-
-        public override int BufferCount
-        {
-            get { return 1; }
-        }
-
-        public override CodecOption CodecOptions
-        {
-            get { return CodecOption.RequireSameSize; }
-        }
-
-        public Size CheckBlock { get; private set; }
-        private byte[] EncodeBuffer;
         private Bitmap decodedBitmap;
+        private byte[] EncodeBuffer;
         private PixelFormat EncodedFormat;
-        private int EncodedWidth;
         private int EncodedHeight;
+        private int EncodedWidth;
 
-        public override event IVideoCodec.VideoDebugScanningDelegate onCodeDebugScan;
-
-        public override event IVideoCodec.VideoDebugScanningDelegate onDecodeDebugScan;
-
-        private bool UseJPEG;
+        private readonly bool UseJPEG;
 
         /// <summary>
-        /// Initialize a new object of UnsafeStreamCodec
+        ///     Initialize a new object of UnsafeStreamCodec
         /// </summary>
         /// <param name="ImageQuality">The quality to use between 0-100</param>
         public UnsafeStreamCodec(int ImageQuality = 100, bool UseJPEG = true)
             : base(ImageQuality)
         {
-            this.CheckBlock = new Size(50, 1);
+            CheckBlock = new Size(50, 1);
             this.UseJPEG = UseJPEG;
         }
 
-        public override unsafe void CodeImage(IntPtr Scan0, Rectangle ScanArea, Size ImageSize, PixelFormat Format, Stream outStream)
+        public override ulong CachedSize { get; internal set; }
+
+        public override int BufferCount => 1;
+
+        public override CodecOption CodecOptions => CodecOption.RequireSameSize;
+
+        public Size CheckBlock { get; }
+
+        public override event IVideoCodec.VideoDebugScanningDelegate onCodeDebugScan;
+
+        public override event IVideoCodec.VideoDebugScanningDelegate onDecodeDebugScan;
+
+        public override unsafe void CodeImage(IntPtr Scan0, Rectangle ScanArea, Size ImageSize, PixelFormat Format,
+            Stream outStream)
         {
             lock (ImageProcessLock)
             {
-                byte* pScan0 = (byte*)Scan0.ToInt32();
+                byte* pScan0 = (byte*) Scan0.ToInt32();
                 if (!outStream.CanWrite)
                     throw new Exception("Must have access to Write in the Stream");
 
@@ -82,22 +74,23 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
 
                 if (EncodeBuffer == null)
                 {
-                    this.EncodedFormat = Format;
-                    this.EncodedWidth = ImageSize.Width;
-                    this.EncodedHeight = ImageSize.Height;
-                    this.EncodeBuffer = new byte[RawLength];
+                    EncodedFormat = Format;
+                    EncodedWidth = ImageSize.Width;
+                    EncodedHeight = ImageSize.Height;
+                    EncodeBuffer = new byte[RawLength];
                     fixed (byte* ptr = EncodeBuffer)
                     {
                         byte[] temp = null;
                         using (Bitmap TmpBmp = new Bitmap(ImageSize.Width, ImageSize.Height, Stride, Format, Scan0))
                         {
-                            temp = base.jpgCompression.Compress(TmpBmp);
+                            temp = jpgCompression.Compress(TmpBmp);
                         }
 
                         outStream.Write(BitConverter.GetBytes(temp.Length), 0, 4);
                         outStream.Write(temp, 0, temp.Length);
-                        NativeMethods.memcpy(new IntPtr(ptr), Scan0, (uint)RawLength);
+                        NativeMethods.memcpy(new IntPtr(ptr), Scan0, (uint) RawLength);
                     }
+
                     return;
                 }
 
@@ -105,10 +98,10 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                 outStream.Write(new byte[4], 0, 4);
                 int TotalDataLength = 0;
 
-                if (this.EncodedFormat != Format)
+                if (EncodedFormat != Format)
                     throw new Exception("PixelFormat is not equal to previous Bitmap");
 
-                if (this.EncodedWidth != ImageSize.Width || this.EncodedHeight != ImageSize.Height)
+                if (EncodedWidth != ImageSize.Width || EncodedHeight != ImageSize.Height)
                     throw new Exception("Bitmap width/height are not equal to previous bitmap");
 
                 List<Rectangle> Blocks = new List<Rectangle>();
@@ -135,13 +128,14 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                         if (onCodeDebugScan != null)
                             onCodeDebugScan(cBlock);
 
-                        int offset = (y * Stride) + (ScanArea.X * PixelSize);
-                        if (NativeMethods.memcmp(encBuffer + offset, pScan0 + offset, (uint)Stride) != 0)
+                        int offset = y * Stride + ScanArea.X * PixelSize;
+                        if (NativeMethods.memcmp(encBuffer + offset, pScan0 + offset, (uint) Stride) != 0)
                         {
                             index = Blocks.Count - 1;
-                            if (Blocks.Count != 0 && (Blocks[index].Y + Blocks[index].Height) == cBlock.Y)
+                            if (Blocks.Count != 0 && Blocks[index].Y + Blocks[index].Height == cBlock.Y)
                             {
-                                cBlock = new Rectangle(Blocks[index].X, Blocks[index].Y, Blocks[index].Width, Blocks[index].Height + cBlock.Height);
+                                cBlock = new Rectangle(Blocks[index].X, Blocks[index].Y, Blocks[index].Width,
+                                    Blocks[index].Height + cBlock.Height);
                                 Blocks[index] = cBlock;
                             }
                             else
@@ -149,6 +143,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                                 Blocks.Add(cBlock);
                             }
                         }
+
                         y += s.Height;
                     }
 
@@ -167,10 +162,12 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
 
                             for (int j = 0; j < cBlock.Height; j++)
                             {
-                                int blockOffset = (Stride * (cBlock.Y + j)) + (PixelSize * cBlock.X);
-                                if (NativeMethods.memcmp(encBuffer + blockOffset, pScan0 + blockOffset, (uint)blockStride) != 0)
+                                int blockOffset = Stride * (cBlock.Y + j) + PixelSize * cBlock.X;
+                                if (NativeMethods.memcmp(encBuffer + blockOffset, pScan0 + blockOffset,
+                                        (uint) blockStride) != 0)
                                     FoundChanges = true;
-                                NativeMethods.memcpy(encBuffer + blockOffset, pScan0 + blockOffset, (uint)blockStride); //copy-changes
+                                NativeMethods.memcpy(encBuffer + blockOffset, pScan0 + blockOffset,
+                                    (uint) blockStride); //copy-changes
                             }
 
                             if (onCodeDebugScan != null)
@@ -179,7 +176,8 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                             if (FoundChanges)
                             {
                                 index = finalUpdates.Count - 1;
-                                if (finalUpdates.Count > 0 && (finalUpdates[index].X + finalUpdates[index].Width) == cBlock.X)
+                                if (finalUpdates.Count > 0 &&
+                                    finalUpdates[index].X + finalUpdates[index].Width == cBlock.X)
                                 {
                                     Rectangle rect = finalUpdates[index];
                                     int newWidth = cBlock.Width + rect.Width;
@@ -191,6 +189,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                                     finalUpdates.Add(cBlock);
                                 }
                             }
+
                             x += s.Width;
                         }
                     }
@@ -215,13 +214,16 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                     int blockStride = PixelSize * rect.Width;
 
                     Bitmap TmpBmp = new Bitmap(rect.Width, rect.Height, Format);
-                    BitmapData TmpData = TmpBmp.LockBits(new Rectangle(0, 0, TmpBmp.Width, TmpBmp.Height), ImageLockMode.ReadWrite, TmpBmp.PixelFormat);
+                    BitmapData TmpData = TmpBmp.LockBits(new Rectangle(0, 0, TmpBmp.Width, TmpBmp.Height),
+                        ImageLockMode.ReadWrite, TmpBmp.PixelFormat);
                     for (int j = 0, offset = 0; j < rect.Height; j++)
                     {
-                        int blockOffset = (Stride * (rect.Y + j)) + (PixelSize * rect.X);
-                        NativeMethods.memcpy((byte*)TmpData.Scan0.ToPointer() + offset, pScan0 + blockOffset, (uint)blockStride); //copy-changes
+                        int blockOffset = Stride * (rect.Y + j) + PixelSize * rect.X;
+                        NativeMethods.memcpy((byte*) TmpData.Scan0.ToPointer() + offset, pScan0 + blockOffset,
+                            (uint) blockStride); //copy-changes
                         offset += blockStride;
                     }
+
                     TmpBmp.UnlockBits(TmpData);
 
                     /*using (Graphics g = Graphics.FromImage(bmp))
@@ -240,21 +242,17 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                     long OldPos = outStream.Position;
 
                     if (UseJPEG)
-                    {
-                        base.jpgCompression.Compress(TmpBmp, ref outStream);
-                    }
+                        jpgCompression.Compress(TmpBmp, ref outStream);
                     else
-                    {
-                        base.lzwCompression.Compress(TmpBmp, outStream);
-                    }
+                        lzwCompression.Compress(TmpBmp, outStream);
 
                     length = outStream.Position - length;
 
                     outStream.Position = OldPos - 4;
-                    outStream.Write(BitConverter.GetBytes((int)length), 0, 4);
+                    outStream.Write(BitConverter.GetBytes((int) length), 0, 4);
                     outStream.Position += length;
                     TmpBmp.Dispose();
-                    TotalDataLength += (int)length + (4 * 5);
+                    TotalDataLength += (int) length + 4 * 5;
                 }
 
                 /*if (finalUpdates.Count > 0)
@@ -279,43 +277,49 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
             if (Length < 4)
                 return decodedBitmap;
 
-            int DataSize = *(int*)(CodecBuffer);
+            int DataSize = *(int*) CodecBuffer;
             if (decodedBitmap == null)
             {
                 byte[] temp = new byte[DataSize];
                 fixed (byte* tempPtr = temp)
                 {
-                    NativeMethods.memcpy(new IntPtr(tempPtr), new IntPtr(CodecBuffer.ToInt32() + 4), (uint)DataSize);
+                    NativeMethods.memcpy(new IntPtr(tempPtr), new IntPtr(CodecBuffer.ToInt32() + 4), (uint) DataSize);
                 }
 
-                this.decodedBitmap = (Bitmap)Bitmap.FromStream(new MemoryStream(temp));
+                decodedBitmap = (Bitmap) Image.FromStream(new MemoryStream(temp));
                 return decodedBitmap;
             }
+
             return decodedBitmap;
-            byte* bufferPtr = (byte*)CodecBuffer.ToInt32();
+            byte* bufferPtr = (byte*) CodecBuffer.ToInt32();
             if (DataSize > 0)
             {
                 Graphics g = Graphics.FromImage(decodedBitmap);
                 for (int i = 4; DataSize > 0;)
                 {
-                    Rectangle rect = new Rectangle(*(int*)(bufferPtr + i), *(int*)(bufferPtr + i + 4),
-                                                   *(int*)(bufferPtr + i + 8), *(int*)(bufferPtr + i + 12));
-                    int UpdateLen = *(int*)(bufferPtr + i + 16);
+                    Rectangle rect = new Rectangle(*(int*) (bufferPtr + i), *(int*) (bufferPtr + i + 4),
+                        *(int*) (bufferPtr + i + 8), *(int*) (bufferPtr + i + 12));
+                    int UpdateLen = *(int*) (bufferPtr + i + 16);
                     byte[] temp = new byte[UpdateLen];
 
                     fixed (byte* tempPtr = temp)
                     {
-                        NativeMethods.memcpy(new IntPtr(tempPtr), new IntPtr(CodecBuffer.ToInt32() + i + 20), (uint)UpdateLen);
-                        using (Bitmap TmpBmp = new Bitmap(rect.Width, rect.Height, rect.Width * 3, decodedBitmap.PixelFormat, new IntPtr(tempPtr)))
+                        NativeMethods.memcpy(new IntPtr(tempPtr), new IntPtr(CodecBuffer.ToInt32() + i + 20),
+                            (uint) UpdateLen);
+                        using (Bitmap TmpBmp = new Bitmap(rect.Width, rect.Height, rect.Width * 3,
+                            decodedBitmap.PixelFormat, new IntPtr(tempPtr)))
                         {
                             g.DrawImage(TmpBmp, new Point(rect.X, rect.Y));
                         }
                     }
-                    DataSize -= UpdateLen + (4 * 5);
-                    i += UpdateLen + (4 * 5);
+
+                    DataSize -= UpdateLen + 4 * 5;
+                    i += UpdateLen + 4 * 5;
                 }
+
                 g.Dispose();
             }
+
             return decodedBitmap;
         }
 
@@ -329,7 +333,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
             {
                 temp = new byte[DataSize];
                 inStream.Read(temp, 0, temp.Length);
-                this.decodedBitmap = (Bitmap)Bitmap.FromStream(new MemoryStream(temp));
+                decodedBitmap = (Bitmap) Image.FromStream(new MemoryStream(temp));
                 return decodedBitmap;
             }
 
@@ -341,7 +345,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                     inStream.Read(tempData, 0, tempData.Length);
 
                     Rectangle rect = new Rectangle(BitConverter.ToInt32(tempData, 0), BitConverter.ToInt32(tempData, 4),
-                                         BitConverter.ToInt32(tempData, 8), BitConverter.ToInt32(tempData, 12));
+                        BitConverter.ToInt32(tempData, 8), BitConverter.ToInt32(tempData, 12));
                     int UpdateLen = BitConverter.ToInt32(tempData, 16);
                     tempData = null;
 
@@ -352,14 +356,16 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs
                         onDecodeDebugScan(rect);
 
                     using (MemoryStream m = new MemoryStream(buffer))
-                    using (Bitmap tmp = (Bitmap)Image.FromStream(m))
+                    using (Bitmap tmp = (Bitmap) Image.FromStream(m))
                     {
                         g.DrawImage(tmp, rect.Location);
                     }
+
                     buffer = null;
-                    DataSize -= UpdateLen + (4 * 5);
+                    DataSize -= UpdateLen + 4 * 5;
                 }
             }
+
             return decodedBitmap;
         }
     }

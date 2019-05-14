@@ -32,9 +32,7 @@ namespace VanillaRat.Forms
 
                 Opacity = 1;
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         //On notification box load

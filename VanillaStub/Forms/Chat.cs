@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using VanillaStub.Helpers;
 using VanillaStub.Helpers.Networking;
 
 namespace VanillaStub.Forms
@@ -16,28 +12,6 @@ namespace VanillaStub.Forms
         public Chat()
         {
             InitializeComponent();
-        }
-
-        //Data type enum
-        public enum DataType
-        {
-            ImageType = 0,
-            NotificationType = 1,
-            ClientTag = 2,
-            ProcessType = 3,
-            InformationType = 4,
-            FilesListType = 5,
-            CurrentDirectoryType = 6,
-            DirectoryUpType = 7,
-            FileType = 8,
-            ClipboardType = 9,
-            HardwareUsageType = 10,
-            KeystrokeType = 11,
-            CurrentWindowType = 12,
-            MicrophoneRecordingType = 13,
-            AntiVirusTag = 14,
-            WindowsVersionTag = 15,
-            MessageType = 16
         }
 
         //Prevent form closing
@@ -51,15 +25,11 @@ namespace VanillaStub.Forms
         private void btnSend_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtChat.Text))
-            {
                 txtChat.Text = "You: " + txtSend.Text;
-            }
             else
-            {
                 txtChat.AppendText(Environment.NewLine + "You: " + txtSend.Text);
-            }
             List<byte> ToSend = new List<byte>();
-            ToSend.Add((int)DataType.MessageType);
+            ToSend.Add((int) DataType.MessageType);
             ToSend.AddRange(Encoding.ASCII.GetBytes(txtSend.Text));
             Networking.MainClient.Send(ToSend.ToArray());
             txtSend.Text = "";
@@ -71,15 +41,11 @@ namespace VanillaStub.Forms
             if (e.KeyCode == Keys.Enter)
             {
                 if (string.IsNullOrWhiteSpace(txtChat.Text))
-                {
                     txtChat.Text = "You: " + txtSend.Text;
-                }
                 else
-                {
                     txtChat.AppendText(Environment.NewLine + "You: " + txtSend.Text);
-                }
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int)DataType.MessageType);
+                ToSend.Add((int) DataType.MessageType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes(txtSend.Text));
                 Networking.MainClient.Send(ToSend.ToArray());
                 txtSend.Text = "";
@@ -92,7 +58,7 @@ namespace VanillaStub.Forms
             if (Visible)
             {
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int)DataType.MessageType);
+                ToSend.Add((int) DataType.MessageType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("Connected to chat"));
                 Networking.MainClient.Send(ToSend.ToArray());
             }

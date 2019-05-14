@@ -118,91 +118,88 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Monitor_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Monitor_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Close Window_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Close Window_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Console_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Console_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Administrative Tools_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Administrative Tools_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Services_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Services_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Click_Soft_00" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Click_Soft_00.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Laptop_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Laptop_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Disconnected_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Disconnected_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Paper Plane_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Paper Plane_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Website_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Website_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Info_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Info_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Communication_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Communication_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Upload_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Upload_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Headphones_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Headphones_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Server_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Server_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Restart_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Restart_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Windows Client_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Windows Client_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Flash On_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Flash On_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Compose_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Compose_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Download_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Download_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Close Window_48px2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Close Window_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Double Up_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Double Up_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Document_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Document_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Close Window_48px1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Close Window_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Administrative_Tools_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\administrative tools_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Chat_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Chat_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\forms\resources\chat_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Opened Folder_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Opened Folder_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Click_Soft_00" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\click_soft_00.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Close_Window_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\close window_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Communication_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\communication_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Compose_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\compose_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Console_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\console_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Disconnected_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\disconnected_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Document_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\document_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Double_Up_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\double up_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Download_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\download_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Flash_On_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\flash on_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Headphones_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\headphones_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Info_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\info_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Laptop_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\laptop_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lock_Landscape_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\lock landscape_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Monitor_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\monitor_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Opened_Folder_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\opened folder_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Paper_Plane_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\paper plane_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Person_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Person_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\forms\resources\person_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Play_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Play_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\forms\resources\play_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Lock Landscape_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lock Landscape_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Restart_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\restart_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Server_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\server_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Services_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\services_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Source_Code_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\source code_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upload_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\upload_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Website_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\website_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Windows_Client_48px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\forms\resources\windows client_48px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -65,7 +65,7 @@ namespace VanillaRat.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Administrative_Tools_48px {
             get {
-                object obj = ResourceManager.GetObject("Administrative Tools_48px", resourceCulture);
+                object obj = ResourceManager.GetObject("Administrative_Tools_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -94,27 +94,7 @@ namespace VanillaRat.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Close_Window_48px {
             get {
-                object obj = ResourceManager.GetObject("Close Window_48px", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Close_Window_48px1 {
-            get {
-                object obj = ResourceManager.GetObject("Close Window_48px1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Close_Window_48px2 {
-            get {
-                object obj = ResourceManager.GetObject("Close Window_48px2", resourceCulture);
+                object obj = ResourceManager.GetObject("Close_Window_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -174,7 +154,7 @@ namespace VanillaRat.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Double_Up_48px {
             get {
-                object obj = ResourceManager.GetObject("Double Up_48px", resourceCulture);
+                object obj = ResourceManager.GetObject("Double_Up_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -194,7 +174,7 @@ namespace VanillaRat.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Flash_On_48px {
             get {
-                object obj = ResourceManager.GetObject("Flash On_48px", resourceCulture);
+                object obj = ResourceManager.GetObject("Flash_On_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -234,7 +214,7 @@ namespace VanillaRat.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Lock_Landscape_48px {
             get {
-                object obj = ResourceManager.GetObject("Lock Landscape_48px", resourceCulture);
+                object obj = ResourceManager.GetObject("Lock_Landscape_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -254,7 +234,7 @@ namespace VanillaRat.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Opened_Folder_48px {
             get {
-                object obj = ResourceManager.GetObject("Opened Folder_48px", resourceCulture);
+                object obj = ResourceManager.GetObject("Opened_Folder_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -264,7 +244,7 @@ namespace VanillaRat.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Paper_Plane_48px {
             get {
-                object obj = ResourceManager.GetObject("Paper Plane_48px", resourceCulture);
+                object obj = ResourceManager.GetObject("Paper_Plane_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -322,6 +302,16 @@ namespace VanillaRat.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Source_Code_48px {
+            get {
+                object obj = ResourceManager.GetObject("Source_Code_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Upload_48px {
             get {
                 object obj = ResourceManager.GetObject("Upload_48px", resourceCulture);
@@ -344,7 +334,7 @@ namespace VanillaRat.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Windows_Client_48px {
             get {
-                object obj = ResourceManager.GetObject("Windows Client_48px", resourceCulture);
+                object obj = ResourceManager.GetObject("Windows_Client_48px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

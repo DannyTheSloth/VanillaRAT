@@ -9,36 +9,21 @@ namespace VanillaStub.Helpers.Telepathy
 {
     public class Server : Common
     {
+        private static int counter;
+
+        private readonly ConcurrentDictionary<int, ClientToken> clients = new ConcurrentDictionary<int, ClientToken>();
         public TcpListener listener;
         private Thread listenerThread;
 
-        private class ClientToken
-        {
-            public TcpClient client;
-            public SafeQueue<byte[]> sendQueue = new SafeQueue<byte[]>();
-            public ManualResetEvent sendPending = new ManualResetEvent(false);
-
-            public ClientToken(TcpClient client)
-            {
-                this.client = client;
-            }
-        }
-
-        private ConcurrentDictionary<int, ClientToken> clients = new ConcurrentDictionary<int, ClientToken>();
-        private static int counter = 0;
+        public bool Active => listenerThread != null && listenerThread.IsAlive;
 
         public static int NextConnectionId()
         {
             int id = Interlocked.Increment(ref counter);
-            if (id == int.MaxValue)
-            {
-                throw new Exception("connection id limit reached: " + id);
-            }
+            if (id == int.MaxValue) throw new Exception("connection id limit reached: " + id);
 
             return id;
         }
-
-        public bool Active => listenerThread != null && listenerThread.IsAlive;
 
         private void Listen(int port)
         {
@@ -65,9 +50,7 @@ namespace VanillaStub.Helpers.Telepathy
                         {
                             SendLoop(connectionId, client, token.sendQueue, token.sendPending);
                         }
-                        catch (ThreadAbortException)
-                        {
-                        }
+                        catch (ThreadAbortException) { }
                         catch (Exception exception)
                         {
                             Logger.LogError("Server send thread exception: " + exception);
@@ -137,7 +120,12 @@ namespace VanillaStub.Helpers.Telepathy
             foreach (KeyValuePair<int, ClientToken> kvp in clients)
             {
                 TcpClient client = kvp.Value.client;
-                try { client.GetStream().Close(); } catch { }
+                try
+                {
+                    client.GetStream().Close();
+                }
+                catch { }
+
                 client.Close();
             }
 
@@ -155,9 +143,11 @@ namespace VanillaStub.Helpers.Telepathy
                     token.sendPending.Set();
                     return true;
                 }
+
                 Logger.Log("Server.Send: invalid connectionId: " + connectionId);
                 return false;
             }
+
             Logger.LogError("Client.Send: message too big: " + data.Length + ". Limit: " + MaxMessageSize);
             return false;
         }
@@ -166,9 +156,7 @@ namespace VanillaStub.Helpers.Telepathy
         {
             ClientToken token;
             if (clients.TryGetValue(connectionId, out token))
-            {
-                return ((IPEndPoint)token.client.Client.RemoteEndPoint).Address.ToString();
-            }
+                return ((IPEndPoint) token.client.Client.RemoteEndPoint).Address.ToString();
             return "";
         }
 
@@ -181,7 +169,20 @@ namespace VanillaStub.Helpers.Telepathy
                 Logger.Log("Server.Disconnect connectionId:" + connectionId);
                 return true;
             }
+
             return false;
+        }
+
+        private class ClientToken
+        {
+            public readonly TcpClient client;
+            public readonly ManualResetEvent sendPending = new ManualResetEvent(false);
+            public readonly SafeQueue<byte[]> sendQueue = new SafeQueue<byte[]>();
+
+            public ClientToken(TcpClient client)
+            {
+                this.client = client;
+            }
         }
     }
 }

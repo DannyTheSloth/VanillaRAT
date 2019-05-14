@@ -6,17 +6,17 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 {
     public class LzwCompression
     {
-        private EncoderParameter parameter;
-        private ImageCodecInfo encoderInfo;
-        private EncoderParameters encoderParams;
+        private readonly ImageCodecInfo encoderInfo;
+        private readonly EncoderParameters encoderParams;
+        private readonly EncoderParameter parameter;
 
         public LzwCompression(int Quality)
         {
-            this.parameter = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, (long)Quality);
-            this.encoderInfo = GetEncoderInfo("image/jpeg");
-            this.encoderParams = new EncoderParameters(2);
-            this.encoderParams.Param[0] = parameter;
-            this.encoderParams.Param[1] = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)EncoderValue.CompressionLZW);
+            parameter = new EncoderParameter(Encoder.Quality, Quality);
+            encoderInfo = GetEncoderInfo("image/jpeg");
+            encoderParams = new EncoderParameters(2);
+            encoderParams.Param[0] = parameter;
+            encoderParams.Param[1] = new EncoderParameter(Encoder.Compression, (long) EncoderValue.CompressionLZW);
         }
 
         public byte[] Compress(Bitmap bmp, byte[] AdditionInfo = null)
@@ -41,12 +41,8 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         {
             ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders();
             for (int i = 0; i < imageEncoders.Length; i++)
-            {
                 if (imageEncoders[i].MimeType == mimeType)
-                {
                     return imageEncoders[i];
-                }
-            }
             return null;
         }
     }

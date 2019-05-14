@@ -30,8 +30,6 @@ namespace VanillaRat.Forms
         }
 
         //On remote desktop load
-        private void RDC_Load(object sender, EventArgs e)
-        {
-        }
+        private void RDC_Load(object sender, EventArgs e) { }
     }
 }

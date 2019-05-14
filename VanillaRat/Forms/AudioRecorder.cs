@@ -67,9 +67,7 @@ namespace VanillaRat.Forms
                     btnPlayback.Text = "Stop Playing";
                     Playing = true;
                 }
-                catch
-                {
-                }
+                catch { }
             else
                 try
                 {
@@ -77,9 +75,7 @@ namespace VanillaRat.Forms
                     Playing = false;
                     btnPlayback.Text = "Start Playing";
                 }
-                catch
-                {
-                }
+                catch { }
         }
 
         //On form close

@@ -7,22 +7,21 @@ namespace VanillaStub.Helpers.Telepathy
 {
     public abstract class Common
     {
+        public static int messageQueueSizeWarning = 100000;
+
+        public int MaxMessageSize = 2147483647;
+
+        public bool NoDelay = true;
         protected ConcurrentQueue<Message> receiveQueue = new ConcurrentQueue<Message>();
 
-        public int ReceiveQueueCount => receiveQueue.Count;
+        public int SendTimeout = 5000;
 
-        public static int messageQueueSizeWarning = 100000;
+        public int ReceiveQueueCount => receiveQueue.Count;
 
         public bool GetNextMessage(out Message message)
         {
             return receiveQueue.TryDequeue(out message);
         }
-
-        public bool NoDelay = true;
-
-        public int MaxMessageSize = 1024 * 1024;
-
-        public int SendTimeout = 5000;
 
         protected static bool SendMessagesBlocking(NetworkStream stream, byte[][] messages)
         {
@@ -69,11 +68,13 @@ namespace VanillaStub.Helpers.Telepathy
                 content = new byte[size];
                 return stream.ReadExactly(content, size);
             }
+
             Logger.LogWarning("ReadMessageBlocking: possible allocation attack with a header of: " + size + " bytes.");
             return false;
         }
 
-        protected static void ReceiveLoop(int connectionId, TcpClient client, ConcurrentQueue<Message> receiveQueue, int MaxMessageSize)
+        protected static void ReceiveLoop(int connectionId, TcpClient client, ConcurrentQueue<Message> receiveQueue,
+            int MaxMessageSize)
         {
             NetworkStream stream = client.GetStream();
 
@@ -96,7 +97,8 @@ namespace VanillaStub.Helpers.Telepathy
                         TimeSpan elapsed = DateTime.Now - messageQueueLastWarning;
                         if (elapsed.TotalSeconds > 10)
                         {
-                            Logger.LogWarning("ReceiveLoop: messageQueue is getting big(" + receiveQueue.Count + "), try calling GetNextMessage more often. You can call it more than once per frame!");
+                            Logger.LogWarning("ReceiveLoop: messageQueue is getting big(" + receiveQueue.Count +
+                                              "), try calling GetNextMessage more often. You can call it more than once per frame!");
                             messageQueueLastWarning = DateTime.Now;
                         }
                     }
@@ -104,7 +106,8 @@ namespace VanillaStub.Helpers.Telepathy
             }
             catch (Exception exception)
             {
-                Logger.Log("ReceiveLoop: finished receive function for connectionId=" + connectionId + " reason: " + exception);
+                Logger.Log("ReceiveLoop: finished receive function for connectionId=" + connectionId + " reason: " +
+                           exception);
             }
 
             stream.Close();
@@ -113,7 +116,8 @@ namespace VanillaStub.Helpers.Telepathy
             receiveQueue.Enqueue(new Message(connectionId, EventType.Disconnected, null));
         }
 
-        protected static void SendLoop(int connectionId, TcpClient client, SafeQueue<byte[]> sendQueue, ManualResetEvent sendPending)
+        protected static void SendLoop(int connectionId, TcpClient client, SafeQueue<byte[]> sendQueue,
+            ManualResetEvent sendPending)
         {
             NetworkStream stream = client.GetStream();
 
@@ -125,20 +129,14 @@ namespace VanillaStub.Helpers.Telepathy
 
                     byte[][] messages;
                     if (sendQueue.TryDequeueAll(out messages))
-                    {
                         if (!SendMessagesBlocking(stream, messages))
                             return;
-                    }
 
                     sendPending.WaitOne();
                 }
             }
-            catch (ThreadAbortException)
-            {
-            }
-            catch (ThreadInterruptedException)
-            {
-            }
+            catch (ThreadAbortException) { }
+            catch (ThreadInterruptedException) { }
             catch (Exception exception)
             {
                 Logger.Log("SendLoop Exception: connectionId=" + connectionId + " reason: " + exception);

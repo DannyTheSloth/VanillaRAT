@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace VanillaStub.Helpers.Services.StreamLibrary.src
 {
     public class PayloadWriter : IDisposable
     {
-        public Stream vStream { get; set; }
-
         public PayloadWriter()
         {
             vStream = new MemoryStream();
@@ -15,6 +14,17 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         public PayloadWriter(Stream stream)
         {
             vStream = stream;
+        }
+
+        public Stream vStream { get; set; }
+
+        public int Length => (int) vStream.Length;
+
+        public void Dispose()
+        {
+            vStream.Close();
+            vStream.Dispose();
+            vStream = null;
         }
 
         public void WriteBytes(byte[] value)
@@ -33,13 +43,13 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         }
 
         /// <summary>
-        /// A integer with 3 bytes not 4
+        ///     A integer with 3 bytes not 4
         /// </summary>
         public void WriteThreeByteInteger(int value)
         {
-            WriteByte((byte)value);
-            WriteByte((byte)(value >> 8));
-            WriteByte((byte)(value >> 16));
+            WriteByte((byte) value);
+            WriteByte((byte) (value >> 8));
+            WriteByte((byte) (value >> 16));
         }
 
         public void WriteUInteger(uint value)
@@ -69,7 +79,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 
         public void WriteBool(bool value)
         {
-            WriteByte(value ? (byte)1 : (byte)0);
+            WriteByte(value ? (byte) 1 : (byte) 0);
         }
 
         public void WriteDouble(double value)
@@ -96,23 +106,11 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
         public void WriteString(string value)
         {
             if (!(value == null))
-                WriteBytes(System.Text.Encoding.Unicode.GetBytes(value));
+                WriteBytes(Encoding.Unicode.GetBytes(value));
             else
                 throw new NullReferenceException("value");
             vStream.WriteByte(0);
             vStream.WriteByte(0);
-        }
-
-        public int Length
-        {
-            get { return (int)vStream.Length; }
-        }
-
-        public void Dispose()
-        {
-            vStream.Close();
-            vStream.Dispose();
-            vStream = null;
         }
     }
 }

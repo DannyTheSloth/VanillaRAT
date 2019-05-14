@@ -30,6 +30,7 @@ namespace VanillaStub.Helpers.Telepathy
 
                 bytesRead += result;
             }
+
             return true;
         }
     }

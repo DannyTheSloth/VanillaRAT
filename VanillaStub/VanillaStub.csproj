@@ -35,10 +35,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -70,6 +72,7 @@
     <Compile Include="Forms\ScreenLock.Designer.cs">
       <DependentUpon>ScreenLock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Enums.cs" />
     <Compile Include="Helpers\Information\ComputerInfo.cs" />
     <Compile Include="Helpers\Information\GeoInfo.cs" />
     <Compile Include="Helpers\Networking\Networking.cs" />
@@ -140,6 +143,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="alert-logo-png-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\Information\Recovery\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

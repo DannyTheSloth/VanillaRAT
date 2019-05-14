@@ -80,19 +80,13 @@ namespace VanillaRat.Forms
         }
 
         //On CPU change
-        private void txtCpuUsage_TextChanged(object sender, EventArgs e)
-        {
-        }
+        private void txtCpuUsage_TextChanged(object sender, EventArgs e) { }
 
         //On disk change
-        private void txtDiskUsage_TextChanged(object sender, EventArgs e)
-        {
-        }
+        private void txtDiskUsage_TextChanged(object sender, EventArgs e) { }
 
         //On ram Change
-        private void txtAvailableRam_TextChanged(object sender, EventArgs e)
-        {
-        }
+        private void txtAvailableRam_TextChanged(object sender, EventArgs e) { }
 
         //Stop usage stream
         private void HardwareUsageViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -127,9 +121,7 @@ namespace VanillaRat.Forms
                         if (ucDisk.Series[0].Points.Count > 40)
                             ucDisk.Series[0].Points.RemoveAt(0);
                     }
-                    catch
-                    {
-                    }
+                    catch { }
                 }));
                 Thread.Sleep(450);
             }

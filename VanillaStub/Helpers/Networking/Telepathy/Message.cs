@@ -3,8 +3,8 @@
     public class Message
     {
         public int connectionId;
-        public EventType eventType;
         public byte[] data;
+        public EventType eventType;
 
         public Message(int connectionId, EventType eventType, byte[] data)
         {

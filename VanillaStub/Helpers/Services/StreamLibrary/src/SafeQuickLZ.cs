@@ -27,31 +27,31 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 
         private int headerLen(byte[] source, int offset)
         {
-            return ((source[offset] & 2) == 2) ? 9 : 3;
+            return (source[offset] & 2) == 2 ? 9 : 3;
         }
 
         public int sizeDecompressed(byte[] source, int offset)
         {
             if (headerLen(source, offset) == 9)
-                return source[offset + 5] | (source[offset + 6] << 8) | (source[offset + 7] << 16) | (source[offset + 8] << 24);
-            else
-                return source[offset + 2];
+                return source[offset + 5] | (source[offset + 6] << 8) | (source[offset + 7] << 16) |
+                       (source[offset + 8] << 24);
+            return source[offset + 2];
         }
 
         public int sizeCompressed(byte[] source, int offset)
         {
             if (headerLen(source, offset) == 9)
-                return source[offset + 1] | (source[offset + 2] << 8) | (source[offset + 3] << 16) | (source[offset + 4] << 24);
-            else
-                return source[offset + 1];
+                return source[offset + 1] | (source[offset + 2] << 8) | (source[offset + 3] << 16) |
+                       (source[offset + 4] << 24);
+            return source[offset + 1];
         }
 
         private void write_header(byte[] dst, int level, bool compressible, int size_compressed, int size_decompressed)
         {
-            dst[0] = (byte)(2 | (compressible ? 1 : 0));
-            dst[0] |= (byte)(level << 2);
-            dst[0] |= (1 << 6);
-            dst[0] |= (0 << 4);
+            dst[0] = (byte) (2 | (compressible ? 1 : 0));
+            dst[0] |= (byte) (level << 2);
+            dst[0] |= 1 << 6;
+            dst[0] |= 0 << 4;
             fast_write(dst, 1, size_decompressed, 4);
             fast_write(dst, 5, size_compressed, 4);
         }
@@ -68,7 +68,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
             byte[] hash_counter = new byte[HASH_VALUES];
             byte[] d2;
             int fetch = 0;
-            int last_matchstart = (Length - UNCONDITIONAL_MATCHLEN - UNCOMPRESSED_END - 1);
+            int last_matchstart = Length - UNCONDITIONAL_MATCHLEN - UNCOMPRESSED_END - 1;
             int lits = 0;
 
             if (level != 1 && level != 3)
@@ -93,11 +93,11 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                     {
                         d2 = new byte[Length + DEFAULT_HEADERLEN];
                         write_header(d2, level, false, Length, Length + DEFAULT_HEADERLEN);
-                        System.Array.Copy(source, 0, d2, DEFAULT_HEADERLEN, Length);
+                        Array.Copy(source, 0, d2, DEFAULT_HEADERLEN, Length);
                         return d2;
                     }
 
-                    fast_write(destination, cword_ptr, (int)((cword_val >> 1) | 0x80000000), 4);
+                    fast_write(destination, cword_ptr, (int) ((cword_val >> 1) | 0x80000000), 4);
                     cword_ptr = dst;
                     dst += CWORD_LEN;
                     cword_val = 0x80000000;
@@ -111,23 +111,27 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                     cachetable[hash] = fetch;
                     hashtable[hash, 0] = src;
 
-                    if (cache == 0 && hash_counter[hash] != 0 && (src - o > MINOFFSET || (src == o + 1 && lits >= 3 && src > 3 && source[src] == source[src - 3] &&
-                                                                                          source[src] == source[src - 2] && source[src] == source[src - 1] &&
-                                                                                          source[src] == source[src + 1] && source[src] == source[src + 2])))
+                    if (cache == 0 && hash_counter[hash] != 0 &&
+                        (src - o > MINOFFSET || src == o + 1 && lits >= 3 && src > 3 &&
+                         source[src] == source[src - 3] &&
+                         source[src] == source[src - 2] && source[src] == source[src - 1] &&
+                         source[src] == source[src + 1] && source[src] == source[src + 2]))
                     {
-                        cword_val = ((cword_val >> 1) | 0x80000000);
+                        cword_val = (cword_val >> 1) | 0x80000000;
                         if (source[o + 3] != source[src + 3])
                         {
-                            int f = 3 - 2 | (hash << 4);
-                            destination[dst + 0] = (byte)(f >> 0 * 8);
-                            destination[dst + 1] = (byte)(f >> 1 * 8);
+                            int f = (3 - 2) | (hash << 4);
+                            destination[dst + 0] = (byte) (f >> (0 * 8));
+                            destination[dst + 1] = (byte) (f >> (1 * 8));
                             src += 3;
                             dst += 2;
                         }
                         else
                         {
                             int old_src = src;
-                            int remaining = ((Length - UNCOMPRESSED_END - src + 1 - 1) > 255 ? 255 : (Length - UNCOMPRESSED_END - src + 1 - 1));
+                            int remaining = Length - UNCOMPRESSED_END - src + 1 - 1 > 255
+                                ? 255
+                                : Length - UNCOMPRESSED_END - src + 1 - 1;
 
                             src += 4;
                             if (source[o + src - old_src] == source[src])
@@ -136,7 +140,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                                 if (source[o + src - old_src] == source[src])
                                 {
                                     src++;
-                                    while (source[o + (src - old_src)] == source[src] && (src - old_src) < remaining)
+                                    while (source[o + (src - old_src)] == source[src] && src - old_src < remaining)
                                         src++;
                                 }
                             }
@@ -146,9 +150,9 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                             hash <<= 4;
                             if (matchlen < 18)
                             {
-                                int f = (hash | (matchlen - 2));
-                                destination[dst + 0] = (byte)(f >> 0 * 8);
-                                destination[dst + 1] = (byte)(f >> 1 * 8);
+                                int f = hash | (matchlen - 2);
+                                destination[dst + 0] = (byte) (f >> (0 * 8));
+                                destination[dst + 1] = (byte) (f >> (1 * 8));
                                 dst += 2;
                             }
                             else
@@ -157,6 +161,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                                 dst += 3;
                             }
                         }
+
                         fetch = source[src] | (source[src + 1] << 8) | (source[src + 2] << 16);
                         lits = 0;
                     }
@@ -165,7 +170,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                         lits++;
                         hash_counter[hash] = 1;
                         destination[dst] = source[src];
-                        cword_val = (cword_val >> 1);
+                        cword_val = cword_val >> 1;
                         src++;
                         dst++;
                         fetch = ((fetch >> 8) & 0xffff) | (source[src + 2] << 16);
@@ -178,7 +183,9 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                     int o, offset2;
                     int matchlen, k, m, best_k = 0;
                     byte c;
-                    int remaining = ((Length - UNCOMPRESSED_END - src + 1 - 1) > 255 ? 255 : (Length - UNCOMPRESSED_END - src + 1 - 1));
+                    int remaining = Length - UNCOMPRESSED_END - src + 1 - 1 > 255
+                        ? 255
+                        : Length - UNCOMPRESSED_END - src + 1 - 1;
                     int hash = ((fetch >> 12) ^ fetch) & (HASH_VALUES - 1);
 
                     c = hash_counter[hash];
@@ -187,12 +194,13 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                     for (k = 0; k < QLZ_POINTERS_3 && c > k; k++)
                     {
                         o = hashtable[hash, k];
-                        if ((byte)fetch == source[o] && (byte)(fetch >> 8) == source[o + 1] && (byte)(fetch >> 16) == source[o + 2] && o < src - MINOFFSET)
+                        if ((byte) fetch == source[o] && (byte) (fetch >> 8) == source[o + 1] &&
+                            (byte) (fetch >> 16) == source[o + 2] && o < src - MINOFFSET)
                         {
                             m = 3;
                             while (source[o + m] == source[src + m] && m < remaining)
                                 m++;
-                            if ((m > matchlen) || (m == matchlen && o > offset2))
+                            if (m > matchlen || m == matchlen && o > offset2)
                             {
                                 offset2 = o;
                                 matchlen = m;
@@ -200,6 +208,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                             }
                         }
                     }
+
                     o = offset2;
                     hashtable[hash, c & (QLZ_POINTERS_3 - 1)] = src;
                     c++;
@@ -218,7 +227,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                         }
 
                         src += matchlen;
-                        cword_val = ((cword_val >> 1) | 0x80000000);
+                        cword_val = (cword_val >> 1) | 0x80000000;
 
                         if (matchlen == 3 && offset <= 63)
                         {
@@ -245,22 +254,24 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                             fast_write(destination, dst, ((matchlen - 3) << 7) | (offset << 15) | 3, 4);
                             dst += 4;
                         }
+
                         lits = 0;
                     }
                     else
                     {
                         destination[dst] = source[src];
-                        cword_val = (cword_val >> 1);
+                        cword_val = cword_val >> 1;
                         src++;
                         dst++;
                     }
                 }
             }
+
             while (src <= Length - 1)
             {
                 if ((cword_val & 1) == 1)
                 {
-                    fast_write(destination, cword_ptr, (int)((cword_val >> 1) | 0x80000000), 4);
+                    fast_write(destination, cword_ptr, (int) ((cword_val >> 1) | 0x80000000), 4);
                     cword_ptr = dst;
                     dst += CWORD_LEN;
                     cword_val = 0x80000000;
@@ -269,24 +280,22 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                 destination[dst] = source[src];
                 src++;
                 dst++;
-                cword_val = (cword_val >> 1);
-            }
-            while ((cword_val & 1) != 1)
-            {
-                cword_val = (cword_val >> 1);
+                cword_val = cword_val >> 1;
             }
 
-            fast_write(destination, cword_ptr, (int)((cword_val >> 1) | 0x80000000), CWORD_LEN);
+            while ((cword_val & 1) != 1) cword_val = cword_val >> 1;
+
+            fast_write(destination, cword_ptr, (int) ((cword_val >> 1) | 0x80000000), CWORD_LEN);
             write_header(destination, level, true, Length, dst);
             d2 = new byte[dst];
-            System.Array.Copy(destination, d2, dst);
+            Array.Copy(destination, d2, dst);
             return d2;
         }
 
         private void fast_write(byte[] a, int i, int value, int numbytes)
         {
             for (int j = 0; j < numbytes; j++)
-                a[i + j] = (byte)(value >> (j * 8));
+                a[i + j] = (byte) (value >> (j * 8));
         }
 
         public byte[] decompress(byte[] source, int Offset, int Length)
@@ -312,22 +321,24 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
             if ((source[Offset] & 1) != 1)
             {
                 byte[] d2 = new byte[size];
-                System.Array.Copy(source, headerLen(source, Offset), d2, Offset, size);
+                Array.Copy(source, headerLen(source, Offset), d2, Offset, size);
                 return d2;
             }
 
-            for (; ; )
+            for (;;)
             {
                 if (cword_val == 1)
                 {
-                    cword_val = (uint)(source[src] | (source[src + 1] << 8) | (source[src + 2] << 16) | (source[src + 3] << 24));
+                    cword_val = (uint) (source[src] | (source[src + 1] << 8) | (source[src + 2] << 16) |
+                                        (source[src + 3] << 24));
                     src += 4;
                     if (dst <= last_matchstart)
                     {
                         if (level == 1)
-                            fetch = (uint)(source[src] | (source[src + 1] << 8) | (source[src + 2] << 16));
+                            fetch = (uint) (source[src] | (source[src + 1] << 8) | (source[src + 2] << 16));
                         else
-                            fetch = (uint)(source[src] | (source[src + 1] << 8) | (source[src + 2] << 16) | (source[src + 3] << 24));
+                            fetch = (uint) (source[src] | (source[src + 1] << 8) | (source[src + 2] << 16) |
+                                            (source[src + 3] << 24));
                     }
                 }
 
@@ -340,8 +351,8 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
 
                     if (level == 1)
                     {
-                        hash = ((int)fetch >> 4) & 0xfff;
-                        offset2 = (uint)hashtable[hash];
+                        hash = ((int) fetch >> 4) & 0xfff;
+                        offset2 = (uint) hashtable[hash];
 
                         if ((fetch & 0xf) != 0)
                         {
@@ -383,41 +394,43 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                         }
                         else
                         {
-                            offset = (fetch >> 15);
+                            offset = fetch >> 15;
                             matchlen = ((fetch >> 7) & 255) + 3;
                             src += 4;
                         }
-                        offset2 = (uint)(dst - offset);
+
+                        offset2 = (uint) (dst - offset);
                     }
 
                     destination[dst + 0] = destination[offset2 + 0];
                     destination[dst + 1] = destination[offset2 + 1];
                     destination[dst + 2] = destination[offset2 + 2];
 
-                    for (int i = 3; i < matchlen; i += 1)
-                    {
-                        destination[dst + i] = destination[offset2 + i];
-                    }
+                    for (int i = 3; i < matchlen; i += 1) destination[dst + i] = destination[offset2 + i];
 
-                    dst += (int)matchlen;
+                    dst += (int) matchlen;
 
                     if (level == 1)
                     {
-                        fetch = (uint)(destination[last_hashed + 1] | (destination[last_hashed + 2] << 8) | (destination[last_hashed + 3] << 16));
+                        fetch = (uint) (destination[last_hashed + 1] | (destination[last_hashed + 2] << 8) |
+                                        (destination[last_hashed + 3] << 16));
                         while (last_hashed < dst - matchlen)
                         {
                             last_hashed++;
-                            hash = (int)(((fetch >> 12) ^ fetch) & (HASH_VALUES - 1));
+                            hash = (int) (((fetch >> 12) ^ fetch) & (HASH_VALUES - 1));
                             hashtable[hash] = last_hashed;
                             hash_counter[hash] = 1;
-                            fetch = (uint)(fetch >> 8 & 0xffff | destination[last_hashed + 3] << 16);
+                            fetch = (uint) (((fetch >> 8) & 0xffff) | (destination[last_hashed + 3] << 16));
                         }
-                        fetch = (uint)(source[src] | (source[src + 1] << 8) | (source[src + 2] << 16));
+
+                        fetch = (uint) (source[src] | (source[src + 1] << 8) | (source[src + 2] << 16));
                     }
                     else
                     {
-                        fetch = (uint)(source[src] | (source[src + 1] << 8) | (source[src + 2] << 16) | (source[src + 3] << 24));
+                        fetch = (uint) (source[src] | (source[src + 1] << 8) | (source[src + 2] << 16) |
+                                        (source[src + 3] << 24));
                     }
+
                     last_hashed = dst - 1;
                 }
                 else
@@ -434,16 +447,19 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                             while (last_hashed < dst - 3)
                             {
                                 last_hashed++;
-                                int fetch2 = destination[last_hashed] | (destination[last_hashed + 1] << 8) | (destination[last_hashed + 2] << 16);
+                                int fetch2 = destination[last_hashed] | (destination[last_hashed + 1] << 8) |
+                                             (destination[last_hashed + 2] << 16);
                                 hash = ((fetch2 >> 12) ^ fetch2) & (HASH_VALUES - 1);
                                 hashtable[hash] = last_hashed;
                                 hash_counter[hash] = 1;
                             }
-                            fetch = (uint)(fetch >> 8 & 0xffff | source[src + 2] << 16);
+
+                            fetch = (uint) (((fetch >> 8) & 0xffff) | (source[src + 2] << 16));
                         }
                         else
                         {
-                            fetch = (uint)(fetch >> 8 & 0xffff | source[src + 2] << 16 | source[src + 3] << 24);
+                            fetch = (uint) (((fetch >> 8) & 0xffff) | (source[src + 2] << 16) |
+                                            (source[src + 3] << 24));
                         }
                     }
                     else
@@ -461,6 +477,7 @@ namespace VanillaStub.Helpers.Services.StreamLibrary.src
                             src++;
                             cword_val = cword_val >> 1;
                         }
+
                         return destination;
                     }
                 }

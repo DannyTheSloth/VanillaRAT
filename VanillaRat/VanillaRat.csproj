@@ -145,12 +145,6 @@
     <Compile Include="Forms\ComputerInformation.Designer.cs">
       <DependentUpon>ComputerInformation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DownloadingFileForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DownloadingFileForm.Designer.cs">
-      <DependentUpon>DownloadingFileForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FileExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,11 +181,23 @@
     <Compile Include="Forms\OpenWebsite.Designer.cs">
       <DependentUpon>OpenWebsite.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PasswordViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PasswordViewer.Designer.cs">
+      <DependentUpon>PasswordViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\RDC.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\RDC.Designer.cs">
       <DependentUpon>RDC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RemoteShell.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RemoteShell.Designer.cs">
+      <DependentUpon>RemoteShell.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
@@ -201,6 +207,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <EmbeddedResource Include="Forms\AudioRecorder.resx">
       <DependentUpon>AudioRecorder.cs</DependentUpon>
@@ -220,9 +231,6 @@
     <EmbeddedResource Include="Forms\ComputerInformation.resx">
       <DependentUpon>ComputerInformation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DownloadingFileForm.resx">
-      <DependentUpon>DownloadingFileForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileExplorer.resx">
       <DependentUpon>FileExplorer.cs</DependentUpon>
     </EmbeddedResource>
@@ -241,22 +249,23 @@
     <EmbeddedResource Include="Forms\OpenWebsite.resx">
       <DependentUpon>OpenWebsite.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PasswordViewer.resx">
+      <DependentUpon>PasswordViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\RDC.resx">
       <DependentUpon>RDC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RemoteShell.resx">
+      <DependentUpon>RemoteShell.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
@@ -272,69 +281,70 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Close Window_48px.png" />
+    <None Include="Forms\Resources\Close Window_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Services_48px.png" />
+    <None Include="Forms\Resources\Services_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Communication_48px.png" />
+    <None Include="Forms\Resources\Communication_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info_48px.png" />
+    <None Include="Forms\Resources\Info_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Flash On_48px.png" />
+    <None Include="Forms\Resources\Flash On_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Website_48px.png" />
+    <None Include="Forms\Resources\Website_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Windows Client_48px.png" />
+    <None Include="Forms\Resources\Windows Client_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Laptop_48px.png" />
+    <None Include="Forms\Resources\Laptop_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Opened Folder_48px.png" />
+    <None Include="Forms\Resources\Opened Folder_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Paper Plane_48px.png" />
+    <None Include="Forms\Resources\Paper Plane_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Disconnected_48px.png" />
+    <None Include="Forms\Resources\Disconnected_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Console_48px.png" />
+    <None Include="Forms\Resources\Console_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Double Up_48px.png" />
+    <None Include="Forms\Resources\Double Up_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Restart_48px.png" />
+    <None Include="Forms\Resources\Restart_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Download_48px.png" />
+    <None Include="Forms\Resources\Download_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Upload_48px.png" />
+    <None Include="Forms\Resources\Upload_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Document_48px.png" />
+    <None Include="Forms\Resources\Document_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Server_48px.png" />
+    <None Include="Forms\Resources\Server_48px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Compose_48px.png" />
-    <None Include="Monitor_48px.png" />
-    <None Include="Play_48px.png" />
-    <None Include="Headphones_48px.png" />
-    <None Include="Person_48px.png" />
-    <None Include="Click_Soft_00.wav" />
-    <None Include="Chat_48px.png" />
-    <None Include="Administrative Tools_48px.png" />
-    <None Include="Lock Landscape_48px.png" />
+    <None Include="Forms\Resources\Compose_48px.png" />
+    <None Include="Forms\Resources\Monitor_48px.png" />
+    <None Include="Forms\Resources\Play_48px.png" />
+    <None Include="Forms\Resources\Headphones_48px.png" />
+    <None Include="Forms\Resources\Person_48px.png" />
+    <None Include="Forms\Resources\Click_Soft_00.wav" />
+    <None Include="Forms\Resources\Chat_48px.png" />
+    <None Include="Forms\Resources\Administrative Tools_48px.png" />
+    <None Include="Forms\Resources\Lock Landscape_48px.png" />
+    <None Include="Forms\Resources\Source Code_48px.png" />
     <Content Include="StreamLibrary.dll" />
   </ItemGroup>
   <ItemGroup>

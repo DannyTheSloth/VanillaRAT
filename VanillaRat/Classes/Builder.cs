@@ -1,7 +1,7 @@
-﻿using dnlib.DotNet;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using dnlib.DotNet;
 using VanillaRatStub;
 
 namespace VanillaRat.Classes

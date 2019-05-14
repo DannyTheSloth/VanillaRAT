@@ -125,7 +125,6 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Fo
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.ClientRunningApps.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.ClipboardTextViewer.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.ComputerInformation.resources
-C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.DownloadingFileForm.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.FileExplorer.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.HardwareUsageViewer.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.Keylogger.resources
@@ -140,3 +139,5 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.cs
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.csproj.CopyComplete
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.exe
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.pdb
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.PasswordViewer.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.RemoteShell.resources

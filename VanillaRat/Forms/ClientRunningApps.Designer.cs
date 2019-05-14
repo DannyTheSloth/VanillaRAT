@@ -59,7 +59,7 @@
             // 
             // btnEndProcess
             // 
-            this.btnEndProcess.Image = global::VanillaRat.Properties.Resources.Close_Window_48px1;
+            this.btnEndProcess.Image = global::VanillaRat.Properties.Resources.Close_Window_48px;
             this.btnEndProcess.Name = "btnEndProcess";
             this.btnEndProcess.Size = new System.Drawing.Size(167, 22);
             this.btnEndProcess.Text = "End Process";
