@@ -59,6 +59,7 @@
             this.sendTextToSpeechToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.messageToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.txtTTSText = new System.Windows.Forms.ToolStripTextBox();
+            this.btnSendTTS = new System.Windows.Forms.ToolStripMenuItem();
             this.btnOpenChat = new System.Windows.Forms.ToolStripMenuItem();
             this.clientExtrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnStartKL = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,7 +91,6 @@
             this.SidebarPanel = new System.Windows.Forms.Panel();
             this.lblVersion = new System.Windows.Forms.Label();
             this.bwUpdateImage = new System.ComponentModel.BackgroundWorker();
-            this.btnSendTTS = new System.Windows.Forms.ToolStripMenuItem();
             this.ClientMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SidebarPanel.SuspendLayout();
@@ -106,7 +106,7 @@
             this.clientCommunicationToolStripMenuItem,
             this.clientExtrasToolStripMenuItem});
             this.ClientMenu.Name = "ClientMenu";
-            this.ClientMenu.Size = new System.Drawing.Size(211, 158);
+            this.ClientMenu.Size = new System.Drawing.Size(211, 136);
             // 
             // lblCurrentID
             // 
@@ -352,13 +352,20 @@
             this.messageToolStripMenuItem3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.txtTTSText});
             this.messageToolStripMenuItem3.Name = "messageToolStripMenuItem3";
-            this.messageToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.messageToolStripMenuItem3.Size = new System.Drawing.Size(120, 22);
             this.messageToolStripMenuItem3.Text = "Message";
             // 
             // txtTTSText
             // 
             this.txtTTSText.Name = "txtTTSText";
             this.txtTTSText.Size = new System.Drawing.Size(100, 23);
+            // 
+            // btnSendTTS
+            // 
+            this.btnSendTTS.Name = "btnSendTTS";
+            this.btnSendTTS.Size = new System.Drawing.Size(120, 22);
+            this.btnSendTTS.Text = "Send";
+            this.btnSendTTS.Click += new System.EventHandler(this.btnSendTTS_Click);
             // 
             // btnOpenChat
             // 
@@ -627,22 +634,15 @@
             this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(230)))), ((int)(((byte)(233)))));
             this.lblVersion.Location = new System.Drawing.Point(8, 411);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(30, 16);
+            this.lblVersion.Size = new System.Drawing.Size(40, 16);
             this.lblVersion.TabIndex = 9;
-            this.lblVersion.Text = "v1.6";
+            this.lblVersion.Text = "v1.6.1";
             this.lblVersion.Click += new System.EventHandler(this.lblVersion_Click);
             // 
             // bwUpdateImage
             // 
             this.bwUpdateImage.WorkerSupportsCancellation = true;
             this.bwUpdateImage.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdateImage_DoWork);
-            // 
-            // btnSendTTS
-            // 
-            this.btnSendTTS.Name = "btnSendTTS";
-            this.btnSendTTS.Size = new System.Drawing.Size(180, 22);
-            this.btnSendTTS.Text = "Send";
-            this.btnSendTTS.Click += new System.EventHandler(this.btnSendTTS_Click);
             // 
             // Main
             // 

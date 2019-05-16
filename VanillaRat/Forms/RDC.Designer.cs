@@ -1,4 +1,6 @@
-﻿namespace VanillaRat.Forms
+﻿using System.Windows.Forms;
+
+namespace VanillaRat.Forms
 {
     partial class RDC
     {
@@ -28,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pbDesktop = new System.Windows.Forms.PictureBox();
+            this.pbDesktop = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbDesktop)).BeginInit();
             this.SuspendLayout();
             // 

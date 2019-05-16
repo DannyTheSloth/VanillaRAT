@@ -117,7 +117,6 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.ex
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.exe
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.pdb
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\dnlib.xml
-C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.csprojAssemblyReference.cache
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.exe.config
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.AudioRecorder.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.BuilderForm.resources
@@ -131,7 +130,9 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Fo
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Main.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.NotificationBox.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.OpenWebsite.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.PasswordViewer.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.RDC.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.RemoteShell.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.SettingsForm.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Properties.Resources.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.csproj.GenerateResource.cache
@@ -139,5 +140,4 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.cs
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.csproj.CopyComplete
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.exe
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.pdb
-C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.PasswordViewer.resources
-C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.RemoteShell.resources
+C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.csprojAssemblyReference.cache

