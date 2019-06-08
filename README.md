@@ -3,7 +3,7 @@
 VanillaRat is an advanced remote administration tool coded in C#. VanillaRat uses the Telepathy TCP networking library, dnlib module reading and writing library, and Costura.Fody dll embedding library.
 
 ### Features:
-- Remote Desktop Viewer 
+- Remote Desktop Viewer (With remote click)
 - File Browser (Including downloading, drag and drop uploading, and file opening)
 - Process Manager
 - Computer Information 
@@ -20,6 +20,7 @@ VanillaRat is an advanced remote administration tool coded in C#. VanillaRat use
 - Process Killer (Task manager, etc.)
 - Remote Shell 
 - Startup 
+- Security Blacklist (Drag client into list if you don't want connection. Press del. key on client to remove from list) 
 
 ### TODO:
 - Add password recovery
