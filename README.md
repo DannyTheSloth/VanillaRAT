@@ -22,7 +22,7 @@ VanillaRat is an advanced remote administration tool coded in C#. VanillaRat use
 - Startup 
 - Security Blacklist (Drag client into list if you don't want connection. Press del. key on client to remove from list) 
 
-### TODO:
+### TODO - PROJECT COMPLETED (NEW PROJECT IN THE WORKS):
 - Add password recovery
 - Redesign networking system
 - Bug Fixing
