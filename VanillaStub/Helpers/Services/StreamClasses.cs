@@ -235,7 +235,7 @@ namespace VanillaStub.Helpers.Services
                 Size S = new Size(Image.Width, Image.Height);
                 BitmapData BD = Image.LockBits(new Rectangle(0, 0, Image.Width, Image.Height),
                     ImageLockMode.ReadWrite, Image.PixelFormat);
-                using (MemoryStream MS = new MemoryStream(100000000))
+                using (MemoryStream MS = new MemoryStream(1000000000))
                 {
                     UC.CodeImage(BD.Scan0, Rect, S,
                         Image.PixelFormat, MS);
@@ -243,12 +243,11 @@ namespace VanillaStub.Helpers.Services
                 }
 
                 List<byte> ToSend = new List<byte>();
-                ToSend.Add((int) DataType.ImageType);
+                ToSend.Add((int)DataType.ImageType);
                 ToSend.AddRange(ImageBytes);
                 Networking.Networking.MainClient.Send(ToSend.ToArray());
                 Image.UnlockBits(BD);
-                Image.Dispose();
-                await Task.Delay(1);
+                Image.Dispose();               
             }
         }
 

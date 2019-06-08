@@ -27,7 +27,6 @@ namespace VanillaRat.Forms
                     MessageBoxIcon.Error);
                 return;
             }
-
             Builder ClientBuilder = new Builder();
             try
             {
@@ -40,10 +39,8 @@ namespace VanillaRat.Forms
                 return;
             }
 
-            string Install = "False";
-            string Startup = "False";
-            Install = cbEnableInstallation.Checked ? "True" : "False";
-            Startup = cbEnableStartup.Checked ? "True" : "False";
+            string Install = cbEnableInstallation.Checked ? "True" : "False";
+            string Startup = cbEnableStartup.Checked ? "True" : "False";
 
             ClientBuilder.BuildClient(txtPort.Text, txtDNS.Text, txtName.Text, txtClientTag.Text, txtInterval.Text,
                 Install, Startup);

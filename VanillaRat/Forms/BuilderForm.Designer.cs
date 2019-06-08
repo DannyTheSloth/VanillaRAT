@@ -180,7 +180,7 @@
             this.tbAdditionalOptions.Location = new System.Drawing.Point(4, 22);
             this.tbAdditionalOptions.Name = "tbAdditionalOptions";
             this.tbAdditionalOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tbAdditionalOptions.Size = new System.Drawing.Size(424, 138);
+            this.tbAdditionalOptions.Size = new System.Drawing.Size(424, 137);
             this.tbAdditionalOptions.TabIndex = 1;
             this.tbAdditionalOptions.Text = "Additional Options";
             this.tbAdditionalOptions.UseVisualStyleBackColor = true;

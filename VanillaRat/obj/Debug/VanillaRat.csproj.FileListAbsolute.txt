@@ -117,7 +117,6 @@ C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.ex
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.exe
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\VanillaRat.pdb
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\bin\Debug\dnlib.xml
-C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.exe.config
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.AudioRecorder.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.BuilderForm.resources
 C:\Users\dhuin\Desktop\Projects\C#\VanillaRat\VanillaRat\obj\Debug\VanillaRat.Forms.Chat.resources

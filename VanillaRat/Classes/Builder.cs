@@ -17,7 +17,7 @@ namespace VanillaRat.Classes
             ClientSettings.ClientTag = ClientTag;
             ClientSettings.UpdateInterval = UpdateInterval;
             ClientSettings.Install = Install == "True" ? "True" : "False";
-            ClientSettings.Startup = Startup == "True" ? "True" : "False";
+            ClientSettings.Startup = Startup == "True" ? "True" : "False";           
             string FullName = "VanillaRatStub.ClientSettings";
             var Assembly = AssemblyDef.Load("VanillaStub.exe");
             var Module = Assembly.ManifestModule;

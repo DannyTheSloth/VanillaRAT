@@ -21,6 +21,6 @@
         WindowsVersionTag = 15,
         MessageType = 16,
         PasswordType = 17,
-        RemoteShellType = 18,
+        RemoteShellType = 18
     }
 }

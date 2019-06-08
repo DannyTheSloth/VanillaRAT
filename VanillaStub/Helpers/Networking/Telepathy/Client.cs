@@ -7,13 +7,12 @@ namespace VanillaStub.Helpers.Telepathy
 {
     public class Client : Common
     {
-        private volatile bool _Connecting;
-        public TcpClient client;
-        private Thread receiveThread;
-
         private readonly ManualResetEvent sendPending = new ManualResetEvent(false);
 
         private readonly SafeQueue<byte[]> sendQueue = new SafeQueue<byte[]>();
+        private volatile bool _Connecting;
+        public TcpClient client;
+        private Thread receiveThread;
         private Thread sendThread;
 
         public bool Connected => client != null &&

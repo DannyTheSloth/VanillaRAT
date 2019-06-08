@@ -89,6 +89,9 @@
             this.chAntiVirus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chOperatingSystem = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SidebarPanel = new System.Windows.Forms.Panel();
+            this.lbBlackList = new System.Windows.Forms.ListBox();
+            this.BlacklistPanel = new VanillaRat.Forms.Controls.FlatPanel();
+            this.lblBlackList = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.bwUpdateImage = new System.ComponentModel.BackgroundWorker();
             this.ClientMenu.SuspendLayout();
@@ -106,7 +109,7 @@
             this.clientCommunicationToolStripMenuItem,
             this.clientExtrasToolStripMenuItem});
             this.ClientMenu.Name = "ClientMenu";
-            this.ClientMenu.Size = new System.Drawing.Size(211, 136);
+            this.ClientMenu.Size = new System.Drawing.Size(211, 158);
             // 
             // lblCurrentID
             // 
@@ -172,7 +175,7 @@
             // 
             this.btnLockComputer.Image = global::VanillaRat.Properties.Resources.Lock_Landscape_48px;
             this.btnLockComputer.Name = "btnLockComputer";
-            this.btnLockComputer.Size = new System.Drawing.Size(174, 22);
+            this.btnLockComputer.Size = new System.Drawing.Size(180, 22);
             this.btnLockComputer.Text = "Start Screen Locker";
             this.btnLockComputer.Click += new System.EventHandler(this.btnLockComputer_Click);
             // 
@@ -387,7 +390,7 @@
             this.clientExtrasToolStripMenuItem.Image = global::VanillaRat.Properties.Resources.Flash_On_48px;
             this.clientExtrasToolStripMenuItem.Name = "clientExtrasToolStripMenuItem";
             this.clientExtrasToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.clientExtrasToolStripMenuItem.Text = "Client Extras ";
+            this.clientExtrasToolStripMenuItem.Text = "Client Extras";
             // 
             // btnStartKL
             // 
@@ -586,6 +589,7 @@
             this.lbConnectedClients.UseCompatibleStateImageBehavior = false;
             this.lbConnectedClients.View = System.Windows.Forms.View.Details;
             this.lbConnectedClients.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.listView1_ColumnWidthChanging);
+            this.lbConnectedClients.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.OnClientDrag);
             this.lbConnectedClients.SelectedIndexChanged += new System.EventHandler(this.lbConnectedClients_SelectedIndexChanged);
             // 
             // chConnectionId
@@ -616,6 +620,9 @@
             // SidebarPanel
             // 
             this.SidebarPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(54)))));
+            this.SidebarPanel.Controls.Add(this.lbBlackList);
+            this.SidebarPanel.Controls.Add(this.BlacklistPanel);
+            this.SidebarPanel.Controls.Add(this.lblBlackList);
             this.SidebarPanel.Controls.Add(this.lblVersion);
             this.SidebarPanel.Controls.Add(this.btnStopServer);
             this.SidebarPanel.Controls.Add(this.btnStartServer);
@@ -627,6 +634,43 @@
             this.SidebarPanel.Size = new System.Drawing.Size(171, 437);
             this.SidebarPanel.TabIndex = 8;
             // 
+            // lbBlackList
+            // 
+            this.lbBlackList.AllowDrop = true;
+            this.lbBlackList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(52)))), ((int)(((byte)(54)))));
+            this.lbBlackList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbBlackList.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbBlackList.ForeColor = System.Drawing.SystemColors.Window;
+            this.lbBlackList.FormattingEnabled = true;
+            this.lbBlackList.ItemHeight = 16;
+            this.lbBlackList.Location = new System.Drawing.Point(13, 213);
+            this.lbBlackList.Name = "lbBlackList";
+            this.lbBlackList.Size = new System.Drawing.Size(144, 80);
+            this.lbBlackList.TabIndex = 1;
+            this.lbBlackList.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnBlacklistDrop);
+            this.lbBlackList.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnBlacklistEnter);
+            this.lbBlackList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnBlacklistKeyDown);
+            // 
+            // BlacklistPanel
+            // 
+            this.BlacklistPanel.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(110)))), ((int)(((byte)(114)))));
+            this.BlacklistPanel.Location = new System.Drawing.Point(12, 212);
+            this.BlacklistPanel.Name = "BlacklistPanel";
+            this.BlacklistPanel.Size = new System.Drawing.Size(146, 82);
+            this.BlacklistPanel.TabIndex = 10;
+            this.BlacklistPanel.Text = "flatPanel1";
+            // 
+            // lblBlackList
+            // 
+            this.lblBlackList.AutoSize = true;
+            this.lblBlackList.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblBlackList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(230)))), ((int)(((byte)(233)))));
+            this.lblBlackList.Location = new System.Drawing.Point(9, 193);
+            this.lblBlackList.Name = "lblBlackList";
+            this.lblBlackList.Size = new System.Drawing.Size(65, 16);
+            this.lblBlackList.TabIndex = 9;
+            this.lblBlackList.Text = "BLACKLIST";
+            // 
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
@@ -634,9 +678,9 @@
             this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(230)))), ((int)(((byte)(233)))));
             this.lblVersion.Location = new System.Drawing.Point(8, 411);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(40, 16);
+            this.lblVersion.Size = new System.Drawing.Size(30, 16);
             this.lblVersion.TabIndex = 9;
-            this.lblVersion.Text = "v1.6.1";
+            this.lblVersion.Text = "v1.7";
             this.lblVersion.Click += new System.EventHandler(this.lblVersion_Click);
             // 
             // bwUpdateImage
@@ -732,6 +776,9 @@
         private System.Windows.Forms.ToolStripMenuItem messageToolStripMenuItem3;
         private System.Windows.Forms.ToolStripTextBox txtTTSText;
         private System.Windows.Forms.ToolStripMenuItem btnSendTTS;
+        private System.Windows.Forms.Label lblBlackList;
+        private System.Windows.Forms.ListBox lbBlackList;
+        private Forms.Controls.FlatPanel BlacklistPanel;
     }
 }
 
